@@ -42,7 +42,7 @@ class Suche extends \Module
 		}
 		else
 		{
-			$this->Helper = \Samson\DeWIS\Helper::getInstance(); // Hilfsfunktionen bereitstellen
+			$this->Helper = \Schachbulle\ContaoDewisBundle\Helper\Helper::getInstance(); // Hilfsfunktionen bereitstellen
 		}
 
 		return parent::generate(); // Weitermachen mit dem Modul
@@ -57,7 +57,7 @@ class Suche extends \Module
 		global $objPage;
 		
 		// Blacklist laden
-		$Blacklist = \Samson\DeWIS\DeWIS::blacklist();
+		$Blacklist = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::blacklist();
 
 		// ZPS-Variable holen
 		$search = \Input::get($this->dewis_searchkey);
@@ -67,7 +67,7 @@ class Suche extends \Module
 			// ==================
 			// SUCHE NACH SPIELER
 			// ==================
-			$check_search = \Samson\DeWIS\Helper::checkSearchstringPlayer($search); // Suchbegriff analysieren
+			$check_search = \Schachbulle\ContaoDewisBundle\Helper\Helper::checkSearchstringPlayer($search); // Suchbegriff analysieren
 
 			// Abfrage vorbereiten
 			$param = array
@@ -78,7 +78,7 @@ class Suche extends \Module
 				'nachname' => $check_search['nachname'],
 				'limit'    => 500
 			);
-			$resultArr = \Samson\DeWIS\DeWIS::autoQuery($param); // Abfrage ausführen
+			$resultArr = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::autoQuery($param); // Abfrage ausführen
 
 			// Daten konvertieren für Ausgabe
 			$daten = array();
@@ -97,9 +97,9 @@ class Suche extends \Module
 						(
 							'PKZ'         => $m->pid,
 							'Verein'      => sprintf("<a href=\"".ALIAS_VEREIN."/%s.html\">%s</a>", $m->vkz, $m->club),
-							'Spielername' => \Samson\DeWIS\Helper::Spielername($m, $gesperrt),
-							'KW'          => ($gesperrt) ? '&nbsp;' : \Samson\DeWIS\DeWIS::Kalenderwoche($m->tcode),
-							'DWZ'         => (!$m->rating && $m->tcode) ? 'Restp.' : \Samson\DeWIS\DeWIS::DWZ($m->rating, $m->ratingIndex),
+							'Spielername' => \Schachbulle\ContaoDewisBundle\Helper\Helper::Spielername($m, $gesperrt),
+							'KW'          => ($gesperrt) ? '&nbsp;' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Kalenderwoche($m->tcode),
+							'DWZ'         => (!$m->rating && $m->tcode) ? 'Restp.' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::DWZ($m->rating, $m->ratingIndex),
 							'Elo'         => ($m->elo) ? $m->elo : '-----'
 						);
 					}

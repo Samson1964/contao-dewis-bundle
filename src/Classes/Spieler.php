@@ -61,7 +61,7 @@ class Spieler extends \Module
 
 			// Startzeit setzen
 			$this->startzeit = microtime(true);
-			$this->Helper = \Samson\DeWIS\Helper::getInstance(); // Hilfsfunktionen bereitstellen
+			$this->Helper = \Schachbulle\ContaoDewisBundle\Helper\Helper::getInstance(); // Hilfsfunktionen bereitstellen
 		}
 
 		return parent::generate(); // Weitermachen mit dem Modul
@@ -76,19 +76,19 @@ class Spieler extends \Module
 		global $objPage;
 
 		// Blacklist laden
-		$Blacklist = \Samson\DeWIS\DeWIS::Blacklist();
+		$Blacklist = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Blacklist();
 		
 		// Spielerkartei angefordert?
 		$id = \Input::get('id'); 
 		// Spielersuche aktiv?
 		$search = \Input::get('search'); 
 
-		$mitglied = \Samson\DeWIS\Helper::getMitglied(); // Daten des aktuellen Mitgliedes laden
+		$mitglied = \Schachbulle\ContaoDewisBundle\Helper\Helper::getMitglied(); // Daten des aktuellen Mitgliedes laden
 		
 		$this->Template->hl = 'h1'; // Standard-Überschriftgröße
 		$this->Template->shl = 'h2'; // Standard-Überschriftgröße 2
 		$this->Template->headline = 'DWZ - Spieler'; // Standard-Überschrift
-		$this->Template->navigation   = \Samson\DeWIS\Helper::Navigation(); // Navigation ausgeben
+		$this->Template->navigation   = \Schachbulle\ContaoDewisBundle\Helper\Helper::Navigation(); // Navigation ausgeben
 
 		// Sperrstatus festlegen
 		if(KARTEISPERRE_GAESTE) $gesperrt = $mitglied->id ? false : true;
@@ -96,7 +96,7 @@ class Spieler extends \Module
 
 		if($search)
 		{
-			$check_search = \Samson\DeWIS\Helper::checkSearchstringPlayer($search); // Suchbegriff analysieren
+			$check_search = \Schachbulle\ContaoDewisBundle\Helper\Helper::checkSearchstringPlayer($search); // Suchbegriff analysieren
 
 			$this->Template->subHeadline = 'Suche nach '.$search; // Unterüberschrift setzen
 
@@ -138,7 +138,7 @@ class Spieler extends \Module
 				);
 			}
 
-			$resultArr = \Samson\DeWIS\DeWIS::autoQuery($param); // Abfrage ausführen
+			$resultArr = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::autoQuery($param); // Abfrage ausführen
 			
 			// Daten konvertieren für Ausgabe
 			$daten = array();
@@ -157,9 +157,9 @@ class Spieler extends \Module
 						(
 							'PKZ'         => $m->pid,
 							'Verein'      => sprintf("<a href=\"".ALIAS_VEREIN."/%s.html\">%s</a>", $m->vkz, $m->club),
-							'Spielername' => \Samson\DeWIS\Helper::Spielername($m, $gesperrt),
-							'KW'          => ($gesperrt) ? '&nbsp;' : \Samson\DeWIS\DeWIS::Kalenderwoche($m->tcode),
-							'DWZ'         => (!$m->rating && $m->tcode) ? 'Restp.' : \Samson\DeWIS\DeWIS::DWZ($m->rating, $m->ratingIndex),
+							'Spielername' => \Schachbulle\ContaoDewisBundle\Helper\Helper::Spielername($m, $gesperrt),
+							'KW'          => ($gesperrt) ? '&nbsp;' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Kalenderwoche($m->tcode),
+							'DWZ'         => (!$m->rating && $m->tcode) ? 'Restp.' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::DWZ($m->rating, $m->ratingIndex),
 							'Elo'         => ($m->elo) ? $m->elo : '-----'
 						);
 					}
@@ -178,7 +178,7 @@ class Spieler extends \Module
 					'nachname' => $check_search['nachname2'],
 					'limit'    => 500
 				);
-				$resultArr = \Samson\DeWIS\DeWIS::autoQuery($param); // Abfrage ausführen
+				$resultArr = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::autoQuery($param); // Abfrage ausführen
 				if($resultArr['result']->members)
 				{
 					foreach($resultArr['result']->members as $m)
@@ -194,9 +194,9 @@ class Spieler extends \Module
 							(
 								'PKZ'         => $m->pid,
 								'Verein'      => sprintf("<a href=\"".ALIAS_VEREIN."/%s.html\">%s</a>", $m->vkz, $m->club),
-								'Spielername' => \Samson\DeWIS\Helper::Spielername($m, $gesperrt),
-								'KW'          => ($gesperrt) ? '&nbsp;' : \Samson\DeWIS\DeWIS::Kalenderwoche($m->tcode),
-								'DWZ'         => (!$m->rating && $m->tcode) ? 'Restp.' : \Samson\DeWIS\DeWIS::DWZ($m->rating, $m->ratingIndex),
+								'Spielername' => \Schachbulle\ContaoDewisBundle\Helper\Helper::Spielername($m, $gesperrt),
+								'KW'          => ($gesperrt) ? '&nbsp;' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Kalenderwoche($m->tcode),
+								'DWZ'         => (!$m->rating && $m->tcode) ? 'Restp.' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::DWZ($m->rating, $m->ratingIndex),
 								'Elo'         => ($m->elo) ? $m->elo : '-----'
 							);
 						}
@@ -215,8 +215,8 @@ class Spieler extends \Module
 			$this->Template->infobox = $Infotemplate->parse();
 			$this->Template->searchresult = $this->Subtemplate->parse();
 			$this->Template->hinweis = $gesperrt;
-			$this->Template->registrierung = \Samson\DeWIS\DeWIS::Registrierungshinweis();
-			$this->Template->fehler = \Samson\DeWIS\DeWIS::ZeigeFehler();
+			$this->Template->registrierung = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Registrierungshinweis();
+			$this->Template->fehler = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::ZeigeFehler();
 			$this->Template->searchform = true;
 
 		}
@@ -247,9 +247,9 @@ class Spieler extends \Module
 				);
 			}
 
-			$resultArr = \Samson\DeWIS\DeWIS::autoQuery($param); // Abfrage ausführen
+			$resultArr = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::autoQuery($param); // Abfrage ausführen
 
-			if(!$resultArr['result']) \Samson\DeWIS\Helper::get404(); // ID nicht gefunden
+			if(!$resultArr['result']) \Schachbulle\ContaoDewisBundle\Helper\Helper::get404(); // ID nicht gefunden
 			
 			// Seitentitel ändern
 			$objPage->pageTitle = 'DWZ-Karteikarte '.$resultArr['result']->member->firstname.' '.$resultArr['result']->member->surname;
@@ -274,7 +274,7 @@ class Spieler extends \Module
 			$this->Template->fide_nation  = ($resultArr['result']->member->fideNation) ? ($resultArr['result']->member->gender == 'f' ? sprintf('<a href="https://ratings.fide.com/topfed.phtml?tops=1&ina=1&country=%s" target="_blank">%s</a>',$resultArr['result']->member->fideNation, $resultArr['result']->member->fideNation) : sprintf('<a href="https://ratings.fide.com/topfed.phtml?tops=0&ina=1&country=%s" target="_blank">%s</a>',$resultArr['result']->member->fideNation, $resultArr['result']->member->fideNation)) : '-';
 
 			// Alte Datenbank abfragen
-			if(!\Samson\DeWIS\DeWIS::Karteisperre($id) && $altdb = \Samson\DeWIS\DeWIS::AlteDatenbank($id))
+			if(!\Schachbulle\ContaoDewisBundle\Helper\DeWIS::Karteisperre($id) && $altdb = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::AlteDatenbank($id))
 			{
 				$this->Template->historie = ($altdb["status"] == "L") ? 'Vorhanden, aber zuletzt abgemeldet' : sprintf("<a href=\"http://altdwz.schachbund.net/db/spieler.html?zps=%s\" target=\"_blank\">Alte Karteikarte</a>",$altdb["zps"]);
 			}
@@ -319,7 +319,7 @@ class Spieler extends \Module
 			 * Ausgabe zuständiger Wertungsreferent
 			*/
 
-			$this->Template->referent = \Samson\DeWIS\DeWIS::Wertungsreferent($referent);
+			$this->Template->referent = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Wertungsreferent($referent);
 
 			/*********************************************************
 			 * Ausgabe der Karteikarte (DeWIS)
@@ -335,8 +335,8 @@ class Spieler extends \Module
 				foreach($resultArr['result']->tournaments as $t)
 				{
 					$i++;
-					$dwz_alt = \Samson\DeWIS\DeWIS::DWZ($t->ratingOld, $t->ratingOldIndex);
-					$dwz_neu = \Samson\DeWIS\DeWIS::DWZ($t->ratingNew, $t->ratingNewIndex);
+					$dwz_alt = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::DWZ($t->ratingOld, $t->ratingOldIndex);
+					$dwz_neu = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::DWZ($t->ratingNew, $t->ratingNewIndex);
 					$chartlabel[] = $t->ratingNewIndex;
 					$chartdwz[] = $t->ratingNew;
 					$chartleistung[] = $t->achievement ? $t->achievement : false;
@@ -356,8 +356,8 @@ class Spieler extends \Module
 					(
 						'nummer'     => ($i == count($resultArr['result']->tournaments) && $dwz_neu != '&nbsp;') ? 'AKT' : $i,
 						'jahr'       => (substr($t->tcode, 0, 1) > '9' ? '20' . (ord(substr($t->tcode, 0, 1)) - 65) : '19' . substr($t->tcode, 0, 1)) . substr($t->tcode, 1, 1),
-						'turnier'    => sprintf("<a href=\"".ALIAS_TURNIER."/%s/%s.html\" title=\"%s\">%s</a>", $t->tcode, $resultArr['result']->member->pid, $t->tname, \Samson\DeWIS\DeWIS::Turnierkurzname($t->tname)),
-						'punkte'     => \Samson\DeWIS\DeWIS::Punkte($t->points),
+						'turnier'    => sprintf("<a href=\"".ALIAS_TURNIER."/%s/%s.html\" title=\"%s\">%s</a>", $t->tcode, $resultArr['result']->member->pid, $t->tname, \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Turnierkurzname($t->tname)),
+						'punkte'     => \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Punkte($t->points),
 						'partien'    => $t->games,
 						'we'         => $dwz_neu == '&nbsp;' ? '&nbsp;' : str_replace('.', ',', $t->we),
 						'e'          => $t->eCoefficient,
@@ -374,18 +374,18 @@ class Spieler extends \Module
 			 * Ausgabe Diagramm
 			*/
 
-			$this->Template->chartlabel = implode(',',\Samson\DeWIS\Helper::ArrayExtract($chart, 'Label'));
-			$this->Template->chartdwz = implode(',',\Samson\DeWIS\Helper::Mittelwerte(\Samson\DeWIS\Helper::ArrayExtract($chart, 'DWZ')));
+			$this->Template->chartlabel = implode(',',\Schachbulle\ContaoDewisBundle\Helper\Helper::ArrayExtract($chart, 'Label'));
+			$this->Template->chartdwz = implode(',',\Schachbulle\ContaoDewisBundle\Helper\Helper::Mittelwerte(\Schachbulle\ContaoDewisBundle\Helper\Helper::ArrayExtract($chart, 'DWZ')));
 
 			// Leistungskurve weicher machen
 			for($x = 0; $x < count($chart); $x++)
 			{
 				if($chart[$x]['Leistung'] == 0)
 				{
-					$chart[$x]['Leistung'] = \Samson\DeWIS\DeWIS::LeistungSchaetzen($chart[$x]['Niveau'], $chart[$x]['Punkte'], $chart[$x]['Partien'], $chart[$x]['DWZ']); 
+					$chart[$x]['Leistung'] = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::LeistungSchaetzen($chart[$x]['Niveau'], $chart[$x]['Punkte'], $chart[$x]['Partien'], $chart[$x]['DWZ']); 
 				}
 			}
-			$this->Template->chartleistung = implode(',',\Samson\DeWIS\Helper::Mittelwerte(\Samson\DeWIS\Helper::ArrayExtract($chart, 'Leistung')));
+			$this->Template->chartleistung = implode(',',\Schachbulle\ContaoDewisBundle\Helper\Helper::Mittelwerte(\Schachbulle\ContaoDewisBundle\Helper\Helper::ArrayExtract($chart, 'Leistung')));
 
 			/*********************************************************
 			 * Ausgabe Ranglistenplazierungen und Verbandszugehörigkeiten

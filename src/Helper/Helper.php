@@ -60,7 +60,7 @@ class Helper extends \Frontend
 	{
 		if (self::$instance === null)
 		{
-			self::$instance = new \Samson\DeWIS\Helper();
+			self::$instance = new \Schachbulle\ContaoDewisBundle\Helper\Helper();
 		}
 	
 		return self::$instance;
@@ -68,7 +68,7 @@ class Helper extends \Frontend
 
 	public function getMitglied()
 	{
-		//\Samson\DeWIS\DeWIS::debug(\FrontendUser::getInstance());
+		//\Schachbulle\ContaoDewisBundle\Helper\DeWIS::debug(\FrontendUser::getInstance());
 		return \FrontendUser::getInstance(); //$this->user;
 	}
 

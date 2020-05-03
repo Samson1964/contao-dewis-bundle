@@ -57,7 +57,7 @@ class Verband extends \Module
 
 			// Startzeit setzen
 			$this->startzeit = microtime(true);
-			$this->Helper = \Samson\DeWIS\Helper::getInstance(); // Hilfsfunktionen bereitstellen
+			$this->Helper = \Schachbulle\ContaoDewisBundle\Helper\Helper::getInstance(); // Hilfsfunktionen bereitstellen
 		}
 
 		return parent::generate(); // Weitermachen mit dem Modul
@@ -72,7 +72,7 @@ class Verband extends \Module
 		global $objPage;
 		
 		// Blacklist laden
-		$Blacklist = \Samson\DeWIS\DeWIS::blacklist();
+		$Blacklist = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::blacklist();
 
 		// ZPS-Variable holen
 		$zps = \Input::get('zps');
@@ -84,12 +84,12 @@ class Verband extends \Module
 		$age_from = \Input::get('age_from'); 
 		$age_to = \Input::get('age_to'); 
 		
-		$mitglied = \Samson\DeWIS\Helper::getMitglied(); // Daten des aktuellen Mitgliedes laden
+		$mitglied = \Schachbulle\ContaoDewisBundle\Helper\Helper::getMitglied(); // Daten des aktuellen Mitgliedes laden
 		
 		$this->Template->hl = 'h1'; // Standard-Überschriftgröße
 		$this->Template->shl = 'h2'; // Standard-Überschriftgröße 2
 		$this->Template->headline = 'DWZ - Verband'; // Standard-Überschrift
-		$this->Template->navigation   = \Samson\DeWIS\Helper::Navigation(); // Navigation ausgeben
+		$this->Template->navigation   = \Schachbulle\ContaoDewisBundle\Helper\Helper::Navigation(); // Navigation ausgeben
 		$this->Template->zps = $zps; // Aktuelle ZPS-Nummer
 
 		// Sperrstatus festlegen
@@ -101,7 +101,7 @@ class Verband extends \Module
 		*/
 
 		// Verbände/Vereine laden
-		$result = \Samson\DeWIS\DeWIS::Verbandsliste('00000');
+		$result = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Verbandsliste('00000');
 
 		$temp = array();
 		$y = 0;
@@ -178,7 +178,7 @@ class Verband extends \Module
 				'geschlecht'=> $sex,
 			);
 
-			$resultArr = \Samson\DeWIS\DeWIS::autoQuery($param); // Abfrage ausführen
+			$resultArr = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::autoQuery($param); // Abfrage ausführen
 
 			/*********************************************************
 			 * Ausgabe der Verbandsrangliste
@@ -211,13 +211,13 @@ class Verband extends \Module
 						'PKZ'         => $m->pid,
 						'Status'      => $m->state,
 						'Mglnr'       => sprintf("%04d", $m->membership),
-						'Spielername' => \Samson\DeWIS\Helper::Spielername($m, $gesperrt),
+						'Spielername' => \Schachbulle\ContaoDewisBundle\Helper\Helper::Spielername($m, $gesperrt),
 						'Geschlecht'  => ($m->gender == 'm') ? '&nbsp;' : ($m->gender == 'f' ? 'w' : strtolower($m->gender)),
-						'KW'          => ($gesperrt) ? '&nbsp;' : \Samson\DeWIS\DeWIS::Kalenderwoche($m->tcode),
-						'DWZ'         => (!$m->rating && $m->tcode) ? 'Restp.' : \Samson\DeWIS\DeWIS::DWZ($m->rating, $m->ratingIndex),
+						'KW'          => ($gesperrt) ? '&nbsp;' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Kalenderwoche($m->tcode),
+						'DWZ'         => (!$m->rating && $m->tcode) ? 'Restp.' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::DWZ($m->rating, $m->ratingIndex),
 						'Elo'         => ($m->elo) ? $m->elo : '-----',
 						'FIDE-Titel'  => $m->fideTitle,
-						'Verein'      => sprintf("<a href=\"".ALIAS_VEREIN."/%s.html\">%s</a>", $m->vkz, \Samson\DeWIS\DeWIS::Vereinskurzname($m->club))
+						'Verein'      => sprintf("<a href=\"".ALIAS_VEREIN."/%s.html\">%s</a>", $m->vkz, \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Vereinskurzname($m->club))
 					);
 				}
 				if($z == $toplist) break; // Abbruch wenn Limit erreicht
@@ -227,14 +227,14 @@ class Verband extends \Module
 			$this->Template->sichtbar = true;
 			$this->Template->daten = $daten;
 			$this->Template->hinweis = $gesperrt;
-			$this->Template->registrierung = \Samson\DeWIS\DeWIS::Registrierungshinweis();
+			$this->Template->registrierung = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Registrierungshinweis();
 
 
 			/*********************************************************
 			 * Ausgabe zuständiger Wertungsreferent
 			*/
 
-			$this->Template->referent = \Samson\DeWIS\DeWIS::Wertungsreferent($referent);
+			$this->Template->referent = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Wertungsreferent($referent);
 
 			/*********************************************************
 			 * Ausgabe Metadaten

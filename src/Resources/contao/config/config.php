@@ -15,9 +15,8 @@
 //define(CACHE_TIME, 36000); // Cachezeit (36000 = 10h)
 //define(CACHE_TIME_FAKTOR_VERBAND, 20); // CACHE_TIME * Faktor = gesamte Cachelebenszeit
 //define(CACHE_TIME_FAKTOR_REFERENT, 5); // CACHE_TIME * Faktor = gesamte Cachelebenszeit
-define('CACHE_DIR', TL_ROOT . '/system/cache/dewis/'); // Cacheverzeichnis festlegen
 
-define('KARTEISPERRE_GAESTE', true); // Anzeige von Karteikarten für nichtangemeldete Besucher gesperrt
+define('KARTEISPERRE_GAESTE', false); // Anzeige von Karteikarten für nichtangemeldete Besucher gesperrt
 define('PASSIVE_AUSBLENDEN', false); // Anzeige passiver Spieler
 define('GEBURTSJAHR_AUSBLENDEN', true); // Anzeige des Geburtsjahres
 define('GESCHLECHT_AUSBLENDEN', true); // Anzeige des Geschlechtes
@@ -77,15 +76,15 @@ $GLOBALS['BE_MOD']['dewis'] = array
 
 $GLOBALS['FE_MOD']['dewis'] = array
 (
-	'dewis_spieler'         => 'Samson\DeWIS\Spieler',
-	'dewis_verein'          => 'Samson\DeWIS\Verein',
-	'dewis_verband'         => 'Samson\DeWIS\Verband',
-	'dewis_turnier'         => 'Samson\DeWIS\Turnier',
-	'dewis_suche'           => 'Samson\DeWIS\Suche',
+	'dewis_spieler'         => 'Schachbulle\ContaoDewisBundle\Classes\Spieler',
+	'dewis_verein'          => 'Schachbulle\ContaoDewisBundle\Classes\Verein',
+	'dewis_verband'         => 'Schachbulle\ContaoDewisBundle\Classes\Verband',
+	'dewis_turnier'         => 'Schachbulle\ContaoDewisBundle\Classes\Turnier',
+	'dewis_suche'           => 'Schachbulle\ContaoDewisBundle\Classes\Suche',
 );
 
 // http://de.contaowiki.org/Strukturierte_URLs
-$GLOBALS['TL_HOOKS']['getPageIdFromUrl'][] = array('DeWIS\DeWIS', 'getParamsFromUrl');
+$GLOBALS['TL_HOOKS']['getPageIdFromUrl'][] = array('Schachbulle\ContaoDewisBundle\Helper\DeWIS', 'getParamsFromUrl');
 
 if (TL_MODE == 'BE') 
 {
@@ -99,7 +98,7 @@ if (TL_MODE == 'BE')
  */
 $GLOBALS['TL_PURGE']['custom']['dewis'] = array
 (
-	'callback' => array('DeWIS\DeWIS', 'purgeCache')
+	'callback' => array('Schachbulle\ContaoDewisBundle\Helper\DeWIS', 'purgeCache')
 );
 
 /**

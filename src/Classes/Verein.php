@@ -55,7 +55,7 @@ class Verein extends \Module
 
 			// Startzeit setzen
 			$this->startzeit = microtime(true);
-			$this->Helper = \Samson\DeWIS\Helper::getInstance(); // Hilfsfunktionen bereitstellen
+			$this->Helper = \Schachbulle\ContaoDewisBundle\Helper\Helper::getInstance(); // Hilfsfunktionen bereitstellen
 		}
 
 		return parent::generate(); // Weitermachen mit dem Modul
@@ -70,7 +70,7 @@ class Verein extends \Module
 		global $objPage;
 		
 		// Blacklist laden
-		$Blacklist = \Samson\DeWIS\DeWIS::blacklist();
+		$Blacklist = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::blacklist();
 
 		// Vereinsliste angefordert?
 		$zps = \Input::get('zps'); 
@@ -80,12 +80,12 @@ class Verein extends \Module
 		$order = \Input::get('order'); 
 		$order = ($order == 'alpha') ? 'alpha' : 'rang';
 		
-		$mitglied = \Samson\DeWIS\Helper::getMitglied(); // Daten des aktuellen Mitgliedes laden
+		$mitglied = \Schachbulle\ContaoDewisBundle\Helper\Helper::getMitglied(); // Daten des aktuellen Mitgliedes laden
 		
 		$this->Template->hl = 'h1'; // Standard-Überschriftgröße
 		$this->Template->shl = 'h2'; // Standard-Überschriftgröße 2
 		$this->Template->headline = 'DWZ - Verein'; // Standard-Überschrift
-		$this->Template->navigation   = \Samson\DeWIS\Helper::Navigation(); // Navigation ausgeben
+		$this->Template->navigation   = \Schachbulle\ContaoDewisBundle\Helper\Helper::Navigation(); // Navigation ausgeben
 
 		// Sperrstatus festlegen
 		if(KARTEISPERRE_GAESTE) $gesperrt = $mitglied->id ? false : true;
@@ -100,7 +100,7 @@ class Verein extends \Module
 			 * Verbands- und Vereinsliste holen
 			*/
 			
-			$liste = \Samson\DeWIS\DeWIS::Verbandsliste('00000');
+			$liste = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Verbandsliste('00000');
 			
 
 			/*********************************************************
@@ -110,7 +110,7 @@ class Verein extends \Module
 			$result_vn = array();
 			if($GLOBALS['TL_CONFIG']['dewis_cache'])
 			{
-				$cache_vn = new \Samson\DeWIS\Cache(array('name' => 'vereinssuche', 'path' => CACHE_DIR, 'extension' => '.cache'));
+				$cache_vn = new \Schachbulle\ContaoDewisBundle\Helper\Cache(array('name' => 'vereinssuche', 'path' => CACHE_DIR, 'extension' => '.cache'));
 				$cache_vn->eraseExpired(); // Cache aufräumen, abgelaufene Schlüssel löschen
 
 				// Cache laden
@@ -128,7 +128,7 @@ class Verein extends \Module
 			$result_vb = array();
 			if($GLOBALS['TL_CONFIG']['dewis_cache'])
 			{
-				$cache_vb = new \Samson\DeWIS\Cache(array('name' => 'verbandssuche', 'path' => CACHE_DIR, 'extension' => '.cache'));
+				$cache_vb = new \Schachbulle\ContaoDewisBundle\Helper\Cache(array('name' => 'verbandssuche', 'path' => CACHE_DIR, 'extension' => '.cache'));
 				$cache_vb->eraseExpired(); // Cache aufräumen, abgelaufene Schlüssel löschen
 
 				// Cache laden
@@ -233,7 +233,7 @@ class Verein extends \Module
 				'zps'      => $zps
 			);
 
-			$resultArr = \Samson\DeWIS\DeWIS::autoQuery($param); // Abfrage ausführen
+			$resultArr = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::autoQuery($param); // Abfrage ausführen
 
 			// Sichtbarkeit der Vereinsliste festlegen
 			$this->Template->sichtbar = true;
@@ -245,7 +245,7 @@ class Verein extends \Module
 
 			if(!$resultArr['result'])
 			{
-				$liste = \Samson\DeWIS\DeWIS::Verbandsliste('00000'); // Vereins- und Verbandsliste laden
+				$liste = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Verbandsliste('00000'); // Vereins- und Verbandsliste laden
 				$vzps = rtrim($zps,0); // In ZPS Nullen hinten entfernen = ZPS des Verbandes
 
 				// Vereinsliste für $zps laden
@@ -261,8 +261,8 @@ class Verein extends \Module
 					}
 				}
 
-				$this->Template->fehler = \Samson\DeWIS\DeWIS::ZeigeFehler();
-				if(!$result && !$this->Template->fehler) \Samson\DeWIS\Helper::get404(); // VZPS nicht gefunden
+				$this->Template->fehler = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::ZeigeFehler();
+				if(!$result && !$this->Template->fehler) \Schachbulle\ContaoDewisBundle\Helper\Helper::get404(); // VZPS nicht gefunden
 				
 				// Titel-Ausgabe modifizieren
 				$ausgabetitel = $liste['verbaende'][$zps]['name'] ? $liste['verbaende'][$zps]['name'] : 'ZPS-Raum '.$zps;
@@ -317,10 +317,10 @@ class Verein extends \Module
 								'PKZ'         => $m->pid,
 								'Mglnr'       => sprintf("%04d", $m->membership),
 								'Status'      => $m->state,
-								'Spielername' => \Samson\DeWIS\Helper::Spielername($m, $gesperrt),
+								'Spielername' => \Schachbulle\ContaoDewisBundle\Helper\Helper::Spielername($m, $gesperrt),
 								'Geschlecht'  => ($m->gender == 'm') ? '&nbsp;' : ($m->gender == 'f' ? 'w' : strtolower($m->gender)),
-								'KW'          => ($gesperrt) ? '&nbsp;' : \Samson\DeWIS\DeWIS::Kalenderwoche($m->tcode),
-								'DWZ'         => (!$m->rating && $m->tcode) ? 'Restp.' : \Samson\DeWIS\DeWIS::DWZ($m->rating, $m->ratingIndex),
+								'KW'          => ($gesperrt) ? '&nbsp;' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Kalenderwoche($m->tcode),
+								'DWZ'         => (!$m->rating && $m->tcode) ? 'Restp.' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::DWZ($m->rating, $m->ratingIndex),
 								'Elo'         => ($m->elo) ? $m->elo : '-----',
 								'FIDE-Titel'  => $m->fideTitle
 							);
@@ -348,7 +348,7 @@ class Verein extends \Module
 			 * Ausgabe Verbandszugehörigkeiten
 			*/
 
-			$result = \Samson\DeWIS\DeWIS::Verbandsliste('00000');
+			$result = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Verbandsliste('00000');
 
 			$temp = array();
 			$y = 0;
@@ -379,7 +379,7 @@ class Verein extends \Module
 			 * Ausgabe zuständiger Wertungsreferent
 			*/
 
-			$this->Template->referent = \Samson\DeWIS\DeWIS::Wertungsreferent($referent);
+			$this->Template->referent = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Wertungsreferent($referent);
 
 
 			/*********************************************************
@@ -389,7 +389,7 @@ class Verein extends \Module
 			$Infotemplate = new \FrontendTemplate($this->infoTemplate);
 			$this->Template->infobox = $Infotemplate->parse();
 			$this->Template->hinweis = $gesperrt;
-			$this->Template->registrierung = \Samson\DeWIS\DeWIS::Registrierungshinweis();
+			$this->Template->registrierung = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Registrierungshinweis();
 
 		}
 

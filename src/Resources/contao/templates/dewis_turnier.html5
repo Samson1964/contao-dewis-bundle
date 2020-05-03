@@ -1,9 +1,9 @@
 <!-- indexer::stop -->
 
 <?php
-	$GLOBALS['TL_CSS'][] = 'system/modules/dewis/assets/css/default.css';
-	$GLOBALS['TL_CSS'][] = 'system/modules/dewis/assets/css/chosen.css';
-	$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/dewis/assets/js/chosen.jquery.min.js';
+	$GLOBALS['TL_CSS'][] = 'bundles/contaodewis/css/default.css';
+	$GLOBALS['TL_CSS'][] = 'bundles/contaodewis/css/chosen.css';
+	$GLOBALS['TL_JAVASCRIPT'][] = 'bundles/contaodewis/js/chosen.jquery.min.js';
 ?>
 <script>
 (function($) 
@@ -146,8 +146,8 @@
 		</table>
 
 		<?php
-			$GLOBALS['TL_CSS'][] = 'system/modules/dewis/assets/css/tablesorter.css';
-			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/dewis/assets/js/jquery.tablesorter.min.js';
+			$GLOBALS['TL_CSS'][] = 'bundles/contaodewis/css/tablesorter.css';
+			$GLOBALS['TL_JAVASCRIPT'][] = 'bundles/contaodewis/js/jquery.tablesorter.min.js';
 		?>
 		<script>
 		(function($) 
@@ -281,8 +281,8 @@
 		<?php elseif($this->ergebnisliste): ?>
 
 			<?php
-				$GLOBALS['TL_CSS'][] = 'system/modules/dewis/assets/css/tablesorter.css';
-				$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/dewis/assets/js/jquery.tablesorter.min.js';
+				$GLOBALS['TL_CSS'][] = 'bundles/contaodewis/css/tablesorter.css';
+				$GLOBALS['TL_JAVASCRIPT'][] = 'bundles/contaodewis/js/jquery.tablesorter.min.js';
 			?>
 			<script>
 			(function($) 
@@ -322,12 +322,14 @@
 						<td class="right-line<?= $class ?>"><?= $d['Ergebnis'] ?></td>
 						<?php for($r = 1; $r <= $this->turnierheader['Runden']; $r++): ?>
 							<td class="right-line<?= $class ?>">
-								<?php for($e = 0; $e < count($d['Ergebnisse'][$r]); $e++): ?>
-									<div class="<?= $d['Ergebnisse'][$r][$e]['Farbe'] ?>">
-										<span class="result"><?= $d['Ergebnisse'][$r][$e]['Ergebnis'] ?></span>&nbsp;
-										<span class="opponent"><?= $d['Ergebnisse'][$r][$e]['Nummer'] ?></span>
-									</div>
-								<?php endfor; ?>
+								<?php if($d['Ergebnisse'][$r]): ?>
+									<?php for($e = 0; $e < count($d['Ergebnisse'][$r]); $e++): ?>
+										<div class="<?= $d['Ergebnisse'][$r][$e]['Farbe'] ?>">
+											<span class="result"><?= $d['Ergebnisse'][$r][$e]['Ergebnis'] ?></span>&nbsp;
+											<span class="opponent"><?= $d['Ergebnisse'][$r][$e]['Nummer'] ?></span>
+										</div>
+									<?php endfor; ?>
+								<?php endif; ?>
 							</td>
 						<?php endfor; ?>
 					</tr>

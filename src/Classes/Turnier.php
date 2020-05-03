@@ -54,7 +54,7 @@ class Turnier extends \Module
 
 			// Startzeit setzen
 			$this->startzeit = microtime(true);
-			$this->Helper = \Samson\DeWIS\Helper::getInstance(); // Hilfsfunktionen bereitstellen
+			$this->Helper = \Schachbulle\ContaoDewisBundle\Helper\Helper::getInstance(); // Hilfsfunktionen bereitstellen
 		}
 
 		return parent::generate(); // Weitermachen mit dem Modul
@@ -69,7 +69,7 @@ class Turnier extends \Module
 		global $objPage;
 		
 		// Blacklist laden
-		$Blacklist = \Samson\DeWIS\DeWIS::blacklist();
+		$Blacklist = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::blacklist();
 
 		$code = \Input::get('code'); // Turniercode angefordert?
 		$search = \Input::get('search'); // Turniersuche aktiv?
@@ -77,23 +77,23 @@ class Turnier extends \Module
 		$id = \Input::get('id'); // Spieler-ID
 		$view = \Input::get('view'); // View
 		
-		$mitglied = \Samson\DeWIS\Helper::getMitglied(); // Daten des aktuellen Mitgliedes laden
+		$mitglied = \Schachbulle\ContaoDewisBundle\Helper\Helper::getMitglied(); // Daten des aktuellen Mitgliedes laden
 		$aktzeit = time();
 		
 		$this->Template->hl = 'h1'; // Standard-Überschriftgröße
 		$this->Template->shl = 'h2'; // Standard-Überschriftgröße 2
 		$this->Template->headline = 'DWZ - Turnier'; // Standard-Überschrift
-		$this->Template->navigation   = \Samson\DeWIS\Helper::Navigation(); // Navigation ausgeben
+		$this->Template->navigation   = \Schachbulle\ContaoDewisBundle\Helper\Helper::Navigation(); // Navigation ausgeben
 
 		// Sperrstatus festlegen
 		if(KARTEISPERRE_GAESTE) $gesperrt = $mitglied->id ? false : true;
 		else $gesperrt = false;
 
 		// DeWIS-Klasse initialisieren
-		$dewis = new \Samson\DeWIS\DeWIS();
+		$dewis = new \Schachbulle\ContaoDewisBundle\Helper\DeWIS();
 
 		// Verbands- und Vereinsliste holen
-		$liste = \Samson\DeWIS\DeWIS::Verbandsliste('00000');
+		$liste = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Verbandsliste('00000');
 
 		if($search)
 		{
@@ -139,7 +139,7 @@ class Turnier extends \Module
 					$zeitraum[] = array
 					(
 						'von' => ($year == $from_year) ? $from_year.'-'.$from_month.'-01' : $year.'-01-01',
-						'bis' => ($year == $to_year) ? $to_year.'-'.$to_month.'-'.\Samson\DeWIS\Helper::Monatstage($to_year)[ltrim($to_month,0)] : $year.'-12-31',
+						'bis' => ($year == $to_year) ? $to_year.'-'.$to_month.'-'.\Schachbulle\ContaoDewisBundle\Helper\Helper::Monatstage($to_year)[ltrim($to_month,0)] : $year.'-12-31',
 					);
 				}
 
@@ -165,7 +165,7 @@ class Turnier extends \Module
 						'suche'     => strtolower(\Input::get('keyword')),
 					);
 
-					$resultArr = \Samson\DeWIS\DeWIS::autoQuery($param); // Abfrage ausführen
+					$resultArr = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::autoQuery($param); // Abfrage ausführen
 
 					if($resultArr['result']->tournaments)
 					{
@@ -174,9 +174,9 @@ class Turnier extends \Module
 							$daten[] = array
 							(
 								'Turniercode'	=> $t->tcode,
-								'Turniername'	=> sprintf('<a href="'.ALIAS_TURNIER.'/%s.html" title="%s">%s</a>', $t->tcode, $t->tname, \Samson\DeWIS\DeWIS::Turnierkurzname($t->tname)),
+								'Turniername'	=> sprintf('<a href="'.ALIAS_TURNIER.'/%s.html" title="%s">%s</a>', $t->tcode, $t->tname, \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Turnierkurzname($t->tname)),
 								'Turnierende'	=> substr($t->finishedOn,8,2).'.'.substr($t->finishedOn,5,2).'.'.substr($t->finishedOn,0,4),
-								'Auswerter'		=> \Samson\DeWIS\DeWIS::Wertungsreferent($t->assessor1, false),
+								'Auswerter'		=> \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Wertungsreferent($t->assessor1, false),
 							);
 						}
 					}
@@ -224,7 +224,7 @@ class Turnier extends \Module
 			$this->Subtemplate->search_verband = $zps;
 			$this->Subtemplate->search_from = $from_month.'/'.$from_year;
 			$this->Subtemplate->search_to = $to_month.'/'.$to_year;
-			$this->Template->fehler = \Samson\DeWIS\DeWIS::ZeigeFehler();
+			$this->Template->fehler = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::ZeigeFehler();
 			$this->Template->searchresult = $this->Subtemplate->parse();
 			$Infotemplate = new \FrontendTemplate($this->infoTemplate);
 			$this->Template->infobox = $Infotemplate->parse();
@@ -243,7 +243,7 @@ class Turnier extends \Module
 
 			$playerArr = array(); // Array mit den Teilnehmern
 			$resultArr = array(); // Array mit den Ergebnissen
-			$result_tausw = \Samson\DeWIS\DeWIS::Turnierauswertung($turniercode); // Auswertung laden (für DWZ)
+			$result_tausw = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Turnierauswertung($turniercode); // Auswertung laden (für DWZ)
 
 			if($result_tausw->evaluation)
 			{
@@ -251,7 +251,7 @@ class Turnier extends \Module
 				{
 					$playerArr[$t->pid] = array
 					(
-						'Spielername'	=> $Blacklist[$t->pid] ? '***' : \Samson\DeWIS\Helper::Spielername($t, $gesperrt),
+						'Spielername'	=> $Blacklist[$t->pid] ? '***' : \Schachbulle\ContaoDewisBundle\Helper\Helper::Spielername($t, $gesperrt),
 						'Spielername'	=> $Blacklist[$t->pid] ? '***' : ($gesperrt ? sprintf("%s,%s%s", $t->surname, $t->firstname, $t->title ? ',' . $t->title : '') : sprintf("<a href=\"".ALIAS_SPIELER."/%s.html\">%s</a>", $t->pid, sprintf("%s,%s%s", $t->surname, $t->firstname, $t->title ? ',' . $t->title : ''))),
 						'Scoresheet'	=> $Blacklist[$t->pid] ? '' : ($gesperrt ? '' : sprintf("<a href=\"".ALIAS_TURNIER."/%s/%s.html\">SC</a>", $result_tausw->tournament->tcode, $t->pid)),
 						'DSB-Mitglied'	=> sprintf("<a href=\"".ALIAS_TURNIER."/%s/%s.html\">SC</a>", $result_tausw->tournament->tcode, $t->pid),
@@ -275,7 +275,7 @@ class Turnier extends \Module
 				'code'      => $turniercode
 			);
 
-			$result = \Samson\DeWIS\DeWIS::autoQuery($param); // Abfrage ausführen
+			$result = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::autoQuery($param); // Abfrage ausführen
 			$result_tresult = $result['result'];
 
 			/*********************************************************
@@ -291,11 +291,11 @@ class Turnier extends \Module
 				'Ergebnisse'	=> sprintf('<a href="'.ALIAS_TURNIER.'/%s/Ergebnisse.html">Turnierergebnisse</a>', $result_tresult->tournament->tcode),
 				'Turniercode'	=> $result_tresult->tournament->tcode,
 				'Turniername'	=> $result_tresult->tournament->tname,
-				'Turnierende'	=> \Samson\DeWIS\Helper::datum_mysql2php($result_tresult->tournament->finishedOn),
-				'Berechnet'		=> sprintf("%s %s", \Samson\DeWIS\Helper::datum_mysql2php(substr($result_tresult->tournament->computedOn, 0, 10)), substr($result_tresult->tournament->computedOn, 11, 5)),
-				'Nachberechnet'	=> $result_tresult->tournament->recomputedOn == 'NULL' || $result_tresult->tournament->recomputedOn == '' ? '&nbsp;' : sprintf("%s %s", \Samson\DeWIS\Helper::datum_mysql2php(substr($result_tresult->tournament->recomputedOn, 0, 10)), substr($result_tresult->tournament->recomputedOn, 11, 5)),
-				'Auswerter1'	=> \Samson\DeWIS\DeWIS::Wertungsreferent($result_tresult->tournament->assessor1),
-				'Auswerter2'	=> \Samson\DeWIS\DeWIS::Wertungsreferent($result_tresult->tournament->assessor2, false),
+				'Turnierende'	=> \Schachbulle\ContaoDewisBundle\Helper\Helper::datum_mysql2php($result_tresult->tournament->finishedOn),
+				'Berechnet'		=> sprintf("%s %s", \Schachbulle\ContaoDewisBundle\Helper\Helper::datum_mysql2php(substr($result_tresult->tournament->computedOn, 0, 10)), substr($result_tresult->tournament->computedOn, 11, 5)),
+				'Nachberechnet'	=> $result_tresult->tournament->recomputedOn == 'NULL' || $result_tresult->tournament->recomputedOn == '' ? '&nbsp;' : sprintf("%s %s", \Schachbulle\ContaoDewisBundle\Helper\Helper::datum_mysql2php(substr($result_tresult->tournament->recomputedOn, 0, 10)), substr($result_tresult->tournament->recomputedOn, 11, 5)),
+				'Auswerter1'	=> \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Wertungsreferent($result_tresult->tournament->assessor1),
+				'Auswerter2'	=> \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Wertungsreferent($result_tresult->tournament->assessor2, false),
 				'Spieler'		=> $result_tresult->tournament->cntPlayer,
 				'Partien'		=> $result_tresult->tournament->cntGames,
 				'Runden'		=> $result_tresult->tournament->rounds,
@@ -418,7 +418,7 @@ class Turnier extends \Module
 					'DWZ'			=> $dataArr['DWZ'],
 					'Punkte'		=> $dataArr['Punkte'],
 					'Partien'		=> $dataArr['Partien'],
-					'Ergebnis'		=> sprintf("%s/%s", \Samson\DeWIS\DeWIS::Punkte($dataArr['Punkte']), $dataArr['Partien']),
+					'Ergebnis'		=> sprintf("%s/%s", \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Punkte($dataArr['Punkte']), $dataArr['Partien']),
 					'Buchholz'		=> $dataArr['Buchholz'],
 				);
 			}
@@ -471,7 +471,7 @@ class Turnier extends \Module
 							switch($erg['Ergebnis'])
 							{
 								case '1':
-									$We = \Samson\DeWIS\DeWIS::Gewinnerwartung($playerArr[$id]['DWZ'], $playerArr[$erg['Gegner']]['DWZ']);
+									$We = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Gewinnerwartung($playerArr[$id]['DWZ'], $playerArr[$erg['Gegner']]['DWZ']);
 									if($We)
 									{
 										$sumPunkte += 1;
@@ -479,7 +479,7 @@ class Turnier extends \Module
 									}
 									break;
 								case '½':
-									$We = \Samson\DeWIS\DeWIS::Gewinnerwartung($playerArr[$id]['DWZ'], $playerArr[$erg['Gegner']]['DWZ']);
+									$We = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Gewinnerwartung($playerArr[$id]['DWZ'], $playerArr[$erg['Gegner']]['DWZ']);
 									if($We)
 									{
 										$sumPunkte += .5;
@@ -487,7 +487,7 @@ class Turnier extends \Module
 									}
 									break;
 								case '0':
-									$We = \Samson\DeWIS\DeWIS::Gewinnerwartung($playerArr[$id]['DWZ'], $playerArr[$erg['Gegner']]['DWZ']);
+									$We = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Gewinnerwartung($playerArr[$id]['DWZ'], $playerArr[$erg['Gegner']]['DWZ']);
 									if($We)
 									{
 										$sumWe += $We;
@@ -534,12 +534,12 @@ class Turnier extends \Module
 				$this->Vereinslose($theader, $playerArr); // Vereinslosen-Statistik schreiben
 			}
 
-			//\Samson\DeWIS\DeWIS::debug($playerArr);
+			//\Schachbulle\ContaoDewisBundle\Helper\DeWIS::debug($playerArr);
 			$this->Template->turnierheader = $theader;
 			$this->Template->ergebnisse = true;
 			$this->Template->ergebnisliste = true;
 			$this->Template->hinweis = $gesperrt;
-			$this->Template->registrierung = \Samson\DeWIS\DeWIS::Registrierungshinweis();
+			$this->Template->registrierung = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Registrierungshinweis();
 			$Infotemplate = new \FrontendTemplate($this->infoTemplate);
 			$this->Template->infobox = $Infotemplate->parse();
 
@@ -551,7 +551,7 @@ class Turnier extends \Module
 			 * Ausgabe der Auswertung
 			*/
 
-			$result_tausw = \Samson\DeWIS\DeWIS::Turnierauswertung($turniercode);
+			$result_tausw = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Turnierauswertung($turniercode);
 
 			/*********************************************************
 			 * Turnierheader
@@ -565,11 +565,11 @@ class Turnier extends \Module
 				'Ergebnisse'	=> sprintf('<a href="'.ALIAS_TURNIER.'/%s/Ergebnisse.html">Turnierergebnisse</a>', $result_tausw->tournament->tcode),
 				'Turniercode'	=> $result_tausw->tournament->tcode,
 				'Turniername'	=> $result_tausw->tournament->tname,
-				'Turnierende'	=> \Samson\DeWIS\Helper::datum_mysql2php($result_tausw->tournament->finishedOn),
-				'Berechnet'		=> sprintf("%s %s", \Samson\DeWIS\Helper::datum_mysql2php(substr($result_tausw->tournament->computedOn, 0, 10)), substr($result_tausw->tournament->computedOn, 11, 5)),
-				'Nachberechnet'	=> $result_tausw->tournament->recomputedOn == 'NULL' || $result_tausw->tournament->recomputedOn == '' ? '&nbsp;' : sprintf("%s %s", \Samson\DeWIS\Helper::datum_mysql2php(substr($result_tausw->tournament->recomputedOn, 0, 10)), substr($result_tausw->tournament->recomputedOn, 11, 5)),
-				'Auswerter1'	=> \Samson\DeWIS\DeWIS::Wertungsreferent($result_tausw->tournament->assessor1),
-				'Auswerter2'	=> \Samson\DeWIS\DeWIS::Wertungsreferent($result_tausw->tournament->assessor2, false),
+				'Turnierende'	=> \Schachbulle\ContaoDewisBundle\Helper\Helper::datum_mysql2php($result_tausw->tournament->finishedOn),
+				'Berechnet'		=> sprintf("%s %s", \Schachbulle\ContaoDewisBundle\Helper\Helper::datum_mysql2php(substr($result_tausw->tournament->computedOn, 0, 10)), substr($result_tausw->tournament->computedOn, 11, 5)),
+				'Nachberechnet'	=> $result_tausw->tournament->recomputedOn == 'NULL' || $result_tausw->tournament->recomputedOn == '' ? '&nbsp;' : sprintf("%s %s", \Schachbulle\ContaoDewisBundle\Helper\Helper::datum_mysql2php(substr($result_tausw->tournament->recomputedOn, 0, 10)), substr($result_tausw->tournament->recomputedOn, 11, 5)),
+				'Auswerter1'	=> \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Wertungsreferent($result_tausw->tournament->assessor1),
+				'Auswerter2'	=> \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Wertungsreferent($result_tausw->tournament->assessor2, false),
 				'Spieler'		=> $result_tausw->tournament->cntPlayer,
 				'Partien'		=> $result_tausw->tournament->cntGames,
 				'Runden'		=> $result_tausw->tournament->rounds,
@@ -596,10 +596,10 @@ class Turnier extends \Module
 					$daten[$key] = array
 					(
 						'PKZ'			=> $t->pid,
-						'Spielername'	=> $Blacklist[$t->pid] ? '***' : \Samson\DeWIS\Helper::Spielername($t, $gesperrt),
+						'Spielername'	=> $Blacklist[$t->pid] ? '***' : \Schachbulle\ContaoDewisBundle\Helper\Helper::Spielername($t, $gesperrt),
 						'Scoresheet'	=> $Blacklist[$t->pid] ? '' : ($gesperrt ? '' : sprintf("<a href=\"".ALIAS_TURNIER."/%s/%s.html\">SC</a>", $result_tausw->tournament->tcode, $t->pid)),
-						'DWZ alt'		=> \Samson\DeWIS\DeWIS::DWZ($t->ratingOld, $t->ratingOldIndex),
-						'DWZ neu'		=> \Samson\DeWIS\DeWIS::DWZ($t->ratingNew, $t->ratingNewIndex),
+						'DWZ alt'		=> \Schachbulle\ContaoDewisBundle\Helper\DeWIS::DWZ($t->ratingOld, $t->ratingOldIndex),
+						'DWZ neu'		=> \Schachbulle\ContaoDewisBundle\Helper\DeWIS::DWZ($t->ratingNew, $t->ratingNewIndex),
 						'MglNr'         => sprintf("%04d", $t->membership),
 						'VKZ'           => sprintf("<a href=\"".ALIAS_VEREIN."/%s.html\">%s</a>", $t->vkz, sprintf("%s-%s", $t->vkz, sprintf("%04d", $t->membership))),
 						'ZPS'           => sprintf("%s-%s", $t->vkz, sprintf("%04d", $t->membership)),
@@ -609,11 +609,11 @@ class Turnier extends \Module
 						'Elo'           => ($t->elo) ? $t->elo : '-----',
 						'Titel'         => $t->fideTitle ? $t->fideTitle : '&nbsp;',
 						'DWZ+-'         => ($t->ratingNew && $t->ratingOld) ? $ratingdiff : "",
-						'Punkte'        => \Samson\DeWIS\DeWIS::Punkte($t->points),
+						'Punkte'        => \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Punkte($t->points),
 						'Partien'       => $t->games,
 						'Ungewertet'    => $t->unratedGames == 'NULL' || !$t->unratedGames ? '&nbsp;' : $t->unratedGames,
-						'E'             => \Samson\DeWIS\DeWIS::DWZ($t->ratingNew, $t->ratingNewIndex) == '-----' ? '&nbsp;' : $t->eCoefficient,
-						'Ergebnis'      => sprintf("%s/%s", \Samson\DeWIS\DeWIS::Punkte($t->points), $t->games),
+						'E'             => \Schachbulle\ContaoDewisBundle\Helper\DeWIS::DWZ($t->ratingNew, $t->ratingNewIndex) == '-----' ? '&nbsp;' : $t->eCoefficient,
+						'Ergebnis'      => sprintf("%s/%s", \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Punkte($t->points), $t->games),
 						'We'            => str_replace('.', ',', $t->we),
 						'Niveau'        => $t->level,
 						'Leistung'      => $t->achievement ? $t->achievement : '&nbsp;',
@@ -627,7 +627,7 @@ class Turnier extends \Module
 			$this->Template->daten = $daten;
 			$this->Template->auswertung = true;
 			$this->Template->hinweis = $gesperrt;
-			$this->Template->registrierung = \Samson\DeWIS\DeWIS::Registrierungshinweis();
+			$this->Template->registrierung = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Registrierungshinweis();
 			$Infotemplate = new \FrontendTemplate($this->infoTemplate);
 			$this->Template->infobox = $Infotemplate->parse();
 
@@ -802,18 +802,22 @@ class Turnier extends \Module
 		}
 	}
 
-	function is_utf8($str){
+	function is_utf8($str)
+	{
 		$strlen = strlen($str);
-		for($i=0; $i<$strlen; $i++){
-		  $ord = ord($str[$i]);
-		  if($ord < 0x80) continue; // 0bbbbbbb
-		  elseif(($ord&0xE0)===0xC0 && $ord>0xC1) $n = 1; // 110bbbbb (exkl C0-C1)
-		  elseif(($ord&0xF0)===0xE0) $n = 2; // 1110bbbb
-		  elseif(($ord&0xF8)===0xF0 && $ord<0xF5) $n = 3; // 11110bbb (exkl F5-FF)
-		  else return false; // ungültiges UTF-8-Zeichen
-		  for($c=0; $c<$n; $c++) // $n Folgebytes? // 10bbbbbb
-		    if(++$i===$strlen || (ord($str[$i])&0xC0)!==0x80)
-		      return false; // ungültiges UTF-8-Zeichen
+		for($i=0; $i<$strlen; $i++)
+		{
+			$ord = ord($str[$i]);
+			
+			if($ord < 0x80) continue; // 0bbbbbbb
+			elseif(($ord&0xE0)===0xC0 && $ord>0xC1) $n = 1; // 110bbbbb (exkl C0-C1)
+			elseif(($ord&0xF0)===0xE0) $n = 2; // 1110bbbb
+			elseif(($ord&0xF8)===0xF0 && $ord<0xF5) $n = 3; // 11110bbb (exkl F5-FF)
+			else return false; // ungültiges UTF-8-Zeichen
+			
+			for($c=0; $c<$n; $c++) // $n Folgebytes? // 10bbbbbb
+				if(++$i===$strlen || (ord($str[$i])&0xC0)!==0x80)
+					return false; // ungültiges UTF-8-Zeichen
 		}
 		return true; // kein ungültiges UTF-8-Zeichen gefunden
 	}

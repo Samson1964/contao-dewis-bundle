@@ -1,5 +1,9 @@
 # Abfrage der DeWIS-API
 
+## Version 0.0.3 (2020-05-03)
+
+Fix: Namespaces komplett ersetzt, Pfade CSS/JS korrigiert
+
 ## Version 0.0.2 (2020-05-02)
 
 Fix: composer.json

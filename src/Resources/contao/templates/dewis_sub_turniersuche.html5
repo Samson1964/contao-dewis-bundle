@@ -26,8 +26,8 @@
 	
 	<?php if($this->daten): ?>
 		<?php
-			$GLOBALS['TL_CSS'][] = 'system/modules/dewis/assets/css/tablesorter.css';
-			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/dewis/assets/js/jquery.tablesorter.min.js';
+			$GLOBALS['TL_CSS'][] = 'bundles/contaodewis/css/tablesorter.css';
+			$GLOBALS['TL_JAVASCRIPT'][] = 'bundles/contaodewis/js/jquery.tablesorter.min.js';
 		?>
 		<script>
 		(function($) 

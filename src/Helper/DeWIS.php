@@ -35,7 +35,7 @@ class DeWIS
 	{
 		if (self::$instance === null)
 		{
-			self::$instance = new \Samson\DeWIS\DeWIS();
+			self::$instance = new \Schachbulle\ContaoDewisBundle\Helper\DeWIS();
 		}
 	
 		return self::$instance;
@@ -62,7 +62,7 @@ class DeWIS
 		if($GLOBALS['TL_CONFIG']['dewis_cache'])
 		{
 			// Cache initialisieren
-			$cache = new \Samson\DeWIS\Cache(array('name' => $params['funktion'], 'path' => CACHE_DIR, 'extension' => '.cache'));
+			$cache = new \Schachbulle\ContaoHelperBundle\Classes\Cache(array('name' => $params['funktion'], 'extension' => '.cache'));
 			$cache->eraseExpired(); // Cache aufräumen, abgelaufene Schlüssel löschen
 			// Cache laden
 			if($cache->isCached($params['cachekey']))
@@ -227,7 +227,7 @@ class DeWIS
 					// zps = fünfstellig
 					$tstart = microtime(true);
 					self::$answer = $client->organizations($parameter["zps"]);
-					self::$answer = \Samson\DeWIS\DeWIS::AddWuerttemberg(self::$answer); // Vereine vom SV Württemberg hinzufügen (Patch bis das in MIVIS behoben ist)
+					self::$answer = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::AddWuerttemberg(self::$answer); // Vereine vom SV Württemberg hinzufügen (Patch bis das in MIVIS behoben ist)
 					self::$answertime = microtime(true) - $tstart;
 					break;
 				default:
@@ -407,13 +407,13 @@ class DeWIS
 			'zps'      => $zps
 		);
 
-		$resultArr = \Samson\DeWIS\DeWIS::autoQuery($param); // Abfrage ausführen
+		$resultArr = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::autoQuery($param); // Abfrage ausführen
 		//echo "<pre>";
 		//print_r($resultArr);
 		//echo "</pre>";
 		
 		// Verbände und Vereine ordnen
-		list($verbaende, $vereine) = \Samson\DeWIS\DeWIS::org($resultArr['result']);
+		list($verbaende, $vereine) = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::org($resultArr['result']);
 		
 		return array('verbaende' => $verbaende, 'vereine' => $vereine);
 	}
@@ -421,7 +421,7 @@ class DeWIS
 	protected function org($result)
 	{
 
-		\Samson\DeWIS\DeWIS::sub_org($result, $liste);
+		\Schachbulle\ContaoDewisBundle\Helper\DeWIS::sub_org($result, $liste);
 
 		$verbaende = array();
 		$vereine = array();
@@ -472,7 +472,7 @@ class DeWIS
 			// Kindelemente der Reihe nach rekursiv abarbeiten
 			foreach ($a->children as $b)
 			{
-				\Samson\DeWIS\DeWIS::sub_org($b, $liste);
+				\Schachbulle\ContaoDewisBundle\Helper\DeWIS::sub_org($b, $liste);
 			}
 		}
 	}
@@ -601,7 +601,7 @@ class DeWIS
 		$string = '</label>';
 		foreach($speicher as $item)
 		{
-			$cache = new \Samson\DeWIS\Cache(array('name' => $item, 'path' => CACHE_DIR, 'extension' => '.cache'));
+			$cache = new \Schachbulle\ContaoHelperBundle\Classes\Cache(array('name' => $item, 'extension' => '.cache'));
 			$anzahl = count($cache->retrieveAll()); // Anzahl der Cache-Einträge
 			$text = ($anzahl == 1) ? 'Eintrag' : 'Einträge';
 			$string .= '<br><span style="font-weight:normal"><span style="color:black">'.$item.':</span> '.$anzahl.' '.$text.'</span>';
@@ -634,7 +634,7 @@ class DeWIS
 
 		foreach($speicher as $item)
 		{
-			$cache = new \Samson\DeWIS\Cache(array('name' => $item, 'path' => CACHE_DIR, 'extension' => '.cache'));
+			$cache = new \Schachbulle\ContaoHelperBundle\Classes\Cache(array('name' => $item, 'extension' => '.cache'));
 			$cache->eraseAll(); // Cache löschen
 		}
 
@@ -702,7 +702,7 @@ class DeWIS
 			'id'       => $id
 		);
 
-		$resultArr = \Samson\DeWIS\DeWIS::autoQuery($param); // Abfrage ausführen
+		$resultArr = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::autoQuery($param); // Abfrage ausführen
 
 		if($address)
 		{
@@ -740,7 +740,7 @@ class DeWIS
 			'code'      => $code
 		);
 		
-		$resultArr = \Samson\DeWIS\DeWIS::autoQuery($param); // Abfrage ausführen
+		$resultArr = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::autoQuery($param); // Abfrage ausführen
 		
 		return $resultArr['result'];
 	}
@@ -805,7 +805,7 @@ class DeWIS
 		//$result = \Database::getInstance()->prepare("SELECT dewis_id FROM tl_dewis_blacklist WHERE published = '1'")
 		//								  ->execute();
 		$result = \Database::getInstance()->prepare("SELECT dewisID FROM tl_dwz_spi WHERE blocked = '1'")
-										  ->execute();
+		                                  ->execute();
 		
 		$blacklist = array();
 		// Übernehmen
