@@ -35,7 +35,6 @@ class Spieler extends \Module
 	var $dewis;
 	
 	var $Helper;
-
 	
 	/**
 	 * Display a wildcard in the back end
@@ -91,7 +90,7 @@ class Spieler extends \Module
 		$this->Template->navigation   = \Schachbulle\ContaoDewisBundle\Helper\Helper::Navigation(); // Navigation ausgeben
 
 		// Sperrstatus festlegen
-		if(KARTEISPERRE_GAESTE) $gesperrt = $mitglied->id ? false : true;
+		if($GLOBALS['TL_CONFIG']['dewis_karteisperre_gaeste']) $gesperrt = $mitglied->id ? false : true;
 		else $gesperrt = false;
 
 		if($search)
@@ -147,7 +146,7 @@ class Spieler extends \Module
 				foreach($resultArr['result']->members as $m)
 				{
 					
-					if($Blacklist[$m->pid] || (PASSIVE_AUSBLENDEN && $m->state == 'P'))
+					if($Blacklist[$m->pid] || ($GLOBALS['TL_CONFIG']['dewis_passive_ausblenden'] && $m->state == 'P'))
 					{
 						// Blacklist und Passive überspringen
 					}
@@ -184,7 +183,7 @@ class Spieler extends \Module
 					foreach($resultArr['result']->members as $m)
 					{
 						
-						if($Blacklist[$m->pid] || (PASSIVE_AUSBLENDEN && $m->state == 'P'))
+						if($Blacklist[$m->pid] || ($GLOBALS['TL_CONFIG']['dewis_passive_ausblenden'] && $m->state == 'P'))
 						{
 							// Blacklist und Passive überspringen
 						}
@@ -264,8 +263,8 @@ class Spieler extends \Module
 			*/
 
 			$this->Template->spielername  = sprintf("%s,%s%s", $resultArr['result']->member->surname, $resultArr['result']->member->firstname, $resultArr['result']->member->title ? ',' . $resultArr['result']->member->title : '');
-			$this->Template->geburtsjahr  = GEBURTSJAHR_AUSBLENDEN ? '****' : $resultArr['result']->member->yearOfBirth;
-			$this->Template->geschlecht   = GESCHLECHT_AUSBLENDEN ? '*' : ($resultArr['result']->member->gender == 'm' ? 'M' : ($resultArr['result']->member->gender == 'f' ? 'W' : strtoupper($resultArr['result']->member->gender)));
+			$this->Template->geburtsjahr  = $GLOBALS['TL_CONFIG']['dewis_geburtsjahr_ausblenden'] ? '****' : $resultArr['result']->member->yearOfBirth;
+			$this->Template->geschlecht   = $GLOBALS['TL_CONFIG']['dewis_geschlecht_ausblenden'] ? '*' : ($resultArr['result']->member->gender == 'm' ? 'M' : ($resultArr['result']->member->gender == 'f' ? 'W' : strtoupper($resultArr['result']->member->gender)));
 			$this->Template->dewis_id     = $resultArr['result']->member->pid;
 			$this->Template->dwz          = $resultArr['result']->member->rating." - ".$resultArr['result']->member->ratingIndex;
 			$this->Template->fide_id      = ($resultArr['result']->member->idfide) ? sprintf('<a href="http://ratings.fide.com/card.phtml?event=%s" target="_blank">%s</a>',$resultArr['result']->member->idfide,$resultArr['result']->member->idfide) : '-';

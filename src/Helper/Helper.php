@@ -66,6 +66,90 @@ class Helper extends \Frontend
 		return self::$instance;
 	}
 
+	/**
+	 * Liefert den Alias der Spielerseite zurück
+	 * @return         Alias
+	 */
+	public function getSpielerseite()
+	{
+		if($GLOBALS['TL_CONFIG']['dewis_seite_spieler'])
+		{
+			$pageModel = \PageModel::findByPK($GLOBALS['TL_CONFIG']['dewis_seite_spieler']);
+		
+			if($pageModel)
+			{
+				$url = \Controller::generateFrontendUrl($pageModel->row());
+				return $url;
+			}
+		}
+
+		return '';
+
+	}
+
+	/**
+	 * Liefert den Alias der Turnierseite zurück
+	 * @return         Alias
+	 */
+	public function getTurnierseite()
+	{
+		if($GLOBALS['TL_CONFIG']['dewis_seite_turnier'])
+		{
+			$pageModel = \PageModel::findByPK($GLOBALS['TL_CONFIG']['dewis_seite_turnier']);
+		
+			if($pageModel)
+			{
+				$url = \Controller::generateFrontendUrl($pageModel->row());
+				return $url;
+			}
+		}
+
+		return '';
+
+	}
+
+	/**
+	 * Liefert den Alias der Vereinseite zurück
+	 * @return         Alias
+	 */
+	public function getVereinseite()
+	{
+		if($GLOBALS['TL_CONFIG']['dewis_seite_verein'])
+		{
+			$pageModel = \PageModel::findByPK($GLOBALS['TL_CONFIG']['dewis_seite_verein']);
+		
+			if($pageModel)
+			{
+				$url = \Controller::generateFrontendUrl($pageModel->row());
+				return $url;
+			}
+		}
+
+		return '';
+
+	}
+
+	/**
+	 * Liefert den Alias der Verbandseite zurück
+	 * @return         Alias
+	 */
+	public function getVerbandseite()
+	{
+		if($GLOBALS['TL_CONFIG']['dewis_seite_verband'])
+		{
+			$pageModel = \PageModel::findByPK($GLOBALS['TL_CONFIG']['dewis_seite_verband']);
+		
+			if($pageModel)
+			{
+				$url = \Controller::generateFrontendUrl($pageModel->row());
+				return $url;
+			}
+		}
+
+		return '';
+
+	}
+
 	public function getMitglied()
 	{
 		//\Schachbulle\ContaoDewisBundle\Helper\DeWIS::debug(\FrontendUser::getInstance());
@@ -89,8 +173,8 @@ class Helper extends \Frontend
 	public function Karteizuweisung($id)
 	{
 		$objSpieler = \Database::getInstance()->prepare('SELECT contaoMemberID FROM tl_dwz_spi WHERE dewisID = ?')
-											  ->limit(1) 
-											  ->execute($id); 
+		                                      ->limit(1) 
+		                                      ->execute($id); 
 		return $objSpieler->contaoMemberID;
 	}
 
@@ -102,7 +186,7 @@ class Helper extends \Frontend
 	public function Karteisperre($id)
 	{
 		$objCheckUser = \Database::getInstance()->prepare('SELECT dewisCard FROM tl_member WHERE id=?')
-												->execute($id); 
+		                                        ->execute($id); 
 		return $objCheckUser->dewisCard;
 	}
 
@@ -115,10 +199,10 @@ class Helper extends \Frontend
 	{
 		return array
 		(
-			'<li class="first"><a href="'.ALIAS_SPIELER.'.html">Spieler</a></li>',
-			'<li class=""><a href="'.ALIAS_VEREIN.'.html">Vereine</a></li>',
-			'<li class=""><a href="'.ALIAS_VERBAND.'.html">Verbände</a></li>',
-			'<li class="last"><a href="'.ALIAS_TURNIER.'.html">Turniere</a></li>',
+			'<li class="first"><a href="'.self::getSpielerseite().'">Spieler</a></li>',
+			'<li class=""><a href="'.self::getVereinseite().'">Vereine</a></li>',
+			'<li class=""><a href="'.self::getVerbandseite().'">Verbände</a></li>',
+			'<li class="last"><a href="'.self::getTurnierseite().'">Turniere</a></li>',
 		);
 	}
 

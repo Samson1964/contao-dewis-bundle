@@ -11,16 +11,6 @@
  * @copyright Frank Hoppe 2014
  */
 
-//define(CACHE_AKTIV, false); // Cachestatus
-//define(CACHE_TIME, 36000); // Cachezeit (36000 = 10h)
-//define(CACHE_TIME_FAKTOR_VERBAND, 20); // CACHE_TIME * Faktor = gesamte Cachelebenszeit
-//define(CACHE_TIME_FAKTOR_REFERENT, 5); // CACHE_TIME * Faktor = gesamte Cachelebenszeit
-
-define('KARTEISPERRE_GAESTE', false); // Anzeige von Karteikarten für nichtangemeldete Besucher gesperrt
-define('PASSIVE_AUSBLENDEN', false); // Anzeige passiver Spieler
-define('GEBURTSJAHR_AUSBLENDEN', true); // Anzeige des Geburtsjahres
-define('GESCHLECHT_AUSBLENDEN', true); // Anzeige des Geschlechtes
-
 define('ALIAS_SPIELER', 'spieler'); // Spielerseite
 define('ALIAS_VEREIN', 'verein'); // Vereineseite
 define('ALIAS_VERBAND', 'verband'); // Verbändeseite
@@ -111,3 +101,7 @@ $GLOBALS['TL_CONFIG']['dewis_cache'] = 1;
 $GLOBALS['TL_CONFIG']['dewis_cache_default'] = 4;
 $GLOBALS['TL_CONFIG']['dewis_cache_referent'] = 24;
 $GLOBALS['TL_CONFIG']['dewis_cache_verband'] = 48;
+$GLOBALS['TL_CONFIG']['dewis_karteisperre_gaeste'] = 1;
+$GLOBALS['TL_CONFIG']['dewis_passive_ausblenden'] = 0;
+$GLOBALS['TL_CONFIG']['dewis_geburtsjahr_ausblenden'] = 1;
+$GLOBALS['TL_CONFIG']['dewis_geschlecht_ausblenden'] = 1;

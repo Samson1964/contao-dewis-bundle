@@ -3,4 +3,4 @@
 $GLOBALS['TL_LANG']['tl_maintenance_jobs']['dewis'] = array('DeWIS-Cache leeren','Löscht den Cache der DeWIS-Abfrage. Dieser Cache kann in den Backend-Einstellungen dauerhaft deaktiviert werden.');
 
 // Ausgabe ergänzen
-$GLOBALS['TL_LANG']['tl_maintenance_jobs']['dewis'][0] .= \Samson\DeWIS\DeWIS::calcCache();
+$GLOBALS['TL_LANG']['tl_maintenance_jobs']['dewis'][0] .= \Schachbulle\ContaoDewisBundle\Helper\DeWIS::calcCache();

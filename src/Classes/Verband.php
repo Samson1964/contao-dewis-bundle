@@ -93,7 +93,7 @@ class Verband extends \Module
 		$this->Template->zps = $zps; // Aktuelle ZPS-Nummer
 
 		// Sperrstatus festlegen
-		if(KARTEISPERRE_GAESTE) $gesperrt = $mitglied->id ? false : true;
+		if($GLOBALS['TL_CONFIG']['dewis_karteisperre_gaeste']) $gesperrt = $mitglied->id ? false : true;
 		else $gesperrt = false;
 
 		/*********************************************************
@@ -197,7 +197,7 @@ class Verband extends \Module
 			foreach($resultArr['result']->members as $m)
 			{
 				
-				if($Blacklist[$m->pid] || (PASSIVE_AUSBLENDEN && $m->state == 'P'))
+				if($Blacklist[$m->pid] || ($GLOBALS['TL_CONFIG']['dewis_passive_ausblenden'] && $m->state == 'P'))
 				{
 					// Passive überspringen
 				}

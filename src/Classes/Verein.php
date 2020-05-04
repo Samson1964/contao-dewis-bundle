@@ -88,7 +88,7 @@ class Verein extends \Module
 		$this->Template->navigation   = \Schachbulle\ContaoDewisBundle\Helper\Helper::Navigation(); // Navigation ausgeben
 
 		// Sperrstatus festlegen
-		if(KARTEISPERRE_GAESTE) $gesperrt = $mitglied->id ? false : true;
+		if($GLOBALS['TL_CONFIG']['dewis_karteisperre_gaeste']) $gesperrt = $mitglied->id ? false : true;
 		else $gesperrt = false;
 
 		if($search)
@@ -300,7 +300,7 @@ class Verein extends \Module
 				foreach($resultArr['result']->members as $m)
 				{
 					
-					if(PASSIVE_AUSBLENDEN && $m->state == 'P')
+					if($GLOBALS['TL_CONFIG']['dewis_passive_ausblenden'] && $m->state == 'P')
 					{
 						// Passive überspringen
 					}

@@ -86,7 +86,7 @@ class Turnier extends \Module
 		$this->Template->navigation   = \Schachbulle\ContaoDewisBundle\Helper\Helper::Navigation(); // Navigation ausgeben
 
 		// Sperrstatus festlegen
-		if(KARTEISPERRE_GAESTE) $gesperrt = $mitglied->id ? false : true;
+		if($GLOBALS['TL_CONFIG']['dewis_karteisperre_gaeste']) $gesperrt = $mitglied->id ? false : true;
 		else $gesperrt = false;
 
 		// DeWIS-Klasse initialisieren

@@ -87,7 +87,7 @@ class Suche extends \Module
 				foreach($resultArr['result']->members as $m)
 				{
 					
-					if($Blacklist[$m->pid] || (PASSIVE_AUSBLENDEN && $m->state == 'P'))
+					if($Blacklist[$m->pid] || ($GLOBALS['TL_CONFIG']['dewis_passive_ausblenden'] && $m->state == 'P'))
 					{
 						// Blacklist und Passive überspringen
 					}
