@@ -110,7 +110,7 @@ class Verein extends \Module
 			$result_vn = array();
 			if($GLOBALS['TL_CONFIG']['dewis_cache'])
 			{
-				$cache_vn = new \Schachbulle\ContaoDewisBundle\Helper\Cache(array('name' => 'vereinssuche', 'path' => CACHE_DIR, 'extension' => '.cache'));
+				$cache_vn = new \Schachbulle\ContaoHelperBundle\Classes\Cache(array('name' => 'vereinssuche', 'extension' => '.cache'));
 				$cache_vn->eraseExpired(); // Cache aufräumen, abgelaufene Schlüssel löschen
 
 				// Cache laden
@@ -128,7 +128,7 @@ class Verein extends \Module
 			$result_vb = array();
 			if($GLOBALS['TL_CONFIG']['dewis_cache'])
 			{
-				$cache_vb = new \Schachbulle\ContaoDewisBundle\Helper\Cache(array('name' => 'verbandssuche', 'path' => CACHE_DIR, 'extension' => '.cache'));
+				$cache_vb = new \Schachbulle\ContaoHelperBundle\Classes\Cache(array('name' => 'verbandssuche', 'extension' => '.cache'));
 				$cache_vb->eraseExpired(); // Cache aufräumen, abgelaufene Schlüssel löschen
 
 				// Cache laden

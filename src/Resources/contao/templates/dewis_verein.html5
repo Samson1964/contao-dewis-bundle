@@ -149,9 +149,9 @@
 				<tr class="row_0">
 					<?php if($this->rangliste): ?><th class="col_0 right-line">Pl.</th><?php endif; ?>
 					<th class="col_1 right-line">Mgl-<br>Nr.</th>
-					<?php if(!PASSIVE_AUSBLENDEN): ?><th class="col_2 right-line">Sta-<br>tus</th><?php endif; ?>
+					<?php if(!$GLOBALS['TL_CONFIG']['dewis_passive_ausblenden']): ?><th class="col_2 right-line">Sta-<br>tus</th><?php endif; ?>
 					<th class="col_3 right-line">Spielername</th>
-					<?php if(!GESCHLECHT_AUSBLENDEN): ?><th class="col_4 right-line">Geschl.</th><?php endif; ?>
+					<?php if(!$GLOBALS['TL_CONFIG']['dewis_geschlecht_ausblenden']): ?><th class="col_4 right-line">Geschl.</th><?php endif; ?>
 					<th class="col_5 right-line">Letzte<br>Ausw.</th>
 					<th class="col_6 right-line">DWZ</th>
 					<th class="col_7 right-line">Elo</th>
@@ -167,9 +167,9 @@
 						<tr class="row_<?= $row ?>">
 							<?php if($this->rangliste): ?><td class="col_0 align-right right-line<?= $class ?>"><?= $d['Platz'] ?>.</td><?php endif; ?>
 							<td class="col_1 right-line<?= $class ?>"><?= $d['Mglnr'] ?></td>
-							<?php if(!PASSIVE_AUSBLENDEN): ?><td class="col_2 right-line align-center<?= $class ?>"><?= $d['Status'] ?></td><?php endif; ?>
+							<?php if(!$GLOBALS['TL_CONFIG']['dewis_passive_ausblenden']): ?><td class="col_2 right-line align-center<?= $class ?>"><?= $d['Status'] ?></td><?php endif; ?>
 							<td class="col_3 right-line<?= $class ?>"><?= $d['Spielername'] ?></td>
-							<?php if(!GESCHLECHT_AUSBLENDEN): ?><td class="col_4 right-line"><?= $d['Geschlecht'] ?></td><?php endif; ?>
+							<?php if(!$GLOBALS['TL_CONFIG']['dewis_geschlecht_ausblenden']): ?><td class="col_4 right-line"><?= $d['Geschlecht'] ?></td><?php endif; ?>
 							<td class="col_5 right-line<?= $class ?>"><?= $d['KW'] ?></td>
 							<td class="col_6 right-line<?= $class ?>"><?= $d['DWZ'] ?></td>
 							<td class="col_7 right-line<?= $class ?>"><?= $d['Elo'] ?></td>

@@ -162,12 +162,12 @@
 				<tr class="row_0">
 					<th class="col_1 right-line">Pl.</th>
 					<th class="col_2 right-line">Spielername</th>
-					<?php if(!GESCHLECHT_AUSBLENDEN): ?><th class="col_3 right-line">Geschl.</th><?php endif; ?>
+					<?php if(!$GLOBALS['TL_CONFIG']['dewis_geschlecht_ausblenden']): ?><th class="col_3 right-line">Geschl.</th><?php endif; ?>
 					<th class="col_4 right-line">Letzte<br>Ausw.</th>
 					<th class="col_5 right-line">DWZ</th>
 					<th class="col_6 right-line">Elo</th>
 					<th class="col_7 right-line">FIDE-<br>Titel</th>
-					<?php if(!PASSIVE_AUSBLENDEN): ?><th class="col_8 right-line">Sta-<br>tus</th><?php endif; ?>
+					<?php if(!$GLOBALS['TL_CONFIG']['dewis_passive_ausblenden']): ?><th class="col_8 right-line">Sta-<br>tus</th><?php endif; ?>
 					<th class="col_9">Verein</th>
 				</tr>
 			</thead>
@@ -180,12 +180,12 @@
 						<tr class="row_<?= $row ?>">
 							<td class="col_1 right-line<?= $class ?> align-right"><?= $d['Platz'] ?>.</td>
 							<td class="col_2 right-line<?= $class ?>"><?= $d['Spielername'] ?></td>
-							<?php if(!GESCHLECHT_AUSBLENDEN): ?><td class="col_3 right-line<?= $class ?>"><?= $d['Geschlecht'] ?></td><?php endif; ?>
+							<?php if(!$GLOBALS['TL_CONFIG']['dewis_geschlecht_ausblenden']): ?><td class="col_3 right-line<?= $class ?>"><?= $d['Geschlecht'] ?></td><?php endif; ?>
 							<td class="col_4 right-line<?= $class ?>"><?= $d['KW'] ?></td>
 							<td class="col_5 right-line<?= $class ?>"><?= $d['DWZ'] ?></td>
 							<td class="col_6 right-line<?= $class ?>"><?= $d['Elo'] ?></td>
 							<td class="col_7 right-line<?= $class ?>"><?= $d['FIDE-Titel'] ?></td>
-							<?php if(!PASSIVE_AUSBLENDEN): ?><td class="col_8 right-line<?= $class ?>"><?= $d['Status'] ?></td><?php endif; ?>
+							<?php if(!$GLOBALS['TL_CONFIG']['dewis_passive_ausblenden']): ?><td class="col_8 right-line<?= $class ?>"><?= $d['Status'] ?></td><?php endif; ?>
 							<td class="col_9<?= $class ?>"><?= $d['Verein'] ?></td>
 						</tr>
 						<?php $row++; ?>

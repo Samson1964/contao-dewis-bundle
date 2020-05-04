@@ -342,13 +342,13 @@ class Spieler extends \Module
 
 					$chart[] = array
 					(
-						'Label'		=> $t->ratingNewIndex,
-						'DWZ'		=> $t->ratingNew,
-						'Niveau'	=> $t->level,
-						'Leistung'	=> $t->achievement ? $t->achievement : false,
-						'Punkte'	=> $t->points,
-						'Partien'	=> $t->games,
-						'We'		=> $t->we,
+						'Label'     => $t->ratingNewIndex,
+						'DWZ'       => $t->ratingNew,
+						'Niveau'    => $t->level,
+						'Leistung'  => $t->achievement ? $t->achievement : false,
+						'Punkte'    => $t->points,
+						'Partien'   => $t->games,
+						'We'        => $t->we,
 					);
 					
 					$temp[] = array

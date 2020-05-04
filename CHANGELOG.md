@@ -1,5 +1,11 @@
 # Abfrage der DeWIS-API
 
+## Version 0.0.5 (2020-05-04)
+
+Fix: Namespace-Problem in Verein.php
+Fix: Turnierkurzname wurde wegen UTF-8 nicht richtig generiert
+Fix: Konstanten-Problem in Templates beseitigt
+
 ## Version 0.0.4 (2020-05-04)
 
 Fix: Namespace-Problem beim Cache-Löschen im Wartungsmodus

@@ -70,7 +70,7 @@
 					<td class="col_0 bottom-line">Name:</td>
 					<td class="col_1 value bottom-line"><?= $this->spielername ?></td>
 					<td class="col_2 bottom-line">Geschlecht:</td>
-					<td class="col_3 value bottom-line"><?php if(!GESCHLECHT_AUSBLENDEN): ?><?= $this->geschlecht ?><?php endif; ?></td>
+					<td class="col_3 value bottom-line"><?php if(!$GLOBALS['TL_CONFIG']['dewis_geschlecht_ausblenden']): ?><?= $this->geschlecht ?><?php endif; ?></td>
 					<td class="col_4 bottom-line">Geburtsjahr:</td>
 					<td class="col_5 value bottom-line"><?= $this->geburtsjahr ?></td>
 				</tr>

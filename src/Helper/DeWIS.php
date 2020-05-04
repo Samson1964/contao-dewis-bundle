@@ -676,13 +676,22 @@ class DeWIS
 
 	/**
 	 * Hilfsfunktion: 
-	 * Kürzt den Turniernamen auf 50 Zeichen
+	 * Kürzt den Turniernamen auf 38 Zeichen
 	 *
 	 * @return string
 	 */
 	public function Turnierkurzname($value)
 	{
-		return (strlen($value) > 38) ? substr($value,0,38).' [...]' : $value;
+		if(mb_detect_encoding($value,'UTF-8, ISO-8859-1') === 'UTF-8')
+		{
+			# Der Turniername ist in UTF-8 kodiert und muß vor der Kürzung umgewandelt werden
+			$value = utf8_decode($value);
+		}
+
+		// Gekürzten Turniernamen generieren und wieder in UTF-8 umwandeln
+		$neu = (strlen($value) > 38) ? substr($value,0,38).' [...]' : $value;
+		return utf8_encode($neu);
+
 	}
 
 
