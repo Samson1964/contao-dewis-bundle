@@ -12,7 +12,8 @@
     "require": {
         "php": "^5.6 || ^7.0",
         "contao/core-bundle": "^4",
-        "schachbulle/contao-helper-bundle": ">=0"
+        "schachbulle/contao-helper-bundle": ">=0",
+        "terminal42/contao-avatar": ">=1"
     },
     "conflict": {
         "contao/core": "*",

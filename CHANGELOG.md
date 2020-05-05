@@ -1,5 +1,9 @@
 # Abfrage der DeWIS-API
 
+## Version 1.0.1 (2020-05-05)
+
+Add: Abhängigkeit terminal42/contao-avatar (für Spielerbilder in den Karteikarten)
+
 ## Version 1.0.0 (2020-05-05)
 
 Fix: undefined-Einträge im Chart entfernt
