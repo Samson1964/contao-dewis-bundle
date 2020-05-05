@@ -192,9 +192,22 @@ class Verband extends \Module
 			$objPage->pageTitle = $titel;
 			$this->Template->subHeadline = $titel;
 
+			// Verbandsliste neu sortieren, vorher das Objekt mittels json in ein Array umwandeln
+			$sorted = \Schachbulle\ContaoHelperBundle\Classes\Helper::sortArrayByFields(
+				json_decode(json_encode($resultArr['result']->members), true),
+				array(
+					'rating'      => SORT_DESC,
+					'ratingIndex' => SORT_DESC,
+					'surname'     => array(SORT_ASC, SORT_STRING),
+					'firstname'   => array(SORT_ASC, SORT_STRING)
+				)
+			);
+			// Sortiertes Array umwandeln in Objekt
+			$liste = json_decode(json_encode($sorted), false);
+
 			$daten = array();
 			$z = 0;
-			foreach($resultArr['result']->members as $m)
+			foreach($liste as $m)
 			{
 				
 				if($Blacklist[$m->pid] || ($GLOBALS['TL_CONFIG']['dewis_passive_ausblenden'] && $m->state == 'P'))

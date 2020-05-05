@@ -153,8 +153,8 @@ class Verein extends \Module
 					{
 						$result_vb[] = array
 						(
-							'zps'		=> $value['zps'],
-							'name'		=> sprintf('<a href="'.ALIAS_VERBAND.'/%s.html">%s</a>', $value['zps'], $value['name']),
+							'zps'       => $value['zps'],
+							'name'      => sprintf('<a href="'.ALIAS_VERBAND.'/%s.html">%s</a>', $value['zps'], $value['name']),
 						);
 					}
 				}
@@ -177,8 +177,8 @@ class Verein extends \Module
 					{
 						$result_vn[] = array
 						(
-							'zps'		=> $value['zps'],
-							'name'		=> sprintf('<a href="'.ALIAS_VEREIN.'/%s.html">%s</a>', $value['zps'], $value['name']),
+							'zps'       => $value['zps'],
+							'name'      => sprintf('<a href="'.ALIAS_VEREIN.'/%s.html">%s</a>', $value['zps'], $value['name']),
 						);
 					}
 				}
@@ -255,8 +255,8 @@ class Verein extends \Module
 					{
 						$result[] = array
 						(
-							'zps'		=> $value['zps'],
-							'name'		=> sprintf('<a href="'.ALIAS_VEREIN.'/%s.html">%s</a>', $value['zps'], $value['name']),
+							'zps'       => $value['zps'],
+							'name'      => sprintf('<a href="'.ALIAS_VEREIN.'/%s.html">%s</a>', $value['zps'], $value['name']),
 						);
 					}
 				}

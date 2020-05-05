@@ -1,5 +1,11 @@
 # Abfrage der DeWIS-API
 
+## Version 1.0.0 (2020-05-05)
+
+Fix: undefined-Einträge im Chart entfernt
+Fix: Sortierung von Verbandslisten geändert - bei höherem Index bessere Plazierung
+Fix: 404-Fehlerseite an Contao 4 angepaßt
+
 ## Version 0.0.5 (2020-05-04)
 
 Fix: Namespace-Problem in Verein.php

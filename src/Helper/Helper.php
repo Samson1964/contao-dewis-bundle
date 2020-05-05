@@ -161,8 +161,7 @@ class Helper extends \Frontend
 	 */
 	public function get404()
 	{
-		$objHandler = new $GLOBALS['TL_PTY']['error_404']();
-		$objHandler->generate($objPage->id);
+		throw new \CoreBundle\Exception\PageNotFoundException('Page not found: '.\Environment::get('uri'));
 	}
 
 	/**
@@ -322,6 +321,9 @@ class Helper extends \Frontend
 	 */
 	public function ArrayExtract($array, $extract)
 	{
+		//echo "<pre>";
+		//echo count($array);
+		//echo "</pre>";
 		$newArr = array();
 		foreach($array as $key => $value)
 		{

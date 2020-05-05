@@ -325,10 +325,8 @@ class Spieler extends \Module
 			*/
 			$temp = array(); 
 			$chart = array();
-			$chartlabel = array(); 
-			$chartdwz = array(); 
-			$chartleistung = array(); 
 			$i = 0;
+
 			if($resultArr['result']->tournaments)
 			{
 				foreach($resultArr['result']->tournaments as $t)
@@ -336,20 +334,21 @@ class Spieler extends \Module
 					$i++;
 					$dwz_alt = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::DWZ($t->ratingOld, $t->ratingOldIndex);
 					$dwz_neu = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::DWZ($t->ratingNew, $t->ratingNewIndex);
-					$chartlabel[] = $t->ratingNewIndex;
-					$chartdwz[] = $t->ratingNew;
-					$chartleistung[] = $t->achievement ? $t->achievement : false;
 
-					$chart[] = array
-					(
-						'Label'     => $t->ratingNewIndex,
-						'DWZ'       => $t->ratingNew,
-						'Niveau'    => $t->level,
-						'Leistung'  => $t->achievement ? $t->achievement : false,
-						'Punkte'    => $t->points,
-						'Partien'   => $t->games,
-						'We'        => $t->we,
-					);
+					if($t->ratingNewIndex)
+					{
+						// Nur vorhandene Indexe berücksichtigen
+						$chart[] = array
+						(
+							'Label'     => $t->ratingNewIndex,
+							'DWZ'       => $t->ratingNew,
+							'Niveau'    => $t->level,
+							'Leistung'  => $t->achievement ? $t->achievement : false,
+							'Punkte'    => $t->points,
+							'Partien'   => $t->games,
+							'We'        => $t->we,
+						);
+					}
 					
 					$temp[] = array
 					(
