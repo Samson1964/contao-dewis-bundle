@@ -1,5 +1,12 @@
 # Abfrage der DeWIS-API
 
+## Version 1.0.2 (2020-06-23)
+
+* Datei LICENSE entfernt
+* Fix: PHP Warning: Invalid argument supplied for foreach() in contao-dewis-bundle/src/Classes/Verband.php on line 210
+* Add: Backend-CSS
+* Add: Backend-Icon (blauer Stern)
+
 ## Version 1.0.1 (2020-05-05)
 
 Add: Abhängigkeit terminal42/contao-avatar (für Spielerbilder in den Karteikarten)

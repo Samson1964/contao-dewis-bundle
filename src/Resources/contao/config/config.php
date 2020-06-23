@@ -13,7 +13,7 @@
 
 define('ALIAS_SPIELER', 'spieler'); // Spielerseite
 define('ALIAS_VEREIN', 'verein'); // Vereineseite
-define('ALIAS_VERBAND', 'verband'); // Verb‰ndeseite
+define('ALIAS_VERBAND', 'verband'); // Verb√§ndeseite
 define('ALIAS_TURNIER', 'turnier'); // Turniereseite
 
 /**
@@ -76,11 +76,9 @@ $GLOBALS['FE_MOD']['dewis'] = array
 // http://de.contaowiki.org/Strukturierte_URLs
 $GLOBALS['TL_HOOKS']['getPageIdFromUrl'][] = array('Schachbulle\ContaoDewisBundle\Helper\DeWIS', 'getParamsFromUrl');
 
-if (TL_MODE == 'BE') 
+if(TL_MODE == 'BE') 
 {
-	//echo "<pre>";
-	//print_r(get_defined_constants());
-	//echo "</pre>";
+	$GLOBALS['TL_CSS'][] = 'bundles/contaodewis/css/backend.css';
 }
 
 /**

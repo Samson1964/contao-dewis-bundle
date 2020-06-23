@@ -207,34 +207,39 @@ class Verband extends \Module
 
 			$daten = array();
 			$z = 0;
-			foreach($liste as $m)
+
+			if(is_array($liste)
 			{
-				
-				if($Blacklist[$m->pid] || ($GLOBALS['TL_CONFIG']['dewis_passive_ausblenden'] && $m->state == 'P'))
+				foreach($liste as $m)
 				{
-					// Passive überspringen
+					
+					if($Blacklist[$m->pid] || ($GLOBALS['TL_CONFIG']['dewis_passive_ausblenden'] && $m->state == 'P'))
+					{
+						// Passive überspringen
+					}
+					else
+					{
+						$z++;
+						// Daten zuweisen
+						$daten[] = array
+						(
+							'Platz'       => $z,
+							'PKZ'         => $m->pid,
+							'Status'      => $m->state,
+							'Mglnr'       => sprintf("%04d", $m->membership),
+							'Spielername' => \Schachbulle\ContaoDewisBundle\Helper\Helper::Spielername($m, $gesperrt),
+							'Geschlecht'  => ($m->gender == 'm') ? '&nbsp;' : ($m->gender == 'f' ? 'w' : strtolower($m->gender)),
+							'KW'          => ($gesperrt) ? '&nbsp;' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Kalenderwoche($m->tcode),
+							'DWZ'         => (!$m->rating && $m->tcode) ? 'Restp.' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::DWZ($m->rating, $m->ratingIndex),
+							'Elo'         => ($m->elo) ? $m->elo : '-----',
+							'FIDE-Titel'  => $m->fideTitle,
+							'Verein'      => sprintf("<a href=\"".ALIAS_VEREIN."/%s.html\">%s</a>", $m->vkz, \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Vereinskurzname($m->club))
+						);
+					}
+					if($z == $toplist) break; // Abbruch wenn Limit erreicht
 				}
-				else
-				{
-					$z++;
-					// Daten zuweisen
-					$daten[] = array
-					(
-						'Platz'       => $z,
-						'PKZ'         => $m->pid,
-						'Status'      => $m->state,
-						'Mglnr'       => sprintf("%04d", $m->membership),
-						'Spielername' => \Schachbulle\ContaoDewisBundle\Helper\Helper::Spielername($m, $gesperrt),
-						'Geschlecht'  => ($m->gender == 'm') ? '&nbsp;' : ($m->gender == 'f' ? 'w' : strtolower($m->gender)),
-						'KW'          => ($gesperrt) ? '&nbsp;' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Kalenderwoche($m->tcode),
-						'DWZ'         => (!$m->rating && $m->tcode) ? 'Restp.' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::DWZ($m->rating, $m->ratingIndex),
-						'Elo'         => ($m->elo) ? $m->elo : '-----',
-						'FIDE-Titel'  => $m->fideTitle,
-						'Verein'      => sprintf("<a href=\"".ALIAS_VEREIN."/%s.html\">%s</a>", $m->vkz, \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Vereinskurzname($m->club))
-					);
-				}
-				if($z == $toplist) break; // Abbruch wenn Limit erreicht
 			}
+
 			$Infotemplate = new \FrontendTemplate($this->infoTemplate);
 			$this->Template->infobox = $Infotemplate->parse();
 			$this->Template->sichtbar = true;
