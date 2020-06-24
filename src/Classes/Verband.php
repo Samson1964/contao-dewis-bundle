@@ -208,7 +208,7 @@ class Verband extends \Module
 			$daten = array();
 			$z = 0;
 
-			if(is_array($liste)
+			if(is_object($liste))
 			{
 				foreach($liste as $m)
 				{

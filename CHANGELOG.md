@@ -1,5 +1,9 @@
 # Abfrage der DeWIS-API
 
+## Version 1.0.3 (2020-06-24)
+
+* Fix: Syntax-Fehler in contao-dewis-bundle/src/Classes/Verband.php on line 213
+
 ## Version 1.0.2 (2020-06-23)
 
 * Datei LICENSE entfernt
