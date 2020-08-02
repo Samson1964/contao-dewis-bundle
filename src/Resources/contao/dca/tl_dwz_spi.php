@@ -72,25 +72,25 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_dwz_spi']['editKartei'],
 				'href'                => 'table=tl_dwz_kar',
-				'icon'                => 'system/modules/dewis/assets/images/icon_kartei.png',
+				'icon'                => 'bundles/contaodewis/images/icon_kartei.png',
 			),
 			'editVereine' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_dwz_spi']['editVereine'],
 				'href'                => 'table=tl_dwz_spiver',
-				'icon'                => 'system/modules/dewis/assets/images/icon_vereine.png',
+				'icon'                => 'bundles/contaodewis/images/icon_vereine.png',
 			),
 			'editInfo' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_dwz_spi']['editInfo'],
 				'href'                => 'table=tl_dwz_inf',
-				'icon'                => 'system/modules/dewis/assets/images/icon_info.png',
+				'icon'                => 'bundles/contaodewis/images/icon_info.png',
 			),
 			'editElo' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_dwz_spi']['editElo'],
 				'href'                => 'table=tl_dwz_fid',
-				'icon'                => 'system/modules/dewis/assets/images/icon_fide.png',
+				'icon'                => 'bundles/contaodewis/images/icon_fide.png',
 			),
 			'editHeader' => array
 			(

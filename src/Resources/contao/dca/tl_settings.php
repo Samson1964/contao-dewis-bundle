@@ -4,8 +4,10 @@
  * palettes
  */
 $GLOBALS['TL_DCA']['tl_settings']['palettes']['__selector__'][] = 'dewis_cache';
-$GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] .= ';{dewis_legend:hide},dewis_karteisperre_gaeste,dewis_passive_ausblenden,dewis_geburtsjahr_ausblenden,dewis_geschlecht_ausblenden,dewis_seite_spieler,dewis_seite_turnier,dewis_seite_verein,dewis_seite_verband,dewis_cache';
+$GLOBALS['TL_DCA']['tl_settings']['palettes']['__selector__'][] = 'dewis_elobase';
+$GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] .= ';{dewis_legend:hide},dewis_karteisperre_gaeste,dewis_passive_ausblenden,dewis_geburtsjahr_ausblenden,dewis_geschlecht_ausblenden,dewis_seite_spieler,dewis_seite_turnier,dewis_seite_verein,dewis_seite_verband,dewis_cache,dewis_elobase';
 $GLOBALS['TL_DCA']['tl_settings']['subpalettes']['dewis_cache'] = 'dewis_cache_default,dewis_cache_verband,dewis_cache_referent';
+$GLOBALS['TL_DCA']['tl_settings']['subpalettes']['dewis_elobase'] = 'dewis_elobase_host,dewis_elobase_db,dewis_elobase_user,dewis_elobase_pass,dewis_elobase_url';
 
 /**
  * fields
@@ -186,3 +188,70 @@ $GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_seite_verband'] = array
 		'load'                => 'lazy'
 	)
 ); 
+
+// Alte Elobase-Datenbank aktivieren
+$GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_elobase'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['dewis_elobase'],
+	'inputType'               => 'checkbox',
+	'eval'                    => array
+	(
+		'tl_class'            => 'clr',
+		'submitOnChange'      => true
+	)
+);
+
+// Alte Elobase-Datenbank Host
+$GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_elobase_host'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['dewis_elobase_host'],
+	'inputType'               => 'text',
+	'eval'                    => array
+	(
+		'tl_class'            => 'w50',
+	)
+);
+
+// Alte Elobase-Datenbank Datenbank
+$GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_elobase_db'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['dewis_elobase_db'],
+	'inputType'               => 'text',
+	'eval'                    => array
+	(
+		'tl_class'            => 'w50',
+	)
+);
+
+// Alte Elobase-Datenbank Benutzer
+$GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_elobase_user'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['dewis_elobase_user'],
+	'inputType'               => 'text',
+	'eval'                    => array
+	(
+		'tl_class'            => 'w50',
+	)
+);
+
+// Alte Elobase-Datenbank Passwort
+$GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_elobase_pass'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['dewis_elobase_pass'],
+	'inputType'               => 'text',
+	'eval'                    => array
+	(
+		'tl_class'            => 'w50',
+	)
+);
+
+// Alte Elobase-Datenbank URL
+$GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_elobase_url'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['dewis_elobase_url'],
+	'inputType'               => 'text',
+	'eval'                    => array
+	(
+		'tl_class'            => 'long clr',
+	)
+);

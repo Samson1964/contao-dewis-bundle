@@ -330,7 +330,7 @@ class tl_dwz_kar extends Backend
 
 		if(!$head)
 		{
-			$GLOBALS['TL_CSS'][] = 'system/modules/dewis/assets/css/backend.css';
+			$GLOBALS['TL_CSS'][] = 'bundles/contaodewis/css/backend.css';
 			// Kopfspalte ausgeben
 			$temp .= '<div style="display: inline-block">';
 			$temp .= '<div class="tl_folder_tlist inline" style="">Eintrag</div>';

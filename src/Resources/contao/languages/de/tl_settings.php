@@ -22,3 +22,10 @@ $GLOBALS['TL_LANG']['tl_settings']['dewis_seite_spieler'] = array('Spielerseite 
 $GLOBALS['TL_LANG']['tl_settings']['dewis_seite_turnier'] = array('Turnierseite wählen','Seite, auf der das Turnier-Modul eingebunden ist');
 $GLOBALS['TL_LANG']['tl_settings']['dewis_seite_verein'] = array('Vereinseite wählen','Seite, auf der das Verein-Modul eingebunden ist');
 $GLOBALS['TL_LANG']['tl_settings']['dewis_seite_verband'] = array('Verbandseite wählen','Seite, auf der das Verband-Modul eingebunden ist');
+
+$GLOBALS['TL_LANG']['tl_settings']['dewis_elobase'] = array('EloBase-Datenbank aktivieren','Zugriff auf alte EloBase-Datenbank aktivieren');
+$GLOBALS['TL_LANG']['tl_settings']['dewis_elobase_host'] = array('Host', 'Host-Adresse');
+$GLOBALS['TL_LANG']['tl_settings']['dewis_elobase_db'] = array('Datenbank', 'Datenbank');
+$GLOBALS['TL_LANG']['tl_settings']['dewis_elobase_user'] = array('Benutzer', 'Benutzer');
+$GLOBALS['TL_LANG']['tl_settings']['dewis_elobase_pass'] = array('Passwort', 'Passwort');
+$GLOBALS['TL_LANG']['tl_settings']['dewis_elobase_url'] = array('Link', 'Link zur alten Karteikarte');

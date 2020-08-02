@@ -363,37 +363,39 @@ class DeWIS
 		# --------------------------------------------------------
 		# Sucht in der alten Datenbank nach dem Spieler mit der ID
 		# --------------------------------------------------------
-	
-		// Mit MySQL-Server verbinden
-		//$status = @mysqli_connect("mysql4.deutscher-schachbund.de","db107305_1","dwzdb1708","db107305_1");
-		$mysqli = new \mysqli("mysql5.deutscher-schachbund.de","db107305_28","ggrgt73g472ggw","db107305_28");
-		if ($mysqli->connect_errno)
+
+		if($GLOBALS['TL_CONFIG']['dewis_elobase'])
 		{
-			// Keine Antwort von der Datenbank
-			return false;
-		}
-		else
-		{
-			$sql = "SELECT pkz_alt FROM pkz WHERE pkz_neu = '$id'";
-			$ergebnis = $mysqli->prepare($sql);
-			$ergebnis->execute();
-			$result = $ergebnis->get_result();
-			if($row = $result->fetch_object())
+			// Mit MySQL-Server verbinden
+			$mysqli = new \mysqli($GLOBALS['TL_CONFIG']['dewis_elobase_host'],$GLOBALS['TL_CONFIG']['dewis_elobase_user'],$GLOBALS['TL_CONFIG']['dewis_elobase_pass'],$GLOBALS['TL_CONFIG']['dewis_elobase_db']);
+			if ($mysqli->connect_errno)
 			{
-				// Alte PKZ gefunden, dann nach einer ZPS suchen
-				$pkz = $row->pkz_alt;
-				$sql = "SELECT zpsver,szpsmgl,sstatus FROM dwz_spi WHERE pkz = '$pkz'";
+				// Keine Antwort von der Datenbank
+				return false;
+			}
+			else
+			{
+				$sql = "SELECT pkz_alt FROM pkz WHERE pkz_neu = '$id'";
 				$ergebnis = $mysqli->prepare($sql);
 				$ergebnis->execute();
 				$result = $ergebnis->get_result();
-				while($row = $result->fetch_object())
+				if($row = $result->fetch_object())
 				{
-					// mind. eine ZPS gefunden
-					return array("zps" => $row->zpsver."-".$row->szpsmgl,"status" => $row->sstatus);
+					// Alte PKZ gefunden, dann nach einer ZPS suchen
+					$pkz = $row->pkz_alt;
+					$sql = "SELECT zpsver,szpsmgl,sstatus FROM dwz_spi WHERE pkz = '$pkz'";
+					$ergebnis = $mysqli->prepare($sql);
+					$ergebnis->execute();
+					$result = $ergebnis->get_result();
+					while($row = $result->fetch_object())
+					{
+						// mind. eine ZPS gefunden
+						return array("zps" => $row->zpsver."-".$row->szpsmgl,"status" => $row->sstatus);
+					}
 				}
 			}
 		}
-		return false;
+		else return false;
 	}
 
 	public function Verbandsliste($zps)

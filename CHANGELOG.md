@@ -1,5 +1,10 @@
 # Abfrage der DeWIS-API
 
+## Version 1.1.0 (2020-08-02)
+
+* tl_dwz_kar.php, tl_dwz_spi.php alte Pfade zu assets ersetzt
+* Alte Datenbank optional aktivierbar statt dauerhaft
+
 ## Version 1.0.4 (2020-06-24)
 
 * Fix: Fehler in contao-dewis-bundle/src/Classes/Verband.php on line 211
