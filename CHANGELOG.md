@@ -1,5 +1,9 @@
 # Abfrage der DeWIS-API
 
+## Version 1.1.1 (2020-09-28)
+
+* CSS-Fehler im Backend beseitigt
+
 ## Version 1.1.0 (2020-08-02)
 
 * tl_dwz_kar.php, tl_dwz_spi.php alte Pfade zu assets ersetzt
