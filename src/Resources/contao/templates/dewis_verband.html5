@@ -157,94 +157,102 @@
 		})(jQuery);
 		</script>
 		
-		<table id="dewisTable" class="body tablesorter">
-			<thead>
-				<tr class="row_0">
-					<th class="col_1 right-line">Pl.</th>
-					<th class="col_2 right-line">Spielername</th>
-					<?php if(!$GLOBALS['TL_CONFIG']['dewis_geschlecht_ausblenden']): ?><th class="col_3 right-line">Geschl.</th><?php endif; ?>
-					<th class="col_4 right-line">Letzte<br>Ausw.</th>
-					<th class="col_5 right-line">DWZ</th>
-					<th class="col_6 right-line">Elo</th>
-					<th class="col_7 right-line">FIDE-<br>Titel</th>
-					<?php if(!$GLOBALS['TL_CONFIG']['dewis_passive_ausblenden']): ?><th class="col_8 right-line">Sta-<br>tus</th><?php endif; ?>
-					<th class="col_9">Verein</th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php $row = 1; ?>
-				<?php if($this->daten): ?>
-					<?php $x = 0; ?>
-					<?php foreach($this->daten as $d): ?>
-						<?php $x++; $class = ($x < count($this->daten)) ? ' bottom-line' : ''; ?>
-						<tr class="row_<?= $row ?>">
-							<td class="col_1 right-line<?= $class ?> align-right"><?= $d['Platz'] ?>.</td>
-							<td class="col_2 right-line<?= $class ?>"><?= $d['Spielername'] ?></td>
-							<?php if(!$GLOBALS['TL_CONFIG']['dewis_geschlecht_ausblenden']): ?><td class="col_3 right-line<?= $class ?>"><?= $d['Geschlecht'] ?></td><?php endif; ?>
-							<td class="col_4 right-line<?= $class ?>"><?= $d['KW'] ?></td>
-							<td class="col_5 right-line<?= $class ?>"><?= $d['DWZ'] ?></td>
-							<td class="col_6 right-line<?= $class ?>"><?= $d['Elo'] ?></td>
-							<td class="col_7 right-line<?= $class ?>"><?= $d['FIDE-Titel'] ?></td>
-							<?php if(!$GLOBALS['TL_CONFIG']['dewis_passive_ausblenden']): ?><td class="col_8 right-line<?= $class ?>"><?= $d['Status'] ?></td><?php endif; ?>
-							<td class="col_9<?= $class ?>"><?= $d['Verein'] ?></td>
-						</tr>
-						<?php $row++; ?>
-					<?php endforeach; ?>
-				<?php endif; ?>
-			</tbody>
-		</table>
-
-		<?php if($this->verbaende): ?>
-			<table class="body">
+		<div class="table_responsiv">
+			<table id="dewisTable" class="body tablesorter">
 				<thead>
-					<tr>
-						<th>Verbandszugehörigkeiten</th>
+					<tr class="row_0">
+						<th class="col_1 right-line">Pl.</th>
+						<th class="col_2 right-line">Spielername</th>
+						<?php if(!$GLOBALS['TL_CONFIG']['dewis_geschlecht_ausblenden']): ?><th class="col_3 right-line">Geschl.</th><?php endif; ?>
+						<th class="col_4 right-line">Letzte<br>Ausw.</th>
+						<th class="col_5 right-line">DWZ</th>
+						<th class="col_6 right-line">Elo</th>
+						<th class="col_7 right-line">FIDE-<br>Titel</th>
+						<?php if(!$GLOBALS['TL_CONFIG']['dewis_passive_ausblenden']): ?><th class="col_8 right-line">Sta-<br>tus</th><?php endif; ?>
+						<th class="col_9">Verein</th>
 					</tr>
 				</thead>
 				<tbody>
-				<?php $x = 0; ?>
-				<?php foreach($this->verbaende as $d): ?>
-					<?php $x++; $class = ($x < count($this->verbaende)) ? ' bottom-line' : ''; ?>
-					<tr>
-						<td class="<?= $d['typ'] ?><?= $class ?>"><?= $d['name'] ?></td>
-					</tr>
-				<?php endforeach; ?>
+					<?php $row = 1; ?>
+					<?php if($this->daten): ?>
+						<?php $x = 0; ?>
+						<?php foreach($this->daten as $d): ?>
+							<?php $x++; $class = ($x < count($this->daten)) ? ' bottom-line' : ''; ?>
+							<tr class="row_<?= $row ?>">
+								<td class="col_1 right-line<?= $class ?> align-right"><?= $d['Platz'] ?>.</td>
+								<td class="col_2 right-line<?= $class ?>"><?= $d['Spielername'] ?></td>
+								<?php if(!$GLOBALS['TL_CONFIG']['dewis_geschlecht_ausblenden']): ?><td class="col_3 right-line<?= $class ?>"><?= $d['Geschlecht'] ?></td><?php endif; ?>
+								<td class="col_4 right-line<?= $class ?>"><?= $d['KW'] ?></td>
+								<td class="col_5 right-line<?= $class ?>"><?= $d['DWZ'] ?></td>
+								<td class="col_6 right-line<?= $class ?>"><?= $d['Elo'] ?></td>
+								<td class="col_7 right-line<?= $class ?>"><?= $d['FIDE-Titel'] ?></td>
+								<?php if(!$GLOBALS['TL_CONFIG']['dewis_passive_ausblenden']): ?><td class="col_8 right-line<?= $class ?>"><?= $d['Status'] ?></td><?php endif; ?>
+								<td class="col_9<?= $class ?>"><?= $d['Verein'] ?></td>
+							</tr>
+							<?php $row++; ?>
+						<?php endforeach; ?>
+					<?php endif; ?>
 				</tbody>
 			</table>
+		</div>
+
+		<?php if($this->verbaende): ?>
+			<div class="table_responsiv">
+				<table class="body">
+					<thead>
+						<tr>
+							<th>Verbandszugehörigkeiten</th>
+						</tr>
+					</thead>
+					<tbody>
+					<?php $x = 0; ?>
+					<?php foreach($this->verbaende as $d): ?>
+						<?php $x++; $class = ($x < count($this->verbaende)) ? ' bottom-line' : ''; ?>
+						<tr>
+							<td class="<?= $d['typ'] ?><?= $class ?>"><?= $d['name'] ?></td>
+						</tr>
+					<?php endforeach; ?>
+					</tbody>
+				</table>
+			</div>
 		<?php endif; ?>
 
-		<table class="body">
-			<thead>
-				<tr>
-					<th>Zuständiger Wertungsreferent</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td><?= $this->referent ?></td>
-				</tr>
-			</tbody>
-		</table>
+		<div class="table_responsiv">
+			<table class="body">
+				<thead>
+					<tr>
+						<th>Zuständiger Wertungsreferent</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><?= $this->referent ?></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 
 	<?php else: ?>
 	
 		<?php if($this->verbaende): ?>
-			<table class="body">
-				<thead>
-					<tr>
-						<th>Verbandszugehörigkeiten</th>
-					</tr>
-				</thead>
-				<tbody>
-				<?php $x = 0; ?>
-				<?php foreach($this->verbaende as $d): ?>
-					<?php $x++; $class = ($x < count($this->verbaende)) ? ' bottom-line' : ''; ?>
-					<tr>
-						<td class="<?= $d['typ'] ?><?= $class ?>"><?= $d['name'] ?></td>
-					</tr>
-				<?php endforeach; ?>
-				</tbody>
-			</table>
+			<div class="table_responsiv">
+				<table class="body">
+					<thead>
+						<tr>
+							<th>Verbandszugehörigkeiten</th>
+						</tr>
+					</thead>
+					<tbody>
+					<?php $x = 0; ?>
+					<?php foreach($this->verbaende as $d): ?>
+						<?php $x++; $class = ($x < count($this->verbaende)) ? ' bottom-line' : ''; ?>
+						<tr>
+							<td class="<?= $d['typ'] ?><?= $class ?>"><?= $d['name'] ?></td>
+						</tr>
+					<?php endforeach; ?>
+					</tbody>
+				</table>
+			</div>
 		<?php endif; ?>
 
 	<?php endif; ?>

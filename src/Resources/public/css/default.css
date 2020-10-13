@@ -230,14 +230,14 @@
 	width					: 100%;
 }
 
-.dewis table.body th 
+.dewis table.body th
 {
 	background-color		: #a7abb6;
 	border-bottom			: 1px solid #616161;
 	font-weight				: bold;
 }
 
-.dewis table.body td 
+.dewis table.body td
 {
 	font-size				: 13px;
 }
@@ -309,7 +309,7 @@
 	font-weight				: bold;
 }
 
-.dewis table.queryinfo th 
+.dewis table.queryinfo th
 {
 	background-color		: #a7abb6;
 	border-bottom			: 1px solid #616161;
@@ -350,4 +350,8 @@
 
 .dewis table.body td.font-small {
 	font-size               : 11px;
+}
+
+.dewis .table_responsiv {
+	overflow: auto;
 }

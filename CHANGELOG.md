@@ -1,5 +1,10 @@
 # Abfrage der DeWIS-API
 
+## Version 1.1.2 (2020-10-13)
+
+* DIV-Container um Tabellen hinzugefügt mit Klasse table_responsiv
+* CSS-Klasse table_responsiv erstellt, um Tabellen horizontal scrollbar zu machen
+
 ## Version 1.1.1 (2020-09-28)
 
 * CSS-Fehler im Backend beseitigt

@@ -11,35 +11,39 @@
 	<?php endif; ?> 
 
 	<?php if($this->result_spieler): ?>
-		<table class="header">
-			<tbody>
-				<tr>
-					<td width="30%" class="label">Spielersuche in DeWIS:</td>
-					<td width="70%" class="value"><?= count($this->result_spieler) ?> Ergebnis(se)</td>
-				</tr>
-			</tbody>
-		</table>
+		<div class="table_responsiv">
+			<table class="header">
+				<tbody>
+					<tr>
+						<td width="30%" class="label">Spielersuche in DeWIS:</td>
+						<td width="70%" class="value"><?= count($this->result_spieler) ?> Ergebnis(se)</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 
-		<table class="body">
-			<thead>
-				<tr>
-					<th class="right-line">Spielername</th>
-					<th class="right-line">DWZ</th>
-					<th class="right-line">Elo</th>
-					<th class="">Verein</th>
-				</tr>
-			</thead>
-			<tbody>
-			<?php foreach($this->result_spieler as $d): ?>
-				<tr>
-					<td class="right-line<?= $class ?>"><?= $d['Spielername'] ?></td>
-					<td class="right-line<?= $class ?>"><?= $d['DWZ'] ?></td>
-					<td class="right-line<?= $class ?>"><?= $d['Elo'] ?></td>
-					<td class="<?= $class ?>"><?= $d['Verein'] ?></td>
-				</tr>
-			<?php endforeach; ?>
-			</tbody>
-		</table>
+		<div class="table_responsiv">
+			<table class="body">
+				<thead>
+					<tr>
+						<th class="right-line">Spielername</th>
+						<th class="right-line">DWZ</th>
+						<th class="right-line">Elo</th>
+						<th class="">Verein</th>
+					</tr>
+				</thead>
+				<tbody>
+				<?php foreach($this->result_spieler as $d): ?>
+					<tr>
+						<td class="right-line<?= $class ?>"><?= $d['Spielername'] ?></td>
+						<td class="right-line<?= $class ?>"><?= $d['DWZ'] ?></td>
+						<td class="right-line<?= $class ?>"><?= $d['Elo'] ?></td>
+						<td class="<?= $class ?>"><?= $d['Verein'] ?></td>
+					</tr>
+				<?php endforeach; ?>
+				</tbody>
+			</table>
+		</div>
 	<?php endif; ?> 
 
 </div>
