@@ -1,5 +1,9 @@
 # Abfrage der DeWIS-API
 
+## Version 1.2.0 (2020-11-17)
+
+* JSON-Schnittstelle für Abfrage Spielerdaten aus tl_dwz_spi mittels FIDE-ID eingebaut
+
 ## Version 1.1.2 (2020-10-13)
 
 * DIV-Container um Tabellen hinzugefügt mit Klasse table_responsiv
