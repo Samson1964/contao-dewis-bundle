@@ -1,9 +1,13 @@
 # Abfrage der DeWIS-API
 
+## Version 1.3.1 (2021-01-13)
+
+* Fix: DeWIS_Cleaner.php hat .public gelöscht
+
 ## Version 1.3.0 (2021-01-13)
 
-* Add: Downloadskript von DWZ-Dateien
-* Add: Aufräumskript für DWZ-Dateien
+* Add: Downloadskript von DWZ-Dateien DeWIS_Download.php
+* Add: Aufräumskript für DWZ-Dateien DeWIS_Cleaner.php
 
 ## Version 1.2.0 (2020-11-17)
 

@@ -1,5 +1,5 @@
 ﻿<?php
-/* 
+/*
  * =============================================================================
  * Räumt den Ordner files/dewis auf
  * - Verschieben der Dateien aus dem Hauptverzeichnis in die Unterordner
@@ -11,7 +11,7 @@
 ini_set("display_errors", true);
 error_reporting(E_ALL); // Display everything except E_USER_NOTICE
 
-$verzeichnis = substr($_SERVER['DOCUMENT_ROOT'], 0, -3).'files/dewis/'; // web-Ordner entfernen und Zielordner anhängen 
+$verzeichnis = substr($_SERVER['DOCUMENT_ROOT'], 0, -3).'files/dewis/'; // web-Ordner entfernen und Zielordner anhängen
 
 echo "Verschieben der Dateien aus dem Hauptordner<br>\n";
 
@@ -26,24 +26,26 @@ if(is_dir($verzeichnis))
 		{
 			if(!is_dir($verzeichnis.$file))
 			{
-				// Jahr aus dem Dateinamen extrahieren
-				$jahr = substr($file, -12, -8);
+				if($file != '.' && $file != '..' && $file != '.public')
+				{
+					// Jahr aus dem Dateinamen extrahieren
+					$jahr = substr($file, -12, -8);
 
-				// Zielordner festlegen
-				if(substr($file, 0, 7) == 'dsb-ws8') $zielordner = 'swiss8';
-				elseif(substr($file, 0, 7) == 'dsb-ws7') $zielordner = 'swiss';
-				elseif(substr($file, 0, 8) == 'LV-0-csv') $zielordner = 'csv';
-				elseif(substr($file, 0, 8) == 'LV-0-dos') $zielordner = 'dos';
-				elseif(substr($file, 0, 8) == 'LV-0-sql') $zielordner = 'sql';
-				else $zielordner = 'lv'.strtolower(substr($file, 3, 1));
+					// Zielordner festlegen
+					if(substr($file, 0, 7) == 'dsb-ws8') $zielordner = 'swiss8';
+					elseif(substr($file, 0, 7) == 'dsb-ws7') $zielordner = 'swiss';
+					elseif(substr($file, 0, 8) == 'LV-0-csv') $zielordner = 'csv';
+					elseif(substr($file, 0, 8) == 'LV-0-dos') $zielordner = 'dos';
+					elseif(substr($file, 0, 8) == 'LV-0-sql') $zielordner = 'sql';
+					else $zielordner = 'lv'.strtolower(substr($file, 3, 1));
 
-				// Ordner ggfs. anlegen
-				if(!file_exists($verzeichnis.$jahr)) mkdir($verzeichnis.$jahr, 0777);
-				if(!file_exists($verzeichnis.$jahr.'/'.$zielordner)) mkdir($verzeichnis.$jahr.'/'.$zielordner, 0777);
+					// Ordner ggfs. anlegen
+					if(!file_exists($verzeichnis.$jahr)) mkdir($verzeichnis.$jahr, 0777);
+					if(!file_exists($verzeichnis.$jahr.'/'.$zielordner)) mkdir($verzeichnis.$jahr.'/'.$zielordner, 0777);
 
-				// Datei verschieben
-				$status = rename($verzeichnis.$file, $verzeichnis.$jahr.'/'.$zielordner.'/'.$file);
-
+					// Datei verschieben
+					$status = rename($verzeichnis.$file, $verzeichnis.$jahr.'/'.$zielordner.'/'.$file);
+				}
 			}
 		}
 		closedir($handle);
@@ -116,7 +118,7 @@ function LeseVerzeichnis($ordner)
 			{
 				if(!is_dir($ordner.$file))
 				{
-					if($file != '.' && $file != '..')
+					if($file != '.' && $file != '..' && $file != '.public')
 					{
 						$dateien[] = $file;
 					}
