@@ -1,5 +1,10 @@
 # Abfrage der DeWIS-API
 
+## Version 1.3.0 (2021-01-13)
+
+* Add: Downloadskript von DWZ-Dateien
+* Add: Aufräumskript für DWZ-Dateien
+
 ## Version 1.2.0 (2020-11-17)
 
 * JSON-Schnittstelle für Abfrage Spielerdaten aus tl_dwz_spi mittels FIDE-ID eingebaut
