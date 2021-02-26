@@ -252,7 +252,7 @@ class Verband extends \Module
 			 * Ausgabe zuständiger Wertungsreferent
 			*/
 
-			$this->Template->referent = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Wertungsreferent($referent);
+			$this->Template->referent = ($gesperrt) ? 'Sie müssen sich anmelden, um diese Daten sehen zu können.' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Wertungsreferent($referent);
 
 			/*********************************************************
 			 * Ausgabe Metadaten

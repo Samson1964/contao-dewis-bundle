@@ -176,7 +176,7 @@ class Turnier extends \Module
 								'Turniercode'	=> $t->tcode,
 								'Turniername'	=> sprintf('<a href="'.ALIAS_TURNIER.'/%s.html" title="%s">%s</a>', $t->tcode, $t->tname, \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Turnierkurzname($t->tname)),
 								'Turnierende'	=> substr($t->finishedOn,8,2).'.'.substr($t->finishedOn,5,2).'.'.substr($t->finishedOn,0,4),
-								'Auswerter'		=> \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Wertungsreferent($t->assessor1, false),
+								'Auswerter'		=> ($gesperrt) ? 'Sie müssen sich anmelden, um diese Daten sehen zu können.' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Wertungsreferent($t->assessor1, false),
 							);
 						}
 					}
@@ -294,8 +294,8 @@ class Turnier extends \Module
 				'Turnierende'	=> \Schachbulle\ContaoDewisBundle\Helper\Helper::datum_mysql2php($result_tresult->tournament->finishedOn),
 				'Berechnet'		=> sprintf("%s %s", \Schachbulle\ContaoDewisBundle\Helper\Helper::datum_mysql2php(substr($result_tresult->tournament->computedOn, 0, 10)), substr($result_tresult->tournament->computedOn, 11, 5)),
 				'Nachberechnet'	=> $result_tresult->tournament->recomputedOn == 'NULL' || $result_tresult->tournament->recomputedOn == '' ? '&nbsp;' : sprintf("%s %s", \Schachbulle\ContaoDewisBundle\Helper\Helper::datum_mysql2php(substr($result_tresult->tournament->recomputedOn, 0, 10)), substr($result_tresult->tournament->recomputedOn, 11, 5)),
-				'Auswerter1'	=> \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Wertungsreferent($result_tresult->tournament->assessor1),
-				'Auswerter2'	=> \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Wertungsreferent($result_tresult->tournament->assessor2, false),
+				'Auswerter1'	=> ($gesperrt) ? 'Sie müssen sich anmelden, um diese Daten sehen zu können.' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Wertungsreferent($result_tresult->tournament->assessor1),
+				'Auswerter2'	=> ($gesperrt) ? 'Sie müssen sich anmelden, um diese Daten sehen zu können.' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Wertungsreferent($result_tresult->tournament->assessor2, false),
 				'Spieler'		=> $result_tresult->tournament->cntPlayer,
 				'Partien'		=> $result_tresult->tournament->cntGames,
 				'Runden'		=> $result_tresult->tournament->rounds,
@@ -568,8 +568,8 @@ class Turnier extends \Module
 				'Turnierende'	=> \Schachbulle\ContaoDewisBundle\Helper\Helper::datum_mysql2php($result_tausw->tournament->finishedOn),
 				'Berechnet'		=> sprintf("%s %s", \Schachbulle\ContaoDewisBundle\Helper\Helper::datum_mysql2php(substr($result_tausw->tournament->computedOn, 0, 10)), substr($result_tausw->tournament->computedOn, 11, 5)),
 				'Nachberechnet'	=> $result_tausw->tournament->recomputedOn == 'NULL' || $result_tausw->tournament->recomputedOn == '' ? '&nbsp;' : sprintf("%s %s", \Schachbulle\ContaoDewisBundle\Helper\Helper::datum_mysql2php(substr($result_tausw->tournament->recomputedOn, 0, 10)), substr($result_tausw->tournament->recomputedOn, 11, 5)),
-				'Auswerter1'	=> \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Wertungsreferent($result_tausw->tournament->assessor1),
-				'Auswerter2'	=> \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Wertungsreferent($result_tausw->tournament->assessor2, false),
+				'Auswerter1'	=> ($gesperrt) ? 'Sie müssen sich anmelden, um diese Daten sehen zu können.' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Wertungsreferent($result_tausw->tournament->assessor1),
+				'Auswerter2'	=> ($gesperrt) ? 'Sie müssen sich anmelden, um diese Daten sehen zu können.' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Wertungsreferent($result_tausw->tournament->assessor2, false),
 				'Spieler'		=> $result_tausw->tournament->cntPlayer,
 				'Partien'		=> $result_tausw->tournament->cntGames,
 				'Runden'		=> $result_tausw->tournament->rounds,

@@ -315,8 +315,8 @@ class Verein extends \Module
 							$daten[$key] = array
 							(
 								'PKZ'         => $m->pid,
-								'Mglnr'       => sprintf("%04d", $m->membership),
-								'Status'      => $m->state,
+								'Mglnr'       => ($gesperrt) ? '&nbsp;' : sprintf("%04d", $m->membership),
+								'Status'      => ($gesperrt) ? '&nbsp;' : $m->state,
 								'Spielername' => \Schachbulle\ContaoDewisBundle\Helper\Helper::Spielername($m, $gesperrt),
 								'Geschlecht'  => ($m->gender == 'm') ? '&nbsp;' : ($m->gender == 'f' ? 'w' : strtolower($m->gender)),
 								'KW'          => ($gesperrt) ? '&nbsp;' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Kalenderwoche($m->tcode),
@@ -379,7 +379,7 @@ class Verein extends \Module
 			 * Ausgabe zuständiger Wertungsreferent
 			*/
 
-			$this->Template->referent = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Wertungsreferent($referent);
+			$this->Template->referent = ($gesperrt) ? 'Sie müssen sich anmelden, um diese Daten sehen zu können.' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Wertungsreferent($referent);
 
 
 			/*********************************************************
