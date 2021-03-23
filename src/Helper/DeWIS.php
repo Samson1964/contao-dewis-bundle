@@ -151,7 +151,8 @@ class DeWIS
 					'style'              => SOAP_RPC,
 					'use'                => SOAP_ENCODED,
 					'connection_timeout' => 15,
-					//'stream_context'     => $context // Entfernt am 21.02.2019 da svw.info meldete: Error Fetching http body, No Content-Length, connection closed or chunked data
+					'stream_context'     => $context // Entfernt am 21.02.2019 da svw.info meldete: Error Fetching http body, No Content-Length, connection closed or chunked data
+					// Wieder aktiviert am 23.03.2021 weil die Schnittstelle meldete: Could not connect to host
 				)
 			);
 
