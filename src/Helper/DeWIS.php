@@ -928,7 +928,7 @@ class DeWIS
 								'geschlecht' => strtoupper($m->gender),
 								'geburtstag' => $m->yearOfBirth,
 								'zpsmgl'     => $m->membership,
-								'zpsver'     => $m->vkz,
+								'zpsver'     => $m->vkz ? $m->vkz : '',
 								'status'     => $m->state ? $m->state : 'A',
 								'dwz'        => $m->rating ? $m->rating : 0,
 								'dwzindex'   => $m->ratingIndex ? $m->ratingIndex : 0,
@@ -940,8 +940,8 @@ class DeWIS
 								'published'  => 1,
 							);
 							$objInsert = \Database::getInstance()->prepare("INSERT INTO tl_dwz_spi %s")
-																 ->set($set)
-																 ->execute();
+							                                     ->set($set)
+							                                     ->execute();
 							//print_r($m);
 						}
 					}
@@ -999,7 +999,7 @@ class DeWIS
 								'geschlecht' => strtoupper($m->gender),
 								'geburtstag' => $m->yearOfBirth,
 								'zpsmgl'     => $m->membership,
-								'zpsver'     => $result->union->vkz,
+								'zpsver'     => $result->union->vkz ? $result->union->vkz : '',
 								'status'     => $m->state ? $m->state : 'A',
 								'dwz'        => $m->rating ? $m->rating : 0,
 								'dwzindex'   => $m->ratingIndex ? $m->ratingIndex : 0,
@@ -1010,8 +1010,8 @@ class DeWIS
 								'published'  => 1,
 							);
 							$objInsert = \Database::getInstance()->prepare("INSERT INTO tl_dwz_spi %s")
-																 ->set($set)
-																 ->execute();
+							                                     ->set($set)
+							                                     ->execute();
 							//print_r($m);
 						}
 					}

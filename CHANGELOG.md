@@ -1,5 +1,9 @@
 # Abfrage der DeWIS-API
 
+## Version 1.3.4 (2021-07-08)
+
+* Fix: Column 'zpsver' cannot be null (beim Import von Spielerdaten)
+
 ## Version 1.3.3 (2021-03-23)
 
 * Fix: Helper/DeWIS.php - SOAPClient, Parameter 'stream_context' wieder aktiviert
