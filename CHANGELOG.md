@@ -1,5 +1,10 @@
 # Abfrage der DeWIS-API
 
+## Version 1.3.7 (2021-09-09)
+
+* Fix: 1048 Column 'fideTitel' cannot be null (bei UPDATE tl_dwz_spi)
+* Fix: fideNation ebenfalls entsprechend korrigiert
+
 ## Version 1.3.6 (2021-09-09)
 
 * Fix: 1048 Column 'fideElo' cannot be null (bei UPDATE tl_dwz_spi)
