@@ -905,7 +905,7 @@ class DeWIS
 									'dwzwoche'   => self::Kalenderwoche($m->tcode),
 									'fideID'     => $m->idfide ? $m->idfide : '',
 									'fideNation' => $m->nationfide,
-									'fideElo'    => $m->elo,
+									'fideElo'    => $m->elo ? $m->elo : 0,
 									'fideTitel'  => $m->fideTitle,
 								);
 								$objUpdate = \Database::getInstance()->prepare("UPDATE tl_dwz_spi %s WHERE id=?")
@@ -976,7 +976,7 @@ class DeWIS
 									'dwzindex'   => $m->ratingIndex,
 									'dwzwoche'   => self::Kalenderwoche($m->tcode),
 									'fideID'     => $m->idfide ? $m->idfide : '',
-									'fideElo'    => $m->elo,
+									'fideElo'    => $m->elo ? $m->elo : 0,
 									'fideTitel'  => $m->fideTitle,
 								);
 								$objUpdate = \Database::getInstance()->prepare("UPDATE tl_dwz_spi %s WHERE id=?")
