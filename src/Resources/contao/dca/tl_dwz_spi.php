@@ -515,6 +515,7 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_dwz_spi']['dwz'],
 			'exclude'                 => false,
 			'search'                  => false,
+			'default'                 => 0,
 			'inputType'               => 'text',
 			'eval'                    => array
 			(
