@@ -883,7 +883,7 @@ class DeWIS
 					{
 						// Spieler in lokaler Datenbank suchen, nach dem Kriterium pid
 						$objPlayer = \Database::getInstance()->prepare("SELECT * FROM tl_dwz_spi WHERE dewisID = ?")
-															 ->execute($m->pid);
+						                                     ->execute($m->pid);
 						if($objPlayer->numRows)
 						{
 							while($objPlayer->next())
@@ -903,14 +903,14 @@ class DeWIS
 									'dwz'        => $m->rating,
 									'dwzindex'   => $m->ratingIndex,
 									'dwzwoche'   => self::Kalenderwoche($m->tcode),
-									'fideID'     => $m->idfide,
+									'fideID'     => $m->idfide ? $m->idfide : '',
 									'fideNation' => $m->nationfide,
 									'fideElo'    => $m->elo,
 									'fideTitel'  => $m->fideTitle,
 								);
 								$objUpdate = \Database::getInstance()->prepare("UPDATE tl_dwz_spi %s WHERE id=?")
-																	 ->set($set)
-																	 ->execute($objPlayer->id);
+								                                     ->set($set)
+								                                     ->execute($objPlayer->id);
 								//$arr = (array)$objPlayer;
 								//print_r($arr);
 							}
@@ -933,7 +933,7 @@ class DeWIS
 								'dwz'        => $m->rating ? $m->rating : 0,
 								'dwzindex'   => $m->ratingIndex ? $m->ratingIndex : 0,
 								'dwzwoche'   => self::Kalenderwoche($m->tcode),
-								'fideID'     => $m->idfide ? $m->idfide : 0,
+								'fideID'     => $m->idfide ? $m->idfide : '',
 								'fideNation' => $m->nationfide,
 								'fideElo'    => $m->elo ? $m->elo : 0,
 								'fideTitel'  => $m->fideTitle ? $m->fideTitle : '',
@@ -955,7 +955,7 @@ class DeWIS
 					{
 						// Spieler in lokaler Datenbank suchen, nach dem Kriterium pid
 						$objPlayer = \Database::getInstance()->prepare("SELECT * FROM tl_dwz_spi WHERE dewisID = ?")
-															 ->execute($m->pid);
+						                                     ->execute($m->pid);
 						if($objPlayer->numRows)
 						{
 							while($objPlayer->next())
@@ -975,13 +975,13 @@ class DeWIS
 									'dwz'        => $m->rating,
 									'dwzindex'   => $m->ratingIndex,
 									'dwzwoche'   => self::Kalenderwoche($m->tcode),
-									'fideID'     => $m->idfide,
+									'fideID'     => $m->idfide ? $m->idfide : '',
 									'fideElo'    => $m->elo,
 									'fideTitel'  => $m->fideTitle,
 								);
 								$objUpdate = \Database::getInstance()->prepare("UPDATE tl_dwz_spi %s WHERE id=?")
-																	 ->set($set)
-																	 ->execute($objPlayer->id);
+								                                     ->set($set)
+								                                     ->execute($objPlayer->id);
 								//$arr = (array)$objPlayer;
 								//print_r($arr);
 							}
@@ -1004,7 +1004,7 @@ class DeWIS
 								'dwz'        => $m->rating ? $m->rating : 0,
 								'dwzindex'   => $m->ratingIndex ? $m->ratingIndex : 0,
 								'dwzwoche'   => self::Kalenderwoche($m->tcode),
-								'fideID'     => $m->idfide ? $m->idfide : 0,
+								'fideID'     => $m->idfide ? $m->idfide : '',
 								'fideElo'    => $m->elo ? $m->elo : 0,
 								'fideTitel'  => $m->fideTitle ? $m->fideTitle : '',
 								'published'  => 1,

@@ -1,5 +1,9 @@
 # Abfrage der DeWIS-API
 
+## Version 1.3.5 (2021-09-09)
+
+* Fix: 1048 Column 'fideID' cannot be null (bei UPDATE tl_dwz_spi)
+
 ## Version 1.3.4 (2021-07-08)
 
 * Fix: Column 'zpsver' cannot be null (beim Import von Spielerdaten)

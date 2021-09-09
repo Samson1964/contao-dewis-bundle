@@ -576,6 +576,7 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_dwz_spi']['fideID'],
 			'exclude'                 => true,
 			'search'                  => false,
+			'default'                 => '',
 			'inputType'               => 'text',
 			'eval'                    => array
 			(
@@ -590,6 +591,7 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_dwz_spi']['fideNation'],
 			'exclude'                 => true,
 			'search'                  => false,
+			'default'                 => '',
 			'inputType'               => 'text',
 			'eval'                    => array
 			(
@@ -620,6 +622,7 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_dwz_spi']['alt'],
 			'exclude'                 => true,
 			'search'                  => true,
+			'default'                 => '',
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255, 'tl_class'=>'long'),
 			'sql'                     => "varchar(255) NOT NULL default ''"
@@ -629,6 +632,7 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_dwz_spi']['size'],
 			'exclude'                 => true,
 			'inputType'               => 'imageSize',
+			'default'                 => '',
 			'options'                 => $GLOBALS['TL_CROP'],
 			'reference'               => &$GLOBALS['TL_LANG']['MSC'],
 			'eval'                    => array('rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
@@ -638,6 +642,7 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_dwz_spi']['imagemargin'],
 			'exclude'                 => true,
+			'default'                 => '',
 			'inputType'               => 'trbl',
 			'options'                 => array('px', '%', 'em', 'ex', 'pt', 'pc', 'in', 'cm', 'mm'),
 			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
@@ -648,6 +653,7 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_dwz_spi']['imageUrl'],
 			'exclude'                 => true,
 			'search'                  => true,
+			'default'                 => '',
 			'inputType'               => 'text',
 			'eval'                    => array('rgxp'=>'url', 'decodeEntities'=>true, 'maxlength'=>255, 'tl_class'=>'w50 wizard'),
 			'wizard' => array
@@ -660,6 +666,7 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_dwz_spi']['fullsize'],
 			'exclude'                 => true,
+			'default'                 => '',
 			'inputType'               => 'checkbox',
 			'eval'                    => array('tl_class'=>'w50 m12'),
 			'sql'                     => "char(1) NOT NULL default ''"
