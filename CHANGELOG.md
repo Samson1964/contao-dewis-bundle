@@ -1,5 +1,9 @@
 # Abfrage der DeWIS-API
 
+## Version 1.3.10 (2021-10-01)
+
+* Fix: tl_dwz_spi - 1048 Column 'zpsver' cannot be null (in Helper/DeWIS.php)
+
 ## Version 1.3.9 (2021-10-01)
 
 * Fix: Suche nach Vereinsname mit *** und +++ führt zu einem Fehler
