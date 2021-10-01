@@ -36,7 +36,7 @@
 					<legend>Suche</legend>
 					<div class="w50">
 						<h3><label for "ctrl_search">Turniername</label></h3>
-						<input id="ctrl_search" type="text" class="tl_input_text" autofocus name="keyword" size="30" maxlength="30">
+						<input id="ctrl_search" type="text" class="tl_input_text" autofocus name="keyword" size="30" maxlength="30" value="<?= $this->search ?>">
 						<p class="tl_help">Erlaubt ist Leerlassen oder auch ein Namensbestandteil</p>
 					</div>
 					<div class="w50">
@@ -86,18 +86,15 @@
 						<p class="tl_help">Wenn ausgewählt, wird Von/Bis ignoriert.</p>
 					</div>
 				</fieldset>
+				<?php if($this->fehler): ?>
+					<div class="error"><?= $this->fehler ?></div>
+				<?php endif; ?> 
 				<div class="tl_submit_container">
 					<input type="submit" class="tl_submit" value="Suche starten">
 				</div>
 			</form>
 		</div>
 
-	<?php endif; ?>
-
-	<?php if($this->fehler): ?>
-		<div class="error">
-			Fehler: <?= $this->fehler ?>
-		</div>
 	<?php endif; ?>
 
 	<?php if($this->subHeadline): ?>

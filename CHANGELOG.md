@@ -1,5 +1,14 @@
 # Abfrage der DeWIS-API
 
+## Version 1.3.9 (2021-10-01)
+
+* Fix: Suche nach Vereinsname mit *** und +++ führt zu einem Fehler
+* Add: Ausgabe des Suchbegriffes bei den Suchen
+* Fix: Fehlerausgabe in den Templates direkt unter das Eingabefeld gesetzt
+* Add: FIDE-Nation in Verbandslisten anzeigen
+* Add: Abhängigkeit components/flag-icon-css (für Länderflaggen)
+* Add: Helper-Funktion Laendercode
+
 ## Version 1.3.8 (2021-09-09)
 
 * Fix: 1048 Column 'dwz' cannot be null (bei UPDATE tl_dwz_spi)

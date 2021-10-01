@@ -2,6 +2,7 @@
 
 <?php
 	$GLOBALS['TL_CSS'][] = 'bundles/contaodewis/css/default.css';
+	$GLOBALS['TL_CSS'][] = 'bundles/flag-icon-css/css/flag-icon.min.css|static';
 ?>
 
 <div class="<?php echo $this->class; ?> dewis block"<?php echo $this->cssID; ?> style="<?php if ($this->margin): ?><?php echo trim($this->margin); ?><?php endif; ?> <?php if ($this->style): ?><?php echo $this->style; ?><?php endif; ?>">
@@ -168,6 +169,7 @@
 						<th class="col_5 right-line">DWZ</th>
 						<th class="col_6 right-line">Elo</th>
 						<th class="col_7 right-line">FIDE-<br>Titel</th>
+						<th class="col_10 right-line">FIDE-<br>Nation</th>
 						<?php if(!$GLOBALS['TL_CONFIG']['dewis_passive_ausblenden']): ?><th class="col_8 right-line">Sta-<br>tus</th><?php endif; ?>
 						<th class="col_9">Verein</th>
 					</tr>
@@ -186,6 +188,7 @@
 								<td class="col_5 right-line<?= $class ?>"><?= $d['DWZ'] ?></td>
 								<td class="col_6 right-line<?= $class ?>"><?= $d['Elo'] ?></td>
 								<td class="col_7 right-line<?= $class ?>"><?= $d['FIDE-Titel'] ?></td>
+								<td class="col_10 right-line<?= $class ?>"><?= $d['FIDE-Nation'] ?></td>
 								<?php if(!$GLOBALS['TL_CONFIG']['dewis_passive_ausblenden']): ?><td class="col_8 right-line<?= $class ?>"><?= $d['Status'] ?></td><?php endif; ?>
 								<td class="col_9<?= $class ?>"><?= $d['Verein'] ?></td>
 							</tr>

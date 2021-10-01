@@ -219,6 +219,23 @@ class Verband extends \Module
 					}
 					else
 					{
+
+						// Spielerkartei laden
+						$param = array
+						(
+							'funktion'  => 'Karteikarte',
+							'cachekey'  => $m->pid,
+							'id'        => $m->pid
+						);
+						$karteikarte = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::autoQuery($param); // Abfrage ausführen
+
+						$flag_css = \Schachbulle\ContaoDewisBundle\Helper\Helper::Laendercode($karteikarte['result']->member->fideNation);
+						// Flagge anzeigen, wenn vorhanden
+						if($flag_css)
+							$flag_content = '<span class="'.$flag_css.'"></span>';
+						else
+							$flag_content = '<span class="ioc_code">'.$karteikarte['result']->member->fideNation.'</span>';
+						
 						$z++;
 						// Daten zuweisen
 						$daten[] = array
@@ -233,6 +250,7 @@ class Verband extends \Module
 							'DWZ'         => (!$m->rating && $m->tcode) ? 'Restp.' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::DWZ($m->rating, $m->ratingIndex),
 							'Elo'         => ($m->elo) ? $m->elo : '-----',
 							'FIDE-Titel'  => $m->fideTitle,
+							'FIDE-Nation' => $flag_content,
 							'Verein'      => sprintf("<a href=\"".ALIAS_VEREIN."/%s.html\">%s</a>", $m->vkz, \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Vereinskurzname($m->club))
 						);
 					}

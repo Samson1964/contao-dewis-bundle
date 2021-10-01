@@ -91,6 +91,18 @@ class Verein extends \Module
 		if($GLOBALS['TL_CONFIG']['dewis_karteisperre_gaeste']) $gesperrt = $mitglied->id ? false : true;
 		else $gesperrt = false;
 
+		// Auf ungültige Zeichen im Suchbegriff prüfen (alles außer Buchstaben, Zahlen, Umlaute, Leerzeichen ist nicht erlaubt)
+		if(!preg_match("#^[a-zA-Z0-9äöüÄÖÜ ]+$#", $search))
+		{
+			$this->Template->fehler = 'Der Suchbegriff darf nur Buchstaben, Zahlen und Leerzeichen enthalten!';
+			$this->Template->search = $search;
+			$search = '';
+		}
+		else
+		{
+			$this->Template->search = $search;
+		}
+		
 		if($search)
 		{
 

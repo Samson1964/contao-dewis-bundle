@@ -25,9 +25,12 @@
 					<legend>Suche</legend>
 					<div class="long">
 						<h3><label for "ctrl_search">Spielername</label></h3>
-						<input id="ctrl_search" type="text" class="tl_input_text" autofocus name="search" size="30" maxlength="30">
+						<input id="ctrl_search" type="text" class="tl_input_text" autofocus name="search" size="30" maxlength="30" value="<?= $this->search ?>">
 						<p class="tl_help">Name,Vorname oder nur Name</p>
 					</div>
+					<?php if($this->fehler): ?>
+						<div class="error"><?= $this->fehler ?></div>
+					<?php endif; ?> 
 				</fieldset>
 				<div class="tl_submit_container">
 					<input type="submit" class="tl_submit" value="Suche starten">
@@ -36,12 +39,6 @@
 		</div>
 	<?php endif; ?> 
 	
-	<?php if($this->fehler): ?>
-		<div class="error">
-			Fehler: <?= $this->fehler ?>
-		</div>
-	<?php endif; ?> 
-
 	<?php if($this->subHeadline): ?>
 		<<?= $this->shl ?>><?= $this->subHeadline ?></<?= $this->shl ?>>
 	<?php endif; ?> 

@@ -98,6 +98,7 @@ class Spieler extends \Module
 			$check_search = \Schachbulle\ContaoDewisBundle\Helper\Helper::checkSearchstringPlayer($search); // Suchbegriff analysieren
 
 			$this->Template->subHeadline = 'Suche nach '.$search; // Unterüberschrift setzen
+			$this->Template->search = $search;
 
 			// Abfrageparameter einstellen
 			if ($check_search['typ'] == 'name')
