@@ -117,10 +117,10 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['dwz_gender'] = array
 (
 	'label'                              => &$GLOBALS['TL_LANG']['tl_module']['dwz_gender'],
 	'exclude'                            => true,
-	'default'                            => 'M',
+	'default'                            => 'm',
 	'inputType'                          => 'select',
 	'options'                            => $GLOBALS['TL_LANG']['tl_module']['dwz_gender_options'],
 	'eval'                               => array('tl_class'=>'w50'),
-	'sql'                                => "char(1) NOT NULL default 'M'"
+	'sql'                                => "char(1) NOT NULL default 'm'"
 );
 

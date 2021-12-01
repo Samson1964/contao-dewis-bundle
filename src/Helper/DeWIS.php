@@ -59,11 +59,12 @@ class DeWIS
 	public function autoQuery($params)
 	{
 
-		if($GLOBALS['TL_CONFIG']['dewis_cache'])
+		if($GLOBALS['TL_CONFIG']['dewis_cache'] || $params['cachetime'])
 		{
 			// Cache initialisieren
 			$cache = new \Schachbulle\ContaoHelperBundle\Classes\Cache(array('name' => $params['funktion'], 'extension' => '.cache'));
 			$cache->eraseExpired(); // Cache aufräumen, abgelaufene Schlüssel löschen
+
 			// Cache laden
 			if($cache->isCached($params['cachekey']))
 			{
@@ -94,7 +95,7 @@ class DeWIS
 			$querytime = sprintf("%1.3f", $tende);
 			$cachemode = false;
 			// im Cache speichern
-			if($GLOBALS['TL_CONFIG']['dewis_cache']) $cache->store($params['cachekey'], $result, $cachetime);
+			if($GLOBALS['TL_CONFIG']['dewis_cache'] || $params['cachetime']) $cache->store($params['cachekey'], $result, $cachetime);
 			$GLOBALS['DeWIS-Cache']['dewis-queries']++;
 			$GLOBALS['DeWIS-Cache']['dewis-queriestimes'] += $querytime;
 			//echo $params['funktion'];
@@ -113,9 +114,9 @@ class DeWIS
 
 		return array
 		(
-			'result'		=> $result,
-			'querytime'		=> $querytime,
-			'cachemode'		=> $cachemode
+			'result'     => $result,
+			'querytime'  => $querytime,
+			'cachemode'  => $cachemode
 		);
 	}
 

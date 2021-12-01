@@ -1,5 +1,10 @@
 # Abfrage der DeWIS-API
 
+## Version 1.4.1 (2021-12-01)
+
+* Fix: DWZ-Bestenliste wurde nicht gecached
+* Fix: Voreinstellung tl_module.dwz_gender war nicht richtig gesetzt
+
 ## Version 1.4.0 (2021-12-01)
 
 * Fix: tl_module.space aus Paletten entfernt, da nicht mehr unterstützt
