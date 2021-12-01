@@ -1,5 +1,11 @@
 # Abfrage der DeWIS-API
 
+## Version 1.4.0 (2021-12-01)
+
+* Fix: tl_module.space aus Paletten entfernt, da nicht mehr unterstützt
+* Add: DWZ-Bestenliste als Frontend-Modul
+* Add: DeWIS.php - Cachezeit kann separat im Parameter-Array übergeben werden
+
 ## Version 1.3.10 (2021-10-01)
 
 * Fix: tl_dwz_spi - 1048 Column 'zpsver' cannot be null (in Helper/DeWIS.php)

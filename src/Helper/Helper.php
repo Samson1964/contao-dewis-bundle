@@ -575,9 +575,10 @@ class Helper extends \Frontend
 	 * @param 		Array
 	 * @return		Array
 	 */
-	public function Spielername($t, $gesperrt)
+	public function Spielername($t, $gesperrt, $mode = 0)
 	{
-		return ($gesperrt) ? sprintf("%s,%s%s", $t->surname, $t->firstname, $t->title ? ',' . $t->title : '') : sprintf("<a href=\"".ALIAS_SPIELER."/%s.html\">%s</a>", $t->pid, sprintf("%s,%s%s", $t->surname, $t->firstname, $t->title ? ',' . $t->title : ''));
+		if($mode == 0) return ($gesperrt) ? sprintf("%s,%s%s", $t->surname, $t->firstname, $t->title ? ',' . $t->title : '') : sprintf("<a href=\"".ALIAS_SPIELER."/%s.html\">%s</a>", $t->pid, sprintf("%s,%s%s", $t->surname, $t->firstname, $t->title ? ',' . $t->title : ''));
+		elseif($mode == 1) return ($gesperrt) ? sprintf("%s %s %s", $t->fideTitle, $t->firstname, $t->surname) : sprintf("<a href=\"".ALIAS_SPIELER."/%s.html\">%s</a>", $t->pid, sprintf("%s %s %s", $t->fideTitle, $t->firstname, $t->surname));
 	}
 
 	/**

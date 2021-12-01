@@ -25,3 +25,4 @@ $GLOBALS['TL_LANG']['FMD']['dewis_verein'] = array('Vereinssuche','Vereinssuche 
 $GLOBALS['TL_LANG']['FMD']['dewis_verband'] = array('Verbandssuche','Verbandssuche und -ausgabe aus DeWIS');
 $GLOBALS['TL_LANG']['FMD']['dewis_turnier'] = array('Turniersuche','Turniersuche und -ausgabe aus DeWIS');
 $GLOBALS['TL_LANG']['FMD']['dewis_suche'] = array('Globale Suche','Globale Suche in DeWIS (Einbindung in Websuche)');
+$GLOBALS['TL_LANG']['FMD']['dewis_bestenliste'] = array('DWZ-Bestenliste','DWZ-Bestenliste');

@@ -81,6 +81,7 @@ class DeWIS
 				default:
 					$cachetime = 3600;
 			}
+			if($params['cachetime']) $cachetime = $params['cachetime'];
 		}
 
 		// DeWIS-Abfrage, wenn Cache leer

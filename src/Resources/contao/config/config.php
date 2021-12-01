@@ -71,6 +71,7 @@ $GLOBALS['FE_MOD']['dewis'] = array
 	'dewis_verband'         => 'Schachbulle\ContaoDewisBundle\Classes\Verband',
 	'dewis_turnier'         => 'Schachbulle\ContaoDewisBundle\Classes\Turnier',
 	'dewis_suche'           => 'Schachbulle\ContaoDewisBundle\Classes\Suche',
+	'dewis_bestenliste'     => 'Schachbulle\ContaoDewisBundle\Modules\Bestenliste',
 );
 
 // http://de.contaowiki.org/Strukturierte_URLs
