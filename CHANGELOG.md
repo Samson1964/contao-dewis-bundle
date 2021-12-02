@@ -1,5 +1,9 @@
 # Abfrage der DeWIS-API
 
+## Version 1.4.3 (2021-12-02)
+
+* Fix: DeWIS_Cleaner.php in ANSI umgewandelt. UltraEdit speichert UTF8 mit BOM.
+
 ## Version 1.4.2 (2021-12-02)
 
 * Change: DeWIS_Download.php in ein Contao-Skript umgewandelt (mit system/initialize.php)

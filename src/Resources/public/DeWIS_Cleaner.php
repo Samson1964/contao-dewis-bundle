@@ -1,10 +1,10 @@
-ï»¿<?php
+<?php
 /*
  * =============================================================================
- * RÃ¤umt den Ordner files/dewis auf
+ * Räumt den Ordner files/dewis auf
  * - Verschieben der Dateien aus dem Hauptverzeichnis in die Unterordner
- * - LÃ¶schen aller Dateien mit 0 Byte
- * - LÃ¶schen aller doppelten Dateien (gleiche GrÃ¶ÃŸe wie die vorhergehende Datei)
+ * - Löschen aller Dateien mit 0 Byte
+ * - Löschen aller doppelten Dateien (gleiche Größe wie die vorhergehende Datei)
  * =============================================================================
  */
 
@@ -25,7 +25,7 @@ class DeWIS_Cleaner
 {
 	public function run()
 	{
-		$verzeichnis = substr($_SERVER['DOCUMENT_ROOT'], 0, -3).'files/dewis/'; // web-Ordner entfernen und Zielordner anhÃ¤ngen
+		$verzeichnis = substr($_SERVER['DOCUMENT_ROOT'], 0, -3).'files/dewis/'; // web-Ordner entfernen und Zielordner anhängen
 		
 		echo "Verschieben der Dateien aus dem Hauptordner<br>\n";
 		
@@ -79,9 +79,9 @@ class DeWIS_Cleaner
 					if(file_exists($verzeichnis.$jahr.'/'.$item))
 					{
 						$dateien = self::LeseVerzeichnis($zielpfad);
-						echo "PrÃ¼fe $zielpfad<br>\n";
+						echo "Prüfe $zielpfad<br>\n";
 						//print_r($dateien);
-						// Dateien prÃ¼fen
+						// Dateien prüfen
 						if($dateien)
 						{
 							$dateigroesse_alt = -1;
@@ -90,14 +90,14 @@ class DeWIS_Cleaner
 								$dateigroesse = filesize($zielpfad.'/'.$datei);
 								if($dateigroesse == 0)
 								{
-									// Datei lÃ¶schen
-									echo "... $datei ($dateigroesse) leer - lÃ¶schen<br>\n";
+									// Datei löschen
+									echo "... $datei ($dateigroesse) leer - löschen<br>\n";
 									unlink($zielpfad.'/'.$datei);
 								}
 								elseif($dateigroesse == $dateigroesse_alt)
 								{
-									// GleichgroÃŸe Datei
-									echo "... $datei ($dateigroesse) gleich groÃŸ - lÃ¶schen<br>\n";
+									// Gleichgroße Datei
+									echo "... $datei ($dateigroesse) gleich groß - löschen<br>\n";
 									unlink($zielpfad.'/'.$datei);
 								}
 								elseif($dateigroesse != $dateigroesse_alt)
