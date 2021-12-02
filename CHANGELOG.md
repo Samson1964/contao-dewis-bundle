@@ -1,5 +1,11 @@
 # Abfrage der DeWIS-API
 
+## Version 1.4.2 (2021-12-02)
+
+* Change: DeWIS_Download.php in ein Contao-Skript umgewandelt (mit system/initialize.php)
+* Change: DeWIS_Cleaner.php in ein Contao-Skript umgewandelt (mit system/initialize.php)
+* Add: DeWIS_Cleaner.php - Synchronisierung mit Dateiverwaltung damit die Download-Elemente Daten erhalten
+
 ## Version 1.4.1 (2021-12-01)
 
 * Fix: DWZ-Bestenliste wurde nicht gecached
