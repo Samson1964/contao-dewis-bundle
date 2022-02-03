@@ -8,7 +8,7 @@
 
 	<?php if($this->headline): ?>
 		<<?= $this->hl ?>><?= $this->headline ?></<?= $this->hl ?>>
-	<?php endif; ?> 
+	<?php endif; ?>
 
 	<div class="dewislinks noprint">
 		<ul>
@@ -39,13 +39,13 @@
 
 	<?php if($this->subHeadline): ?>
 		<<?= $this->shl ?>><?= $this->subHeadline ?></<?= $this->shl ?>>
-	<?php endif; ?> 
+	<?php endif; ?>
 
 	<?php if($this->searchresult): ?>
 		<div class="searchresult">
 			<?= $this->searchresult ?>
 		</div>
-	<?php endif; ?> 
+	<?php endif; ?>
 
 	<?php if($this->sichtbar && $this->daten): ?>
 
@@ -56,34 +56,34 @@
 			$GLOBALS['TL_JAVASCRIPT'][] = 'bundles/contaodewis/js/jquery.tablesorter.min.js';
 		?>
 		<script>
-		(function($) 
+		(function($)
 		{
 			$(document).ready(function(){
 
-				// Parser für letzte Auswertung 
-				$.tablesorter.addParser({ 
-					id: 'letzteAuswertung', 
-					is: function(s) { 
-						// return false so this parser is not auto detected 
-						return false; 
-					}, 
-					format: function(s) { 
-						// Wert zum Sortieren 
+				// Parser für letzte Auswertung
+				$.tablesorter.addParser({
+					id: 'letzteAuswertung',
+					is: function(s) {
+						// return false so this parser is not auto detected
+						return false;
+					},
+					format: function(s) {
+						// Wert zum Sortieren
 						return s.substr(3) + s.substr(0,2);
-					}, 
-					// set type, either numeric or text 
-					type: 'numeric' 
-				}); 
+					},
+					// set type, either numeric or text
+					type: 'numeric'
+				});
 
 				// Parser für DWZ
-				$.tablesorter.addParser({ 
-					id: 'DWZ', 
-					is: function(s) { 
-						// return false so this parser is not auto detected 
-						return false; 
-					}, 
-					format: function(s) { 
-						// Wert zum Sortieren 
+				$.tablesorter.addParser({
+					id: 'DWZ',
+					is: function(s) {
+						// return false so this parser is not auto detected
+						return false;
+					},
+					format: function(s) {
+						// Wert zum Sortieren
 						switch(s.trim()) {
 							case 'Restp.': return 0; break;
 							case '': return -1; break;
@@ -93,20 +93,20 @@
 						dwz[1] = '000' + dwz[1].trim();
 						var temp = dwz[0].trim() + dwz[1].substr(-3);
 						return temp;
-					}, 
-					// set type, either numeric or text 
-					type: 'numeric' 
-				}); 
+					},
+					// set type, either numeric or text
+					type: 'numeric'
+				});
 
 				// Parser für FIDE-Titel
-				$.tablesorter.addParser({ 
-					id: 'FIDE-Titel', 
-					is: function(s) { 
-						// return false so this parser is not auto detected 
-						return false; 
-					}, 
-					format: function(s) { 
-						// Wert zum Sortieren 
+				$.tablesorter.addParser({
+					id: 'FIDE-Titel',
+					is: function(s) {
+						// return false so this parser is not auto detected
+						return false;
+					},
+					format: function(s) {
+						// Wert zum Sortieren
 						switch(s.trim()) {
 							case 'GM': return 9; break;
 							case 'IM': return 8; break;
@@ -118,25 +118,25 @@
 							case 'WCM': return 2; break;
 							default: return 0; break;
 						}
-					}, 
-					// set type, either numeric or text 
-					type: 'numeric' 
-				}); 
+					},
+					// set type, either numeric or text
+					type: 'numeric'
+				});
 
 				$("#dewisTable").tablesorter({
-					headers: { 
-						<?= $this->tablesorter[0] ?>: { 
-							sorter:'letzteAuswertung' 
+					headers: {
+						<?= $this->tablesorter[0] ?>: {
+							sorter:'letzteAuswertung'
 						},
-						<?= $this->tablesorter[1] ?>: { 
-							sorter:'DWZ' 
+						<?= $this->tablesorter[1] ?>: {
+							sorter:'DWZ'
 						},
-						<?= $this->tablesorter[2] ?>: { 
-							sorter:'FIDE-Titel' 
-						} 
-					} 
+						<?= $this->tablesorter[2] ?>: {
+							sorter:'FIDE-Titel'
+						}
+					}
 				});
-				
+
 			});
 		})(jQuery);
 		</script>
@@ -217,12 +217,12 @@
 		</div>
 
 	<?php endif; ?>
-	
+
 	<?= $this->infobox ?>
 
 <?php if($this->hinweis): ?>
 	<?= $this->registrierung ?>
-<?php endif; ?> 
+<?php endif; ?>
 
 </div>
 <!-- indexer::continue -->

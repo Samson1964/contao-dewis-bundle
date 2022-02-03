@@ -1,5 +1,12 @@
 # Abfrage der DeWIS-API
 
+## Version 1.4.4 (2022-02-03)
+
+* Change: Chart.js Update von 1.0.2 auf 3.7.0
+* Fix: In Verbandslisten fehlt in der Überschrift das Wort "weiblich" (bei Parameter sex=f)
+* Fix: Parameter sex in Verbandslisten sollte mit Option f laufen, aber w gibt es wohl auch (noch) -> Umstellung w auf f
+* Fix: Schwalbe-Link funktioniert nicht als Vereinslink auf Spielerkarteien von Schwalbemitgliedern -> Weiche eingebaut auf Verband
+
 ## Version 1.4.3 (2021-12-02)
 
 * Fix: DeWIS_Cleaner.php in ANSI umgewandelt. UltraEdit speichert UTF8 mit BOM.

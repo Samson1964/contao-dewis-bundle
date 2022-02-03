@@ -10,7 +10,7 @@ try
 {
   $client = new SOAPClient( "https://dwz.svw.info/services/files/dewis.wsdl" );
   
-  //unionRatingList($client);
+  unionRatingList($client);
   //tournament($client);
   //tournamentCard($client);
   //tournamentCardByZPS($client);
@@ -18,7 +18,7 @@ try
   //searchByName($client);
   //tournamentsByPeriod($client);
   //bestOfFed($client);
-  organizations($client);
+  //organizations($client);
 }
 catch (SOAPFault $f) {
   print $f->faultstring;
@@ -31,7 +31,12 @@ function bestOfFed($client) {
     
     // VKZ des Bezirks / (U-)LV
     // Achtung: diese Abfrage ist noch sehr langsam
-    $ratingList = $client->bestOfFederation("C0600",30);
+    $ratingList = $client->bestOfFederation("22076",30);
+    
+    echo "<pre>";
+    print_r($ratingList);
+    echo "</pre>";
+    
     
     echo "<h2>".$ratingList->organization->vkz." ".$ratingList->organization->name."</h2>";
   echo "<table border='1'>";
@@ -384,7 +389,12 @@ function unionRatingList($client) {
     echo '<h1>DWZ-Liste eines Vereins</h1>';
     
     // VKZ des Vereins
-    $unionRatingList = $client->unionRatingList("C0560");
+    $unionRatingList = $client->unionRatingList("22076");
+
+    echo "<pre>";
+    print_r($unionRatingList);
+    echo "</pre>";
+
   echo "<h3>".$unionRatingList->union->name." (".$unionRatingList->union->vkz.") </h3>";
   echo "<dt>";
   echo "<dt>ID Wertungsreferent:</dt><dd>".$unionRatingList->ratingOfficer."</dd>";

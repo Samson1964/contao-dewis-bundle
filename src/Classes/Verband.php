@@ -169,13 +169,13 @@ class Verband extends \Module
 			// Abfrageparameter einstellen
 			$param = array
 			(
-				'funktion'	=> 'Verbandsliste',
-				'cachekey'	=> $zps.'-'.$toplist.'-'.$sex.'-'.$age_from.'-'.$age_to,
-				'zps'		=> $zps,
-				'limit'		=> $toplist + 50,
-				'alter_von'	=> $age_from,
-				'alter_bis'	=> $age_to,
-				'geschlecht'=> $sex,
+				'funktion'    => 'Verbandsliste',
+				'cachekey'    => $zps.'-'.$toplist.'-'.$sex.'-'.$age_from.'-'.$age_to,
+				'zps'         => $zps,
+				'limit'       => $toplist + 50,
+				'alter_von'   => $age_from,
+				'alter_bis'   => $age_to,
+				'geschlecht'  => $sex,
 			);
 
 			$resultArr = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::autoQuery($param); // Abfrage ausführen
@@ -188,7 +188,7 @@ class Verband extends \Module
 			
 			// Seitentitel/Unterüberschrift generieren
 			
-			$titel = $resultArr['result']->organization->name.' Top '.$toplist.(($sex == 'm')?' männlich':(($sex == 'w')?' weiblich':'')).(($age_from) ? ' '.$age_from.' - '.$age_to.' Jahre' : (($age_to == 140) ? '' : ' '.$age_from.' - '.$age_to.' Jahre'));
+			$titel = $resultArr['result']->organization->name.' Top '.$toplist.(($sex == 'm')?' männlich':(($sex == 'f')?' weiblich':'')).(($age_from) ? ' '.$age_from.' - '.$age_to.' Jahre' : (($age_to == 140) ? '' : ' '.$age_from.' - '.$age_to.' Jahre'));
 			$objPage->pageTitle = $titel;
 			$this->Template->subHeadline = $titel;
 
@@ -245,7 +245,7 @@ class Verband extends \Module
 							'Status'      => $m->state,
 							'Mglnr'       => sprintf("%04d", $m->membership),
 							'Spielername' => \Schachbulle\ContaoDewisBundle\Helper\Helper::Spielername($m, $gesperrt),
-							'Geschlecht'  => ($m->gender == 'm') ? '&nbsp;' : ($m->gender == 'f' ? 'w' : strtolower($m->gender)),
+							'Geschlecht'  => ($m->gender == 'm') ? '&nbsp;' : ($m->gender == 'f' ? 'f' : strtolower($m->gender)),
 							'KW'          => ($gesperrt) ? '&nbsp;' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Kalenderwoche($m->tcode),
 							'DWZ'         => (!$m->rating && $m->tcode) ? 'Restp.' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::DWZ($m->rating, $m->ratingIndex),
 							'Elo'         => ($m->elo) ? $m->elo : '-----',

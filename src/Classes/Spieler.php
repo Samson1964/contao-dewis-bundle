@@ -293,7 +293,7 @@ class Spieler extends \Module
 				{
 					$status                    = $m->state ? $m->state : 'A';
 					$zps_nr                    = sprintf("%s-%04d", $m->vkz, $m->membership);
-					$verein                    = sprintf("<a href=\"".ALIAS_VEREIN."/%s.html\">%s</a>", $m->vkz, $m->club);
+					$verein                    = substr($m->vkz, 1) == '0000' ? sprintf("<a href=\"".ALIAS_VERBAND."/%s.html\">%s</a>", $m->vkz, $m->club) : sprintf("<a href=\"".ALIAS_VEREIN."/%s.html\">%s</a>", $m->vkz, $m->club);
 					$sortiert[$status.$zps_nr] = array
 					(
 						'name'   => $verein,
