@@ -156,7 +156,7 @@ class Spieler extends \Module
 						$daten[] = array
 						(
 							'PKZ'         => $m->pid,
-							'Verein'      => sprintf("<a href=\"".ALIAS_VEREIN."/%s.html\">%s</a>", $m->vkz, $m->club),
+							'Verein'      => sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getVereinseite()."/%s.html\">%s</a>", $m->vkz, $m->club),
 							'Spielername' => \Schachbulle\ContaoDewisBundle\Helper\Helper::Spielername($m, $gesperrt),
 							'KW'          => ($gesperrt) ? '&nbsp;' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Kalenderwoche($m->tcode),
 							'DWZ'         => (!$m->rating && $m->tcode) ? 'Restp.' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::DWZ($m->rating, $m->ratingIndex),
@@ -193,7 +193,7 @@ class Spieler extends \Module
 							$daten[] = array
 							(
 								'PKZ'         => $m->pid,
-								'Verein'      => sprintf("<a href=\"".ALIAS_VEREIN."/%s.html\">%s</a>", $m->vkz, $m->club),
+								'Verein'      => sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getVereinseite()."/%s.html\">%s</a>", $m->vkz, $m->club),
 								'Spielername' => \Schachbulle\ContaoDewisBundle\Helper\Helper::Spielername($m, $gesperrt),
 								'KW'          => ($gesperrt) ? '&nbsp;' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Kalenderwoche($m->tcode),
 								'DWZ'         => (!$m->rating && $m->tcode) ? 'Restp.' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::DWZ($m->rating, $m->ratingIndex),
@@ -293,7 +293,7 @@ class Spieler extends \Module
 				{
 					$status                    = $m->state ? $m->state : 'A';
 					$zps_nr                    = sprintf("%s-%04d", $m->vkz, $m->membership);
-					$verein                    = substr($m->vkz, 1) == '0000' ? sprintf("<a href=\"".ALIAS_VERBAND."/%s.html\">%s</a>", $m->vkz, $m->club) : sprintf("<a href=\"".ALIAS_VEREIN."/%s.html\">%s</a>", $m->vkz, $m->club);
+					$verein                    = substr($m->vkz, 1) == '0000' ? sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getVerbandseite()."/%s.html\">%s</a>", $m->vkz, $m->club) : sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getVereinseite()."/%s.html\">%s</a>", $m->vkz, $m->club);
 					$sortiert[$status.$zps_nr] = array
 					(
 						'name'   => $verein,
@@ -355,7 +355,7 @@ class Spieler extends \Module
 					(
 						'nummer'     => ($i == count($resultArr['result']->tournaments) && $dwz_neu != '&nbsp;') ? 'AKT' : $i,
 						'jahr'       => (substr($t->tcode, 0, 1) > '9' ? '20' . (ord(substr($t->tcode, 0, 1)) - 65) : '19' . substr($t->tcode, 0, 1)) . substr($t->tcode, 1, 1),
-						'turnier'    => sprintf("<a href=\"".ALIAS_TURNIER."/%s/%s.html\" title=\"%s\">%s</a>", $t->tcode, $resultArr['result']->member->pid, $t->tname, \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Turnierkurzname($t->tname)),
+						'turnier'    => sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getTurnierseite()."/%s/%s.html\" title=\"%s\">%s</a>", $t->tcode, $resultArr['result']->member->pid, $t->tname, \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Turnierkurzname($t->tname)),
 						'punkte'     => \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Punkte($t->points),
 						'partien'    => $t->games,
 						'we'         => $dwz_neu == '&nbsp;' ? '&nbsp;' : str_replace('.', ',', $t->we),
@@ -395,7 +395,7 @@ class Spieler extends \Module
 			{
 				foreach ($resultArr['result']->ranking[1] as $r)
 				{
-					$temp[$x]['name']     = $r->organizationType == 'o6' ? sprintf("<a href=\"".ALIAS_VEREIN."/%s.html\">%s</a>", $r->vkz, $r->organization) : sprintf("<a href=\"".ALIAS_VERBAND."/%s.html\">%s</a>", $r->vkz, $r->organization);
+					$temp[$x]['name']     = $r->organizationType == 'o6' ? sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getVereinseite()."/%s.html\">%s</a>", $r->vkz, $r->organization) : sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getVerbandseite()."/%s.html\">%s</a>", $r->vkz, $r->organization);
 					$temp[$x]['typ']      = $r->organizationType;
 					$temp[$x]['platz']    = $r->rank;
 					$temp[$x]['referent'] = $r->assessor;

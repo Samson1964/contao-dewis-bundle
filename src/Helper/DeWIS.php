@@ -165,7 +165,7 @@ class DeWIS
 					// nachname = Nachname des Spielers
 					// limit = Anzahl der Ergebnisse
 					$tstart = microtime(true);
-					self::$answer = $client->searchByName($parameter["nachname"],$parameter["vorname"],0,$parameter["limit"]);
+					self::$answer = $client->searchByName($parameter['nachname'],$parameter['vorname'],0,$parameter['limit']);
 					self::$answertime = microtime(true) - $tstart;
 					break;
 				case "Karteikarte": // Karteikarte nach ID
@@ -292,6 +292,9 @@ class DeWIS
 						break;
 					case "surname too short":
 						self::$error = "Nachname zu kurz";
+						break;
+					case "that is not a valid tournament codeno valid id givenno valid id given":
+						self::$error = "Ungültiger Turniercode";
 						break;
 					default:
 						self::$error = $f->faultstring;
@@ -500,21 +503,21 @@ class DeWIS
 			switch($arrFragments[0])
 			{
 
-				case ALIAS_SPIELER:
+				case \Schachbulle\ContaoDewisBundle\Helper\Helper::getSpielerseite():
 					if(\Input::get('zps'))
 					{
-						header('Location:'.ALIAS_SPIELER.'/'.\Input::get('zps').'.html');
+						header('Location:'.\Schachbulle\ContaoDewisBundle\Helper\Helper::getSpielerseite().'/'.\Input::get('zps').'.html');
 					}
 					elseif(\Input::get('pkz'))
 					{
-						header('Location:'.ALIAS_SPIELER.'/'.\Input::get('pkz').'.html');
+						header('Location:'.\Schachbulle\ContaoDewisBundle\Helper\Helper::getSpielerseite().'/'.\Input::get('pkz').'.html');
 					}
 					break;
 
-				case ALIAS_VEREIN:
+				case \Schachbulle\ContaoDewisBundle\Helper\Helper::getVereinseite():
 					if(\Input::get('zps'))
 					{
-						header('Location:'.ALIAS_VEREIN.'/'.\Input::get('zps').'.html');
+						header('Location:'.\Schachbulle\ContaoDewisBundle\Helper\Helper::getVereinseite().'/'.\Input::get('zps').'.html');
 					}
 					break;
 
@@ -527,22 +530,22 @@ class DeWIS
 			switch($arrFragments[0])
 			{
 
-				case ALIAS_SPIELER:
+				case \Schachbulle\ContaoDewisBundle\Helper\Helper::getSpielerseite():
 					if($arrFragments[1] == 'auto_item') $arrFragments[1] = 'id';
 					// ZPS-Angabe ggfs. anpassen (4-stellige Mitgliedsnummer!)
 					$zps = explode('-', $arrFragments[2]);
 					$arrFragments[2] = count($zps) == 2 ? $zps[0].'-'.substr('0000'.$zps[1], -4) : $arrFragments[2];
 					break;
 
-				case ALIAS_VEREIN:
+				case \Schachbulle\ContaoDewisBundle\Helper\Helper::getVereinseite():
 					if($arrFragments[1] == 'auto_item') $arrFragments[1] = 'zps';
 					break;
 
-				case ALIAS_VERBAND:
+				case \Schachbulle\ContaoDewisBundle\Helper\Helper::getVerbandseite():
 					if($arrFragments[1] == 'auto_item') $arrFragments[1] = 'zps';
 					break;
 
-				case ALIAS_TURNIER:
+				case \Schachbulle\ContaoDewisBundle\Helper\Helper::getTurnierseite():
 					if($arrFragments[1] == 'auto_item') 
 					{
 						$arrFragments[1] = 'code';
@@ -843,7 +846,7 @@ class DeWIS
 	public function Karteisperre($id)
 	{
 		$result = \Database::getInstance()->prepare("SELECT link_altkartei FROM tl_dwz_spi WHERE dewisID = ?")
-										  ->execute($id);
+		                                  ->execute($id);
 		
 		// Gefunden
 		if($result->numRows)
@@ -1308,4 +1311,5 @@ class DeWIS
 		}
 		return $result;
 	}
+
 }

@@ -1,5 +1,11 @@
 # Abfrage der DeWIS-API
 
+## Version 1.5.0 (2022-04-21)
+
+* Fix: Spielersuche nach O'Donnell nicht möglich -> ' wurde in &#39; umkodiert
+* Change: Konstanten ALIAS_* überall durch Funktionsaufrufe ersetzt. Funktionen entsprechend angepaßt, das ggfs. nur das Alias geliefert wird.
+* Add: Verbandslisten nach deutschen Spielern filtern
+
 ## Version 1.4.4 (2022-02-03)
 
 * Change: Chart.js Update von 1.0.2 auf 3.7.0

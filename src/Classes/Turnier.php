@@ -174,7 +174,7 @@ class Turnier extends \Module
 							$daten[] = array
 							(
 								'Turniercode'	=> $t->tcode,
-								'Turniername'	=> sprintf('<a href="'.ALIAS_TURNIER.'/%s.html" title="%s">%s</a>', $t->tcode, $t->tname, \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Turnierkurzname($t->tname)),
+								'Turniername'	=> sprintf('<a href="'.\Schachbulle\ContaoDewisBundle\Helper\Helper::getTurnierseite().'/%s.html" title="%s">%s</a>', $t->tcode, $t->tname, \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Turnierkurzname($t->tname)),
 								'Turnierende'	=> substr($t->finishedOn,8,2).'.'.substr($t->finishedOn,5,2).'.'.substr($t->finishedOn,0,4),
 								'Auswerter'		=> ($gesperrt) ? 'Sie müssen sich anmelden, um diese Daten sehen zu können.' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Wertungsreferent($t->assessor1, false),
 							);
@@ -252,9 +252,9 @@ class Turnier extends \Module
 					$playerArr[$t->pid] = array
 					(
 						'Spielername'	=> $Blacklist[$t->pid] ? '***' : \Schachbulle\ContaoDewisBundle\Helper\Helper::Spielername($t, $gesperrt),
-						'Spielername'	=> $Blacklist[$t->pid] ? '***' : ($gesperrt ? sprintf("%s,%s%s", $t->surname, $t->firstname, $t->title ? ',' . $t->title : '') : sprintf("<a href=\"".ALIAS_SPIELER."/%s.html\">%s</a>", $t->pid, sprintf("%s,%s%s", $t->surname, $t->firstname, $t->title ? ',' . $t->title : ''))),
-						'Scoresheet'	=> $Blacklist[$t->pid] ? '' : ($gesperrt ? '' : sprintf("<a href=\"".ALIAS_TURNIER."/%s/%s.html\">SC</a>", $result_tausw->tournament->tcode, $t->pid)),
-						'DSB-Mitglied'	=> sprintf("<a href=\"".ALIAS_TURNIER."/%s/%s.html\">SC</a>", $result_tausw->tournament->tcode, $t->pid),
+						'Spielername'	=> $Blacklist[$t->pid] ? '***' : ($gesperrt ? sprintf("%s,%s%s", $t->surname, $t->firstname, $t->title ? ',' . $t->title : '') : sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getSpielerseite()."/%s.html\">%s</a>", $t->pid, sprintf("%s,%s%s", $t->surname, $t->firstname, $t->title ? ',' . $t->title : ''))),
+						'Scoresheet'	=> $Blacklist[$t->pid] ? '' : ($gesperrt ? '' : sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getTurnierseite()."/%s/%s.html\">SC</a>", $result_tausw->tournament->tcode, $t->pid)),
+						'DSB-Mitglied'	=> sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getTurnierseite()."/%s/%s.html\">SC</a>", $result_tausw->tournament->tcode, $t->pid),
 						'DWZ'			=> ($t->ratingOld) ? $t->ratingOld : '',
 						'Punkte'		=> 0,
 						'Partien'		=> 0,
@@ -287,8 +287,8 @@ class Turnier extends \Module
 
 			$theader = array
 			(
-				'Auswertung'	=> sprintf('<a href="'.ALIAS_TURNIER.'/%s.html">Turnierauswertung</a>', $result_tresult->tournament->tcode),
-				'Ergebnisse'	=> sprintf('<a href="'.ALIAS_TURNIER.'/%s/Ergebnisse.html">Turnierergebnisse</a>', $result_tresult->tournament->tcode),
+				'Auswertung'	=> sprintf('<a href="'.\Schachbulle\ContaoDewisBundle\Helper\Helper::getTurnierseite().'/%s.html">Turnierauswertung</a>', $result_tresult->tournament->tcode),
+				'Ergebnisse'	=> sprintf('<a href="'.\Schachbulle\ContaoDewisBundle\Helper\Helper::getTurnierseite().'/%s/Ergebnisse.html">Turnierergebnisse</a>', $result_tresult->tournament->tcode),
 				'Turniercode'	=> $result_tresult->tournament->tcode,
 				'Turniername'	=> $result_tresult->tournament->tname,
 				'Turnierende'	=> \Schachbulle\ContaoDewisBundle\Helper\Helper::datum_mysql2php($result_tresult->tournament->finishedOn),
@@ -540,6 +540,7 @@ class Turnier extends \Module
 			$this->Template->ergebnisliste = true;
 			$this->Template->hinweis = $gesperrt;
 			$this->Template->registrierung = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Registrierungshinweis();
+			$this->Template->fehler = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::ZeigeFehler();
 			$Infotemplate = new \FrontendTemplate($this->infoTemplate);
 			$this->Template->infobox = $Infotemplate->parse();
 
@@ -562,7 +563,7 @@ class Turnier extends \Module
 
 			$theader = array
 			(
-				'Ergebnisse'	=> sprintf('<a href="'.ALIAS_TURNIER.'/%s/Ergebnisse.html">Turnierergebnisse</a>', $result_tausw->tournament->tcode),
+				'Ergebnisse'	=> sprintf('<a href="'.\Schachbulle\ContaoDewisBundle\Helper\Helper::getTurnierseite().'/%s/Ergebnisse.html">Turnierergebnisse</a>', $result_tausw->tournament->tcode),
 				'Turniercode'	=> $result_tausw->tournament->tcode,
 				'Turniername'	=> $result_tausw->tournament->tname,
 				'Turnierende'	=> \Schachbulle\ContaoDewisBundle\Helper\Helper::datum_mysql2php($result_tausw->tournament->finishedOn),
@@ -597,13 +598,13 @@ class Turnier extends \Module
 					(
 						'PKZ'			=> $t->pid,
 						'Spielername'	=> $Blacklist[$t->pid] ? '***' : \Schachbulle\ContaoDewisBundle\Helper\Helper::Spielername($t, $gesperrt),
-						'Scoresheet'	=> $Blacklist[$t->pid] ? '' : ($gesperrt ? '' : sprintf("<a href=\"".ALIAS_TURNIER."/%s/%s.html\">SC</a>", $result_tausw->tournament->tcode, $t->pid)),
+						'Scoresheet'	=> $Blacklist[$t->pid] ? '' : ($gesperrt ? '' : sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getTurnierseite()."/%s/%s.html\">SC</a>", $result_tausw->tournament->tcode, $t->pid)),
 						'DWZ alt'		=> \Schachbulle\ContaoDewisBundle\Helper\DeWIS::DWZ($t->ratingOld, $t->ratingOldIndex),
 						'DWZ neu'		=> \Schachbulle\ContaoDewisBundle\Helper\DeWIS::DWZ($t->ratingNew, $t->ratingNewIndex),
 						'MglNr'         => sprintf("%04d", $t->membership),
-						'VKZ'           => sprintf("<a href=\"".ALIAS_VEREIN."/%s.html\">%s</a>", $t->vkz, sprintf("%s-%s", $t->vkz, sprintf("%04d", $t->membership))),
+						'VKZ'           => sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getVereinseite()."/%s.html\">%s</a>", $t->vkz, sprintf("%s-%s", $t->vkz, sprintf("%04d", $t->membership))),
 						'ZPS'           => sprintf("%s-%s", $t->vkz, sprintf("%04d", $t->membership)),
-						'Verein'        => sprintf("<a href=\"".ALIAS_VEREIN."/%s.html\">%s</a>", $t->vkz, $t->club),
+						'Verein'        => sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getVereinseite()."/%s.html\">%s</a>", $t->vkz, $t->club),
 						'Geburt'        => $t->yearOfBirth,
 						'Geschlecht'    => ($t->gender == 'm') ? '&nbsp;' : ($t->gender == 'f' ? 'w' : strtolower($t->gender)),
 						'Elo'           => ($t->elo) ? $t->elo : '-----',
@@ -628,6 +629,7 @@ class Turnier extends \Module
 			$this->Template->auswertung = true;
 			$this->Template->hinweis = $gesperrt;
 			$this->Template->registrierung = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Registrierungshinweis();
+			$this->Template->fehler = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::ZeigeFehler();
 			$Infotemplate = new \FrontendTemplate($this->infoTemplate);
 			$this->Template->infobox = $Infotemplate->parse();
 

@@ -1,4 +1,4 @@
-<?php if (!defined('TL_ROOT')) die('You cannot access this file directly!');
+<?php
 
 /**
  * Contao Open Source CMS
@@ -11,10 +11,10 @@
  * @copyright Frank Hoppe 2014
  */
 
-define('ALIAS_SPIELER', 'spieler'); // Spielerseite
-define('ALIAS_VEREIN', 'verein'); // Vereineseite
-define('ALIAS_VERBAND', 'verband'); // Verbändeseite
-define('ALIAS_TURNIER', 'turnier'); // Turniereseite
+//define('ALIAS_SPIELER', 'spieler'); // Spielerseite
+//define('ALIAS_VEREIN', 'verein'); // Vereineseite
+//define('ALIAS_VERBAND', 'verband'); // Verbändeseite
+//define('ALIAS_TURNIER', 'turnier'); // Turniereseite
 
 /**
  * Backend-Module

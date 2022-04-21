@@ -166,7 +166,7 @@ class Verein extends \Module
 						$result_vb[] = array
 						(
 							'zps'       => $value['zps'],
-							'name'      => sprintf('<a href="'.ALIAS_VERBAND.'/%s.html">%s</a>', $value['zps'], $value['name']),
+							'name'      => sprintf('<a href="'.\Schachbulle\ContaoDewisBundle\Helper\Helper::getVerbandseite().'/%s.html">%s</a>', $value['zps'], $value['name']),
 						);
 					}
 				}
@@ -190,7 +190,7 @@ class Verein extends \Module
 						$result_vn[] = array
 						(
 							'zps'       => $value['zps'],
-							'name'      => sprintf('<a href="'.ALIAS_VEREIN.'/%s.html">%s</a>', $value['zps'], $value['name']),
+							'name'      => sprintf('<a href="'.\Schachbulle\ContaoDewisBundle\Helper\Helper::getVereinseite().'/%s.html">%s</a>', $value['zps'], $value['name']),
 						);
 					}
 				}
@@ -212,7 +212,7 @@ class Verein extends \Module
 			*/
 			if(count($result_vb) == 0 && count($result_vn) == 1)
 			{
-				header('Location:'.ALIAS_VEREIN.'/'.$result_vn[0]['zps'].'.html');
+				header('Location:'.\Schachbulle\ContaoDewisBundle\Helper\Helper::getVereinseite().'/'.$result_vn[0]['zps'].'.html');
 			}
 
 			/*********************************************************
@@ -268,7 +268,7 @@ class Verein extends \Module
 						$result[] = array
 						(
 							'zps'       => $value['zps'],
-							'name'      => sprintf('<a href="'.ALIAS_VEREIN.'/%s.html">%s</a>', $value['zps'], $value['name']),
+							'name'      => sprintf('<a href="'.\Schachbulle\ContaoDewisBundle\Helper\Helper::getVereinseite().'/%s.html">%s</a>', $value['zps'], $value['name']),
 						);
 					}
 				}
@@ -292,7 +292,7 @@ class Verein extends \Module
 			 * Ausgabe Kopfdaten
 			*/
 
-			$this->Template->listenlink   = ($order == 'alpha') ? sprintf("<a href=\"".ALIAS_VEREIN."/%s.html?order=rang\">Rangliste</a>", $resultArr['result']->union->vkz, $resultArr['result']->union->name) : sprintf("<a href=\"".ALIAS_VEREIN."/%s.html?order=alpha\">Alphaliste</a>", $resultArr['result']->union->vkz, $resultArr['result']->union->name);
+			$this->Template->listenlink   = ($order == 'alpha') ? sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getVereinseite()."/%s.html?order=rang\">Rangliste</a>", $resultArr['result']->union->vkz, $resultArr['result']->union->name) : sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getVereinseite()."/%s.html?order=alpha\">Alphaliste</a>", $resultArr['result']->union->vkz, $resultArr['result']->union->name);
 			$this->Template->vereinsname  = $resultArr['result']->union->name;
 			$referent = $resultArr['result']->ratingOfficer; // Wertungsreferent zuweisen
 
@@ -370,7 +370,7 @@ class Verein extends \Module
 				do
 				{
 					$temp[$y]['typ']  = '';
-					$temp[$y]['name'] = sprintf('<a href="'.ALIAS_VERBAND.'/%s.html">%s</a>', $result['verbaende'][$suchzps]['zps'], $result['verbaende'][$suchzps]['name']);
+					$temp[$y]['name'] = sprintf('<a href="'.\Schachbulle\ContaoDewisBundle\Helper\Helper::getVerbandseite().'/%s.html">%s</a>', $result['verbaende'][$suchzps]['zps'], $result['verbaende'][$suchzps]['name']);
 					$alt = $suchzps;
 					$suchzps = $result['verbaende'][$suchzps]['parent'];
 					$y++;

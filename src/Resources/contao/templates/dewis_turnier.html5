@@ -30,7 +30,7 @@
 
 	<?php if($this->form_verbaende): ?>
 		<div class="searchform noprint">
-			<form action="<?= ALIAS_TURNIER ?>.html" method="get">
+			<form action="<?= \Schachbulle\ContaoDewisBundle\Helper\Helper::getTurnierseite() ?>.html" method="get">
 				<input type="hidden" name="search" value="1">
 				<fieldset id="searchform" class="tl_box">
 					<legend>Suche</legend>

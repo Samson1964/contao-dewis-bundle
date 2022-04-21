@@ -54,6 +54,7 @@ class Verband extends \Module
 			\Input::setGet('sex', \Input::get('sex')); // Geschlecht bei Toplistenausgabe
 			\Input::setGet('age_from', \Input::get('age_from')); // Alter von bei Toplistenausgabe
 			\Input::setGet('age_to', \Input::get('age_to')); // Alter bis bei Toplistenausgabe
+			\Input::setGet('german', \Input::get('german')); // Nur deutsche Spieler
 
 			// Startzeit setzen
 			$this->startzeit = microtime(true);
@@ -83,6 +84,7 @@ class Verband extends \Module
 		$sex = \Input::get('sex'); 
 		$age_from = \Input::get('age_from'); 
 		$age_to = \Input::get('age_to'); 
+		$german = \Input::get('german'); 
 		
 		$mitglied = \Schachbulle\ContaoDewisBundle\Helper\Helper::getMitglied(); // Daten des aktuellen Mitgliedes laden
 		
@@ -111,7 +113,7 @@ class Verband extends \Module
 			do
 			{
 				$temp[$y]['typ']  = ($suchzps == $zps) ? 'active ' : '';
-				$temp[$y]['name'] = ($suchzps == $zps) ? sprintf('<a href="'.ALIAS_VERBAND.'/%s.html">%s</a> - <a href="'.ALIAS_VEREIN.'/%s.html">Vereine</a>', $result['verbaende'][$suchzps]['zps'], $result['verbaende'][$suchzps]['name'], $suchzps) : sprintf('<a href="'.ALIAS_VERBAND.'/%s.html">%s</a>', $result['verbaende'][$suchzps]['zps'], $result['verbaende'][$suchzps]['name']);
+				$temp[$y]['name'] = ($suchzps == $zps) ? sprintf('<a href="'.\Schachbulle\ContaoDewisBundle\Helper\Helper::getVerbandseite().'/%s.html">%s</a> - <a href="'.\Schachbulle\ContaoDewisBundle\Helper\Helper::getVereinseite().'/%s.html">Vereine</a>', $result['verbaende'][$suchzps]['zps'], $result['verbaende'][$suchzps]['name'], $suchzps) : sprintf('<a href="'.\Schachbulle\ContaoDewisBundle\Helper\Helper::getVerbandseite().'/%s.html">%s</a>', $result['verbaende'][$suchzps]['zps'], $result['verbaende'][$suchzps]['name']);
 				$alt = $suchzps;
 				$suchzps = $result['verbaende'][$suchzps]['parent'];
 				$y++;
@@ -137,7 +139,7 @@ class Verband extends \Module
 				if($value != $zps)
 				{
 					$temp[$y]['typ']  = 'level_'.$x;
-					$temp[$y]['name'] = sprintf('<a href="'.ALIAS_VERBAND.'/%s.html">%s</a>', $value, $result['verbaende'][$value]['name']);
+					$temp[$y]['name'] = sprintf('<a href="'.\Schachbulle\ContaoDewisBundle\Helper\Helper::getVerbandseite().'/%s.html">%s</a>', $value, $result['verbaende'][$value]['name']);
 					$y++;
 				}
 			}
@@ -170,9 +172,9 @@ class Verband extends \Module
 			$param = array
 			(
 				'funktion'    => 'Verbandsliste',
-				'cachekey'    => $zps.'-'.$toplist.'-'.$sex.'-'.$age_from.'-'.$age_to,
+				'cachekey'    => $zps.'-'.$toplist.'-'.$sex.'-'.$age_from.'-'.$age_to.'-'.$german,
 				'zps'         => $zps,
-				'limit'       => $toplist + 50,
+				'limit'       => $german ? $toplist + 500 : $toplist + 50,
 				'alter_von'   => $age_from,
 				'alter_bis'   => $age_to,
 				'geschlecht'  => $sex,
@@ -229,6 +231,8 @@ class Verband extends \Module
 						);
 						$karteikarte = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::autoQuery($param); // Abfrage ausführen
 
+						if($german && $karteikarte['result']->member->fideNation != 'GER') continue; // Nur Deutsche gesucht
+
 						$flag_css = \Schachbulle\ContaoDewisBundle\Helper\Helper::Laendercode($karteikarte['result']->member->fideNation);
 						// Flagge anzeigen, wenn vorhanden
 						if($flag_css)
@@ -251,7 +255,7 @@ class Verband extends \Module
 							'Elo'         => ($m->elo) ? $m->elo : '-----',
 							'FIDE-Titel'  => $m->fideTitle,
 							'FIDE-Nation' => $flag_content,
-							'Verein'      => sprintf("<a href=\"".ALIAS_VEREIN."/%s.html\">%s</a>", $m->vkz, \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Vereinskurzname($m->club))
+							'Verein'      => sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getVereinseite()."/%s.html\">%s</a>", $m->vkz, \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Vereinskurzname($m->club))
 						);
 					}
 					if($z == $toplist) break; // Abbruch wenn Limit erreicht

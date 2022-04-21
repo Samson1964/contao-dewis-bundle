@@ -19,7 +19,7 @@
 	</div>
 
 	<div class="searchform clr noprint">
-		<form action="<?= ALIAS_VEREIN ?>.html" method="get">
+		<form action="<?= \Schachbulle\ContaoDewisBundle\Helper\Helper::getVereinseite() ?>.html" method="get">
 			<fieldset id="searchform" class="tl_box">
 				<legend>Suche</legend>
 				<div class="long">

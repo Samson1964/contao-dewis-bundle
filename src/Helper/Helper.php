@@ -339,7 +339,7 @@ class Helper extends \Frontend
 	 * Liefert den Alias der Spielerseite zurück
 	 * @return         Alias
 	 */
-	public function getSpielerseite()
+	public function getSpielerseite($alias = true)
 	{
 		if($GLOBALS['TL_CONFIG']['dewis_seite_spieler'])
 		{
@@ -347,8 +347,15 @@ class Helper extends \Frontend
 		
 			if($pageModel)
 			{
-				$url = \Controller::generateFrontendUrl($pageModel->row());
-				return $url;
+				if($alias)
+				{
+					return $pageModel->row()['alias'];
+				}
+				else
+				{
+					$url = \Controller::generateFrontendUrl($pageModel->row());
+					return $url;
+				}
 			}
 		}
 
@@ -360,7 +367,7 @@ class Helper extends \Frontend
 	 * Liefert den Alias der Turnierseite zurück
 	 * @return         Alias
 	 */
-	public function getTurnierseite()
+	public function getTurnierseite($alias = true)
 	{
 		if($GLOBALS['TL_CONFIG']['dewis_seite_turnier'])
 		{
@@ -368,8 +375,15 @@ class Helper extends \Frontend
 		
 			if($pageModel)
 			{
-				$url = \Controller::generateFrontendUrl($pageModel->row());
-				return $url;
+				if($alias)
+				{
+					return $pageModel->row()['alias'];
+				}
+				else
+				{
+					$url = \Controller::generateFrontendUrl($pageModel->row());
+					return $url;
+				}
 			}
 		}
 
@@ -381,7 +395,7 @@ class Helper extends \Frontend
 	 * Liefert den Alias der Vereinseite zurück
 	 * @return         Alias
 	 */
-	public function getVereinseite()
+	public function getVereinseite($alias = true)
 	{
 		if($GLOBALS['TL_CONFIG']['dewis_seite_verein'])
 		{
@@ -389,8 +403,15 @@ class Helper extends \Frontend
 		
 			if($pageModel)
 			{
-				$url = \Controller::generateFrontendUrl($pageModel->row());
-				return $url;
+				if($alias)
+				{
+					return $pageModel->row()['alias'];
+				}
+				else
+				{
+					$url = \Controller::generateFrontendUrl($pageModel->row());
+					return $url;
+				}
 			}
 		}
 
@@ -399,10 +420,11 @@ class Helper extends \Frontend
 	}
 
 	/**
-	 * Liefert den Alias der Verbandseite zurück
+	 * Liefert den Alias der Verbandseite zurück  
+	 * @param          alias true = nur das Alias zurückgeben, false = komplette URL zurückgeben
 	 * @return         Alias
 	 */
-	public function getVerbandseite()
+	public function getVerbandseite($alias = true)
 	{
 		if($GLOBALS['TL_CONFIG']['dewis_seite_verband'])
 		{
@@ -410,8 +432,15 @@ class Helper extends \Frontend
 		
 			if($pageModel)
 			{
-				$url = \Controller::generateFrontendUrl($pageModel->row());
-				return $url;
+				if($alias)
+				{
+					return $pageModel->row()['alias'];
+				}
+				else
+				{
+					$url = \Controller::generateFrontendUrl($pageModel->row());
+					return $url;
+				}
 			}
 		}
 
@@ -467,10 +496,10 @@ class Helper extends \Frontend
 	{
 		return array
 		(
-			'<li class="first"><a href="'.self::getSpielerseite().'">Spieler</a></li>',
-			'<li class=""><a href="'.self::getVereinseite().'">Vereine</a></li>',
-			'<li class=""><a href="'.self::getVerbandseite().'">Verbände</a></li>',
-			'<li class="last"><a href="'.self::getTurnierseite().'">Turniere</a></li>',
+			'<li class="first"><a href="'.self::getSpielerseite(false).'">Spieler</a></li>',
+			'<li class=""><a href="'.self::getVereinseite(false).'">Vereine</a></li>',
+			'<li class=""><a href="'.self::getVerbandseite(false).'">Verbände</a></li>',
+			'<li class="last"><a href="'.self::getTurnierseite(false).'">Turniere</a></li>',
 		);
 	}
 
@@ -577,8 +606,8 @@ class Helper extends \Frontend
 	 */
 	public function Spielername($t, $gesperrt, $mode = 0)
 	{
-		if($mode == 0) return ($gesperrt) ? sprintf("%s,%s%s", $t->surname, $t->firstname, $t->title ? ',' . $t->title : '') : sprintf("<a href=\"".ALIAS_SPIELER."/%s.html\">%s</a>", $t->pid, sprintf("%s,%s%s", $t->surname, $t->firstname, $t->title ? ',' . $t->title : ''));
-		elseif($mode == 1) return ($gesperrt) ? sprintf("%s %s %s", $t->fideTitle, $t->firstname, $t->surname) : sprintf("<a href=\"".ALIAS_SPIELER."/%s.html\">%s</a>", $t->pid, sprintf("%s %s %s", $t->fideTitle, $t->firstname, $t->surname));
+		if($mode == 0) return ($gesperrt) ? sprintf("%s,%s%s", $t->surname, $t->firstname, $t->title ? ',' . $t->title : '') : sprintf("<a href=\"".self::getSpielerseite()."/%s.html\">%s</a>", $t->pid, sprintf("%s,%s%s", $t->surname, $t->firstname, $t->title ? ',' . $t->title : ''));
+		elseif($mode == 1) return ($gesperrt) ? sprintf("%s %s %s", $t->fideTitle, $t->firstname, $t->surname) : sprintf("<a href=\"".self::getSpielerseite()."/%s.html\">%s</a>", $t->pid, sprintf("%s %s %s", $t->fideTitle, $t->firstname, $t->surname));
 	}
 
 	/**
@@ -614,6 +643,9 @@ class Helper extends \Frontend
 		elseif (strlen($search) == 10 && substr($search,5,1) == '-') $typ = 'zps'; // Eine ZPS wurde übergeben
 		else
 		{
+			// HTML-Entities entfernen (Fixt das Problem mit O'Donnell als Suchstring)
+			$search = html_entity_decode($search, ENT_QUOTES | ENT_XML1, 'UTF-8');
+			
 			// Ein Name wurde übergeben, zuerst akademische Titel entfernen
 			$search = str_replace(',Prof. Dr.','',$search);
 			$search = str_replace(',Prof.Dr.','',$search);
