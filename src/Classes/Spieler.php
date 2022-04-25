@@ -395,7 +395,7 @@ class Spieler extends \Module
 			{
 				foreach ($resultArr['result']->ranking[1] as $r)
 				{
-					$temp[$x]['name']     = $r->organizationType == 'o6' ? sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getVereinseite()."/%s.html\">%s</a>", $r->vkz, $r->organization) : sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getVerbandseite()."/%s.html\">%s</a>", $r->vkz, $r->organization);
+					$temp[$x]['name']     = $r->organizationType == 'o6' ? sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getVereinseite()."/%s.html\">%s</a>", $r->vkz, $r->organization) : sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getVerbandseite()."/%s.html\">%s</a>", substr($r->vkz, 0, 3), $r->organization);
 					$temp[$x]['typ']      = $r->organizationType;
 					$temp[$x]['platz']    = $r->rank;
 					$temp[$x]['referent'] = $r->assessor;

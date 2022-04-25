@@ -1,5 +1,11 @@
 # Abfrage der DeWIS-API
 
+## Version 1.5.1 (2022-04-25)
+
+* Fix: Falsche Verbandslinks in Plazierungsstatistik in der Spielerkarteikarte (5-stellig statt 3-stellig)
+* Change: Template dewis_verband - Formular von div auf table umgebaut
+* Fix: Abfrage der FIDE-Nation für Verbandslisten deutlich beschleunigt -> neue Funktion DeWIS::Nation, die zuerst tl_dwz_spi abfragt -> Top-100 Deutschland nun 378% schneller geladen: 6,24 sec statt 23,61 sec
+
 ## Version 1.5.0 (2022-04-21)
 
 * Fix: Spielersuche nach O'Donnell nicht möglich -> ' wurde in &#39; umkodiert

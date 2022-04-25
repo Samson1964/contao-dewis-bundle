@@ -222,23 +222,17 @@ class Verband extends \Module
 					else
 					{
 
-						// Spielerkartei laden
-						$param = array
-						(
-							'funktion'  => 'Karteikarte',
-							'cachekey'  => $m->pid,
-							'id'        => $m->pid
-						);
-						$karteikarte = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::autoQuery($param); // Abfrage ausführen
+						// FIDE-Nation laden
+						$nation = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Nation($m->pid); // Abfrage ausführen
 
-						if($german && $karteikarte['result']->member->fideNation != 'GER') continue; // Nur Deutsche gesucht
+						if($german && $nation != 'GER') continue; // Nur Deutsche gesucht
 
-						$flag_css = \Schachbulle\ContaoDewisBundle\Helper\Helper::Laendercode($karteikarte['result']->member->fideNation);
+						$flag_css = \Schachbulle\ContaoDewisBundle\Helper\Helper::Laendercode($nation);
 						// Flagge anzeigen, wenn vorhanden
 						if($flag_css)
 							$flag_content = '<span class="'.$flag_css.'"></span>';
 						else
-							$flag_content = '<span class="ioc_code">'.$karteikarte['result']->member->fideNation.'</span>';
+							$flag_content = '<span class="ioc_code">'.$nation.'</span>';
 						
 						$z++;
 						// Daten zuweisen

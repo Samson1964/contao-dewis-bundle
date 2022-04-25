@@ -857,6 +857,38 @@ class DeWIS
 		return false;
 	}
 
+	/**
+	 * Liefert die FIDE-Nation eines Spielers
+	 * ======================================
+	 * @param       id      DeWIS-ID des Spielers
+	 * @return      string  FIDE-Nation, z.B. GER bzw. leer
+	 *
+	 */
+	public function Nation($id)
+	{
+		$result = \Database::getInstance()->prepare("SELECT fideNation FROM tl_dwz_spi WHERE dewisID = ?")
+		                                  ->execute($id);
+		
+		if($result->numRows)
+		{
+			// DeWIS-ID gefunden, Nation zurückgeben
+			return $result->fideNation;
+		}
+		else
+		{
+			// DeWIS-ID nicht gefunden, Abfrage bei DeWIS-API machen
+			// Spielerkartei laden
+			$param = array
+			(
+				'funktion'  => 'Karteikarte',
+				'cachekey'  => $id,
+				'id'        => $id
+			);
+			$karteikarte = self::autoQuery($param); // Abfrage ausführen
+			return $karteikarte['result']->member->fideNation;
+		}
+
+	}
 
 	/**
 
