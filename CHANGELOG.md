@@ -1,5 +1,9 @@
 # Abfrage der DeWIS-API
 
+## Version 1.5.2 (2022-04-26)
+
+* Fix: Modules/Bestenliste.php - Ermittlung der FIDE-Nation mit neuer Funktion DeWIS::Nation -> Top-100 alle von 80,86 auf 4,07 sec (19,9 mal schneller), Top-100 wbl. von 43,74 auf 3,02 sec (14,5 mal schneller) beschleunigt
+
 ## Version 1.5.1 (2022-04-25)
 
 * Fix: Falsche Verbandslinks in Plazierungsstatistik in der Spielerkarteikarte (5-stellig statt 3-stellig)

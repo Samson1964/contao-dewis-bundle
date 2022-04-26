@@ -47,7 +47,7 @@ class Bestenliste extends \Module
 	 */
 	protected function compile()
 	{
-	
+
 		global $objPage;
 		
 		// Blacklist laden
@@ -113,16 +113,10 @@ class Bestenliste extends \Module
 					else
 					{
 
-						// Spielerkartei laden
-						$param = array
-						(
-							'funktion'  => 'Karteikarte',
-							'cachekey'  => $m->pid,
-							'id'        => $m->pid
-						);
-						$karteikarte = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::autoQuery($param); // Abfrage ausführen
+						// FIDE-Nation laden
+						$nation = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Nation($m->pid); // Abfrage ausführen
 
-						if($karteikarte['result']->member->fideNation == 'GER')
+						if($nation == 'GER')
 						{
 							$z++;
 							// Daten zuweisen
