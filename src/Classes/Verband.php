@@ -72,6 +72,14 @@ class Verband extends \Module
 	
 		global $objPage;
 		
+		// DWZ-Abfragen abgeschaltet?
+		if($GLOBALS['TL_CONFIG']['dewis_switchedOff'])
+		{
+			$this->Template = new \FrontendTemplate('dewis_abgeschaltet');
+			$this->Template->content = $GLOBALS['TL_CONFIG']['dewis_switchedOffText'];
+			return;
+		}
+
 		// Blacklist laden
 		$Blacklist = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::blacklist();
 

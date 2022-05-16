@@ -3,15 +3,43 @@
 /**
  * palettes
  */
+$GLOBALS['TL_DCA']['tl_settings']['palettes']['__selector__'][] = 'dewis_switchedOff';
 $GLOBALS['TL_DCA']['tl_settings']['palettes']['__selector__'][] = 'dewis_cache';
 $GLOBALS['TL_DCA']['tl_settings']['palettes']['__selector__'][] = 'dewis_elobase';
-$GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] .= ';{dewis_legend:hide},dewis_karteisperre_gaeste,dewis_passive_ausblenden,dewis_geburtsjahr_ausblenden,dewis_geschlecht_ausblenden,dewis_seite_spieler,dewis_seite_turnier,dewis_seite_verein,dewis_seite_verband,dewis_cache,dewis_elobase';
+$GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] .= ';{dewis_legend:hide},dewis_switchedOff,dewis_karteisperre_gaeste,dewis_passive_ausblenden,dewis_geburtsjahr_ausblenden,dewis_geschlecht_ausblenden,dewis_seite_spieler,dewis_seite_turnier,dewis_seite_verein,dewis_seite_verband,dewis_cache,dewis_elobase';
+$GLOBALS['TL_DCA']['tl_settings']['subpalettes']['dewis_switchedOff'] = 'dewis_switchedOffText';
 $GLOBALS['TL_DCA']['tl_settings']['subpalettes']['dewis_cache'] = 'dewis_cache_default,dewis_cache_verband,dewis_cache_referent';
 $GLOBALS['TL_DCA']['tl_settings']['subpalettes']['dewis_elobase'] = 'dewis_elobase_host,dewis_elobase_db,dewis_elobase_user,dewis_elobase_pass,dewis_elobase_url';
 
 /**
  * fields
  */
+
+// DeWIS-Abfrage ausschalten
+$GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_switchedOff'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['dewis_switchedOff'],
+	'inputType'               => 'checkbox',
+	'eval'                    => array
+	(
+		'tl_class'            => 'w50',
+		'submitOnChange'      => true
+	)
+);
+
+// Text im Frontend bei aktiver Abschaltung
+$GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_switchedOffText'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['dewis_switchedOffText'],
+	'inputType'               => 'textarea',
+	'eval'                    => array
+	(
+		'tl_class'            => 'long',
+		'rte'                 => 'tinyMCE',
+		'helpwizard'          => true
+	),
+	'explanation'             => 'insertTags',
+);
 
 // Cache ein- oder ausschalten
 $GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_cache'] = array
@@ -33,7 +61,7 @@ $GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_cache_default'] = array
 	'eval'                    => array
 	(
 		'tl_class'            => 'w50',
-		'rgxp'                =>'natural'
+		'rgxp'                => 'natural'
 	)
 );
 
@@ -45,7 +73,7 @@ $GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_cache_verband'] = array
 	'eval'                    => array
 	(
 		'tl_class'            => 'w50 clr',
-		'rgxp'                =>'natural'
+		'rgxp'                => 'natural'
 	)
 );
 
@@ -57,7 +85,7 @@ $GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_cache_referent'] = array
 	'eval'                    => array
 	(
 		'tl_class'            => 'w50',
-		'rgxp'                =>'natural'
+		'allowHtml'           => true
 	)
 );
 

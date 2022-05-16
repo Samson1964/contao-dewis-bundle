@@ -8,6 +8,9 @@ $GLOBALS['TL_LANG']['tl_settings']['dewis_legend']       = 'DeWIS';
 /**
  * fields
  */
+$GLOBALS['TL_LANG']['tl_settings']['dewis_switchedOff'] = array('DWZ-Abfrage deaktivieren','Abfragen der DWZ-Daten bei DeWIS deaktivieren');
+$GLOBALS['TL_LANG']['tl_settings']['dewis_switchedOffText'] = array('Grund der Abschaltung','Der Text wird im Frontend angezeigt.');
+
 $GLOBALS['TL_LANG']['tl_settings']['dewis_cache'] = array('Cache aktivieren','Cache für DeWIS aktivieren');
 $GLOBALS['TL_LANG']['tl_settings']['dewis_cache_default'] = array('Speicherzeit Standard','Speicherzeit des Standardcaches in Stunden');
 $GLOBALS['TL_LANG']['tl_settings']['dewis_cache_verband'] = array('Speicherzeit Verbände/Vereine','Speicherzeit des Caches für Verbände/Vereine in Stunden');
