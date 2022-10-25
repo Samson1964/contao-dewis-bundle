@@ -233,7 +233,10 @@ class Verband extends \Module
 						// FIDE-Nation laden
 						$nation = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Nation($m->pid); // Abfrage ausführen
 
-						if($german && $nation != 'GER') continue; // Nur Deutsche gesucht
+						if($german && $nation != 'GER' && $nation != '' && $nation != '-')
+						{
+							continue; // Nur Deutsche gesucht, also nächsten Datensatz prüfen
+						}
 
 						$flag_css = \Schachbulle\ContaoDewisBundle\Helper\Helper::Laendercode($nation);
 						// Flagge anzeigen, wenn vorhanden

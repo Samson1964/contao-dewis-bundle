@@ -59,30 +59,34 @@ class DeWIS
 	public function autoQuery($params)
 	{
 
-		if($GLOBALS['TL_CONFIG']['dewis_cache'] || $params['cachetime'])
+		if(!$params['nocache'])
 		{
-			// Cache initialisieren
-			$cache = new \Schachbulle\ContaoHelperBundle\Classes\Cache(array('name' => $params['funktion'], 'extension' => '.cache'));
-			$cache->eraseExpired(); // Cache aufräumen, abgelaufene Schlüssel löschen
-
-			// Cache laden
-			if($cache->isCached($params['cachekey']))
+			// Cache nur berücksichtigen, wenn nocache-Parameter nicht true ist
+			if($GLOBALS['TL_CONFIG']['dewis_cache'] || $params['cachetime'])
 			{
-				$result = $cache->retrieve($params['cachekey']);
+				// Cache initialisieren
+				$cache = new \Schachbulle\ContaoHelperBundle\Classes\Cache(array('name' => $params['funktion'], 'extension' => '.cache'));
+				$cache->eraseExpired(); // Cache aufräumen, abgelaufene Schlüssel löschen
+        	
+				// Cache laden
+				if($cache->isCached($params['cachekey']))
+				{
+					$result = $cache->retrieve($params['cachekey']);
+				}
+				// Cachezeiten modifizieren
+				switch($params['funktion'])
+				{
+					case 'Verbaende':
+						$cachetime = 3600 * $GLOBALS['TL_CONFIG']['dewis_cache_verband'];
+						break;
+					case 'Wertungsreferent':
+						$cachetime = 3600 * $GLOBALS['TL_CONFIG']['dewis_cache_referent'];
+						break;
+					default:
+						$cachetime = 3600;
+				}
+				if($params['cachetime']) $cachetime = $params['cachetime'];
 			}
-			// Cachezeiten modifizieren
-			switch($params['funktion'])
-			{
-				case 'Verbaende':
-					$cachetime = 3600 * $GLOBALS['TL_CONFIG']['dewis_cache_verband'];
-					break;
-				case 'Wertungsreferent':
-					$cachetime = 3600 * $GLOBALS['TL_CONFIG']['dewis_cache_referent'];
-					break;
-				default:
-					$cachetime = 3600;
-			}
-			if($params['cachetime']) $cachetime = $params['cachetime'];
 		}
 
 		// DeWIS-Abfrage, wenn Cache leer

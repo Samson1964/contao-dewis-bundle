@@ -100,7 +100,7 @@ class Verein extends \Module
 		else $gesperrt = false;
 
 		// Auf ungültige Zeichen im Suchbegriff prüfen (alles außer Buchstaben, Zahlen, Umlaute, Leerzeichen ist nicht erlaubt)
-		if(!preg_match("#^[a-zA-Z0-9äöüÄÖÜ ]+$#", $search))
+		if(!preg_match("#^[a-zA-Z0-9äöüÄÖÜß ]+$#", $search))
 		{
 			$this->Template->fehler = 'Der Suchbegriff darf nur Buchstaben, Zahlen und Leerzeichen enthalten!';
 			$this->Template->search = $search;

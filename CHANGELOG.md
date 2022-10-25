@@ -1,5 +1,12 @@
 # Abfrage der DeWIS-API
 
+## Version 1.5.4 (2022-10-25)
+
+* Change: Verbandssuche nach Deutschen berücksichtigt auch Leerstring oder "-" bei der FIDE-Nation
+* Fix: Verein.php, Zeile 103 -> In preg_match-Funktion fehlte bei den erlaubten Zeichen das ß -> altlußheim wurde nicht gefunden
+* Add: public/DeWIS_Check zum Loggen der Verbindungen zu DeWIS
+* Add: DeWIS.php::autoQuery -> neuer Parameter nocache (true = Cache nicht berücksichtigen bei Abfrage)
+
 ## Version 1.5.3 (2022-05-16)
 
 * Add: Option in den Einstellungen, um die DWZ-Abfragen generell abzuschalten
