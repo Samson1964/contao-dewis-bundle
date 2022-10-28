@@ -16,7 +16,7 @@ class DeWIS
 	static $answertime;
 	static $error;
 	static $errorcode;
-	
+
 	/**
 	 * Klasse initialisieren
 	 */
@@ -37,7 +37,7 @@ class DeWIS
 		{
 			self::$instance = new \Schachbulle\ContaoDewisBundle\Helper\DeWIS();
 		}
-	
+
 		return self::$instance;
 	}
 
@@ -46,7 +46,7 @@ class DeWIS
 	 * autoQuery
 	 * =========
 	 * Vollautomatisierte Abfrage von DeWIS inkl. Cachenutzung
-	 * 
+	 *
 	 * @param       Array mit den Parametern
 	 * $param = array
 	 * (
@@ -59,34 +59,31 @@ class DeWIS
 	public function autoQuery($params)
 	{
 
-		if(!$params['nocache'])
+		// Cache nur berücksichtigen, wenn nocache-Parameter nicht true ist
+		if($GLOBALS['TL_CONFIG']['dewis_cache'] || $params['cachetime'])
 		{
-			// Cache nur berücksichtigen, wenn nocache-Parameter nicht true ist
-			if($GLOBALS['TL_CONFIG']['dewis_cache'] || $params['cachetime'])
+			// Cache initialisieren
+			$cache = new \Schachbulle\ContaoHelperBundle\Classes\Cache(array('name' => $params['funktion'], 'extension' => '.cache'));
+			$cache->eraseExpired(); // Cache aufräumen, abgelaufene Schlüssel löschen
+
+			// Cache laden
+			if($cache->isCached($params['cachekey']) && !$params['nocache'])
 			{
-				// Cache initialisieren
-				$cache = new \Schachbulle\ContaoHelperBundle\Classes\Cache(array('name' => $params['funktion'], 'extension' => '.cache'));
-				$cache->eraseExpired(); // Cache aufräumen, abgelaufene Schlüssel löschen
-        	
-				// Cache laden
-				if($cache->isCached($params['cachekey']))
-				{
-					$result = $cache->retrieve($params['cachekey']);
-				}
-				// Cachezeiten modifizieren
-				switch($params['funktion'])
-				{
-					case 'Verbaende':
-						$cachetime = 3600 * $GLOBALS['TL_CONFIG']['dewis_cache_verband'];
-						break;
-					case 'Wertungsreferent':
-						$cachetime = 3600 * $GLOBALS['TL_CONFIG']['dewis_cache_referent'];
-						break;
-					default:
-						$cachetime = 3600;
-				}
-				if($params['cachetime']) $cachetime = $params['cachetime'];
+				$result = $cache->retrieve($params['cachekey']);
 			}
+			// Cachezeiten modifizieren
+			switch($params['funktion'])
+			{
+				case 'Verbaende':
+					$cachetime = 3600 * $GLOBALS['TL_CONFIG']['dewis_cache_verband'];
+					break;
+				case 'Wertungsreferent':
+					$cachetime = 3600 * $GLOBALS['TL_CONFIG']['dewis_cache_referent'];
+					break;
+				default:
+					$cachetime = 3600;
+			}
+			if($params['cachetime']) $cachetime = $params['cachetime'];
 		}
 
 		// DeWIS-Abfrage, wenn Cache leer
@@ -103,7 +100,7 @@ class DeWIS
 			$GLOBALS['DeWIS-Cache']['dewis-queries']++;
 			$GLOBALS['DeWIS-Cache']['dewis-queriestimes'] += $querytime;
 			//echo $params['funktion'];
-			
+
 			// DeWIS-Daten in Contao-Datenbank aktualisieren
 			self::AktualisiereDWZTabellen($result, $params);
 
@@ -254,12 +251,12 @@ class DeWIS
 		catch(\SOAPFault $f)
 		{
 			$time_request = (microtime(true)-$time_start);
-			if(ini_get('default_socket_timeout') < $time_request) 
+			if(ini_get('default_socket_timeout') < $time_request)
 			{
 				// Timeout Fehler!
 				self::$error = "Die DeWIS-Datenbank unter svw.info ist nicht erreichbar.";
 			}
-			else 
+			else
 			{
 				switch($f->faultstring)
 				{
@@ -353,12 +350,12 @@ class DeWIS
 		else $this->viewyear = FALSE;
 	}
 
-	public function DWZ($rating, $ratingIndex) 
+	public function DWZ($rating, $ratingIndex)
 	{
 		return ($rating == 0 && $ratingIndex == 0) ? '' : sprintf("%s -%s", str_replace(' ', '&nbsp;&nbsp;', sprintf("%4d", $rating)), str_replace(' ', '&nbsp;&nbsp;', sprintf("%3d", $ratingIndex)));
 	}
 
-	public function Punkte($points) 
+	public function Punkte($points)
 	{
 		return ($points == 0.5) ? '½' : str_replace('.5', '½', $points * 1);
 	}
@@ -367,7 +364,7 @@ class DeWIS
 	{
 		return $string ? substr($string, 2, 2) . '/' . (substr($string, 0, 1) > '9' ? '20' . (ord(substr($string, 0, 1)) - 65) : '19' . substr($string, 0, 1)) . substr($string, 1, 1) : '&nbsp;';
 	}
-	
+
 	public function AlteDatenbank($id)
 	{
 		# --------------------------------------------------------
@@ -423,10 +420,10 @@ class DeWIS
 		//echo "<pre>";
 		//print_r($resultArr);
 		//echo "</pre>";
-		
+
 		// Verbände und Vereine ordnen
 		list($verbaende, $vereine) = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::org($resultArr['result']);
-		
+
 		return array('verbaende' => $verbaende, 'vereine' => $vereine);
 	}
 
@@ -490,7 +487,7 @@ class DeWIS
 	}
 
 	/**
-	 * Hook-Funktion: 
+	 * Hook-Funktion:
 	 * Wertet das URL-Parameter-Array aus und modifiziert es, wenn das Array für DeWIS bestimmt ist
 	 *
 	 * @return array
@@ -550,7 +547,7 @@ class DeWIS
 					break;
 
 				case \Schachbulle\ContaoDewisBundle\Helper\Helper::getTurnierseite():
-					if($arrFragments[1] == 'auto_item') 
+					if($arrFragments[1] == 'auto_item')
 					{
 						$arrFragments[1] = 'code';
 					}
@@ -581,7 +578,7 @@ class DeWIS
 				default:
 			}
 		}
-		
+
 		//echo "<br>";
 		//print_r($arrFragments);
 		//echo "-->";
@@ -591,7 +588,7 @@ class DeWIS
 
 
 	/**
-	 * PurgeJob-Funktion: 
+	 * PurgeJob-Funktion:
 	 * Berechnet die Cache-Größe
 	 */
 	public function calcCache()
@@ -619,13 +616,13 @@ class DeWIS
 			$string .= '<br><span style="font-weight:normal"><span style="color:black">'.$item.':</span> '.$anzahl.' '.$text.'</span>';
 		}
 		$string .= '<label>';
-		
+
 		//log_message(count($daten),'dewis-cache.log');
 		return $string;
 	}
 
 	/**
-	 * PurgeJob-Funktion: 
+	 * PurgeJob-Funktion:
 	 * Stellt im BE unter Systemwartung die Cache-Löschung zur Verfügung
 	 */
 	public function purgeCache()
@@ -657,7 +654,7 @@ class DeWIS
 
 
 	/**
-	 * Hilfsfunktion: 
+	 * Hilfsfunktion:
 	 * Formatierte Ausgabe einer Variable
 	 *
 	 * @return array
@@ -670,7 +667,7 @@ class DeWIS
 	}
 
 	/**
-	 * Hilfsfunktion: 
+	 * Hilfsfunktion:
 	 * Kürzt den Vereinsnamen auf 34 Zeichen, entfernt vorher unnötige Zeichenfolgen
 	 *
 	 * @return string
@@ -681,13 +678,13 @@ class DeWIS
 		(
 			' e.V.' => '',
 		);
-		$value = str_ireplace(array_keys($ersetzen),array_values($ersetzen),$value); 
+		$value = str_ireplace(array_keys($ersetzen),array_values($ersetzen),$value);
 		return (strlen($value) > 30) ? substr($value,0,30).' [...]' : $value;
 	}
 
 
 	/**
-	 * Hilfsfunktion: 
+	 * Hilfsfunktion:
 	 * Kürzt den Turniernamen auf 38 Zeichen
 	 *
 	 * @return string
@@ -712,7 +709,7 @@ class DeWIS
 	 *
 	 * @return string
 	 */
-	public function Wertungsreferent($id, $address = true) 
+	public function Wertungsreferent($id, $address = true)
 	{
 
 		// Abfrageparameter einstellen
@@ -731,9 +728,9 @@ class DeWIS
 			$strasse = ($resultArr['result']->street && $resultArr['result']->street != '-') ? $resultArr['result']->street : '';
 			$ort = ($resultArr['result']->zip && $resultArr['result']->city) ? $resultArr['result']->zip .' '. $resultArr['result']->city : '';
 			$adresse = ($strasse && $ort) ? '<br>'.$strasse.', '.$ort : '';
-			
+
 			$email = ($resultArr['result']->email && $resultArr['result']->email != '-') ? $resultArr['result']->email : '';
-			
+
 			return $resultArr['result'] ? $resultArr['result']->firstname." ".$resultArr['result']->surname.$adresse.($email ? '<br>{{email::'.$email.'}}' : '') : '';
 		}
 		else
@@ -760,9 +757,9 @@ class DeWIS
 			'cachekey'  => $code,
 			'code'      => $code
 		);
-		
+
 		$resultArr = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::autoQuery($param); // Abfrage ausführen
-		
+
 		return $resultArr['result'];
 	}
 
@@ -779,17 +776,17 @@ class DeWIS
 	}
 
 	/**
-	 * Schätzt die Turnierleistung, wenn zu wenig Partien 
+	 * Schätzt die Turnierleistung, wenn zu wenig Partien
 	 *
 	 */
-	public function LeistungSchaetzen($niveau = 0, $punkte, $partien, $dwz, $pd = '') 
+	public function LeistungSchaetzen($niveau = 0, $punkte, $partien, $dwz, $pd = '')
 	{
-		
+
 		if($pd == '')
 			$pd = 0.5 * $partien;
-		
+
 		if($partien) $ppp = $punkte / $partien;
-		if($niveau == 0 OR $niveau == '') 
+		if($niveau == 0 OR $niveau == '')
 		{
 			if($partien && (($punkte - $pd) / $partien > 0.01))
 				$leistung = $dwz + 100;
@@ -799,12 +796,12 @@ class DeWIS
 				$leistung = $dwz - 100;
 			return $leistung;
 		}
-		if(($partien != 5 AND $partien != 6) && ($ppp == 1 OR $ppp == 0)) 
+		if(($partien != 5 AND $partien != 6) && ($ppp == 1 OR $ppp == 0))
 		{
 			$diff = 677 / (5 - $partien);
 			$leistung = round(($dwz + ($dwz - ($diff + $niveau)) / (6 - $partien)), 0);
 		}
-		elseif(round($ppp, 0) == 0.5) 
+		elseif(round($ppp, 0) == 0.5)
 		{
 			$leistung = $niveau;
 		}
@@ -812,22 +809,22 @@ class DeWIS
 		{
 			$leistung = round(-400 * log10($partien / $punkte - 1) + $niveau, 0);
 		}
-		
+
 		return $leistung;
 	}
 
 	/**
-	 * Liefert die Blacklist zurück 
+	 * Liefert die Blacklist zurück
 	 *
 	 */
-	public function Blacklist() 
+	public function Blacklist()
 	{
 		// Gesperrte ID's einlesen
 		//$result = \Database::getInstance()->prepare("SELECT dewis_id FROM tl_dewis_blacklist WHERE published = '1'")
 		//								  ->execute();
 		$result = \Database::getInstance()->prepare("SELECT dewisID FROM tl_dwz_spi WHERE blocked = '1'")
 		                                  ->execute();
-		
+
 		$blacklist = array();
 		// Übernehmen
 		if($result->numRows)
@@ -840,18 +837,18 @@ class DeWIS
 		}
 
 		return $blacklist;
-	}		
+	}
 
 
 	/**
-	 * Liefert den Status der Sperre der alten Karteikarte zurück 
+	 * Liefert den Status der Sperre der alten Karteikarte zurück
 	 *
 	 */
 	public function Karteisperre($id)
 	{
 		$result = \Database::getInstance()->prepare("SELECT link_altkartei FROM tl_dwz_spi WHERE dewisID = ?")
 		                                  ->execute($id);
-		
+
 		// Gefunden
 		if($result->numRows)
 		{
@@ -872,7 +869,7 @@ class DeWIS
 	{
 		$result = \Database::getInstance()->prepare("SELECT fideNation FROM tl_dwz_spi WHERE dewisID = ?")
 		                                  ->execute($id);
-		
+
 		if($result->numRows)
 		{
 			// DeWIS-ID gefunden, Nation zurückgeben
@@ -896,10 +893,10 @@ class DeWIS
 
 	/**
 
-	 * Liefert den Hinweistext zwecks Anmeldung zurück 
+	 * Liefert den Hinweistext zwecks Anmeldung zurück
 	 *
 	 */
-	public function Registrierungshinweis() 
+	public function Registrierungshinweis()
 	{
 		return '<div class="hinweis noprint">Aus datenschutzrechtlichen Gründen können Spielerdetails seit dem <a href="http://www.schachbund.de/news/aenderungen-beim-zugriff-auf-die-dwz.html">3. Juni 2016</a> nur noch von registrierten Nutzern angesehen werden. <a href="http://www.schachbund.de/registrierung.html">Hier geht es zur kostenlosen Registrierung</a>.</div>';
 	}

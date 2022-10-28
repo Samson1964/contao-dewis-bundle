@@ -1,5 +1,9 @@
 # Abfrage der DeWIS-API
 
+## Version 1.5.5 (2022-10-28)
+
+* Fix: Prüfung $params['nocache'] in DeWIS.php an falscher Stelle eingebaut -> Cache-Klasse war noch nicht initialisiert (Fatal error: Uncaught Error: Call to a member function store() on null in Helper/DeWIS.php:102)
+
 ## Version 1.5.4 (2022-10-25)
 
 * Change: Verbandssuche nach Deutschen berücksichtigt auch Leerstring oder "-" bei der FIDE-Nation
