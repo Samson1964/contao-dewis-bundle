@@ -1,5 +1,9 @@
 # Abfrage der DeWIS-API
 
+## Version 1.5.6 (2022-12-01)
+
+* Change: Link auf alte Karteikarte um Zugangsinformationen ergänzt
+
 ## Version 1.5.5 (2022-10-28)
 
 * Fix: Prüfung $params['nocache'] in DeWIS.php an falscher Stelle eingebaut -> Cache-Klasse war noch nicht initialisiert (Fatal error: Uncaught Error: Call to a member function store() on null in Helper/DeWIS.php:102)

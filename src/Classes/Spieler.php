@@ -284,7 +284,7 @@ class Spieler extends \Module
 			// Alte Datenbank abfragen
 			if(!\Schachbulle\ContaoDewisBundle\Helper\DeWIS::Karteisperre($id) && $altdb = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::AlteDatenbank($id))
 			{
-				$this->Template->historie = ($altdb["status"] == "L") ? 'Vorhanden, aber zuletzt abgemeldet' : sprintf("<a href=\"".$GLOBALS['TL_CONFIG']['dewis_elobase_url']."%s\" target=\"_blank\">Alte Karteikarte</a>",$altdb["zps"]);
+				$this->Template->historie = ($altdb["status"] == "L") ? 'Vorhanden, aber zuletzt abgemeldet' : sprintf("<a href=\"".$GLOBALS['TL_CONFIG']['dewis_elobase_url']."%s\" target=\"_blank\">Alte Karteikarte</a> (Benutzer/Passwort: dwz)",$altdb["zps"]);
 			}
 			else $this->Template->historie = '-';
 
