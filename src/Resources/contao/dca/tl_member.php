@@ -1,14 +1,7 @@
 <?php
 
-// Anpassung der Palette
-$GLOBALS['TL_DCA']['tl_member']['palettes']['default'] = str_replace
-(
-	'gender;',
-	'gender;{dewis_legend:hide},dewisID,dewisCount,dewisCard;',
-	$GLOBALS['TL_DCA']['tl_member']['palettes']['default']
-);
+use Contao\CoreBundle\DataContainer\PaletteManipulator;
 
-// Hinzufügen der Feld-Konfiguration
 // PKZ in DeWIS
 $GLOBALS['TL_DCA']['tl_member']['fields']['dewisID'] = array
 (
@@ -28,17 +21,7 @@ $GLOBALS['TL_DCA']['tl_member']['fields']['dewisID'] = array
 	'sql'                     => "int(10) unsigned NOT NULL default '0'"
 );
 
-if(TL_MODE == 'BE')
-{
-	$GLOBALS['TL_DCA']['tl_member']['fields']['dewisID']['save_callback'] = array
-	(
-		(
-			array('tl_member_DeWIS_BE', 'setNewPKZ')
-		)
-	);
-}
-
-// Zähler für PKZ-Wechsel, bei 0 kein Wechsel mehr möglich
+// ZÃ¤hler fÃ¼r PKZ-Wechsel, bei 0 kein Wechsel mehr mÃ¶glich
 $GLOBALS['TL_DCA']['tl_member']['fields']['dewisCount'] = array
 (
 	'label'              => &$GLOBALS['TL_LANG']['tl_member']['dewisCount'],
@@ -65,10 +48,28 @@ $GLOBALS['TL_DCA']['tl_member']['fields']['dewisCard'] = array
 		'mandatory'      => false, 
 		'feEditable'     => true,
 		'feViewable'     => true,
+		'tl_class'       => 'w50',
 		'feGroup'        => 'dewis'
 	),
 	'sql'                => "char(1) NOT NULL default ''"
 );
+
+PaletteManipulator::create()
+    ->addLegend('dewis_legend', 'personal_legend', PaletteManipulator::POSITION_AFTER)
+    ->addField('dewisID', 'dewis_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('dewisCount', 'dewis_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('dewisCard', 'dewis_legend', PaletteManipulator::POSITION_APPEND)
+    ->applyToPalette('default', 'tl_member');
+
+if(TL_MODE == 'BE')
+{
+	$GLOBALS['TL_DCA']['tl_member']['fields']['dewisID']['save_callback'] = array
+	(
+		(
+			array('tl_member_DeWIS_BE', 'setNewPKZ')
+		)
+	);
+}
 
 class tl_member_DeWIS_BE extends Backend
 {
@@ -87,18 +88,18 @@ class tl_member_DeWIS_BE extends Backend
 		//print_r($dc->activeRecord);
 		if($dc->activeRecord->dewisID != $varValue)
 		{
-			// Feld geändert, deshalb alte Zuordnung auflösen und neue eintragen
+			// Feld geÃ¤ndert, deshalb alte Zuordnung auflÃ¶sen und neue eintragen
 			if($dc->activeRecord->dewisID)
 			{
 				$objSpieler = \Database::getInstance()->prepare('UPDATE tl_dwz_spi %s WHERE dewisID = ?')
-													  ->set(array('contaoMemberID' => 0)) 
-													  ->execute($dc->activeRecord->dewisID); 
+				                                      ->set(array('contaoMemberID' => 0)) 
+				                                      ->execute($dc->activeRecord->dewisID); 
 			}
 			if($varValue)
 			{
 				$objSpieler = \Database::getInstance()->prepare('UPDATE tl_dwz_spi %s WHERE dewisID = ?')
-													  ->set(array('contaoMemberID' => $dc->activeRecord->id)) 
-													  ->execute($varValue); 
+				                                      ->set(array('contaoMemberID' => $dc->activeRecord->id)) 
+				                                      ->execute($varValue); 
 			}
 		}
 		return $varValue;

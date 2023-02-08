@@ -1,5 +1,12 @@
 # Abfrage der DeWIS-API
 
+## Version 1.5.7 (2023-02-08)
+
+* Fix: tl_member wird nicht übernommen -> PaletteManipulator eingebaut
+* Add: Deutsch für tl_member
+* Change: Vereinsstruktur Württemberg in DeWIS-Klasse: Leipheim, Schachritter Kirchheim/Teck, TSV Undingen, Schachclub Strateg Stuttgart, Post-SG Schwäbisch Hall, SF Pattonville
+* Delete: Vereinsstruktur Württemberg in DeWIS-Klasse: Schwarz Weiß Münsingen, DJK Sportbund Stuttgart, Vardar Sindelfingen, Lachender Turm Schwäbisch Hall
+
 ## Version 1.5.6 (2022-12-01)
 
 * Change: Link auf alte Karteikarte um Zugangsinformationen ergänzt
