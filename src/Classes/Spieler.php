@@ -109,7 +109,7 @@ class Spieler extends \Module
 			$this->Template->search = $search;
 
 			// Abfrageparameter einstellen
-			if ($check_search['typ'] == 'name')
+			if($check_search['typ'] == 'name')
 			{
 				// Spielersuche
 				$param = array
@@ -121,7 +121,7 @@ class Spieler extends \Module
 					'limit'    => 500
 				);
 			}
-			if ($check_search['typ'] == 'pkz')
+			if($check_search['typ'] == 'pkz')
 			{
 				// Spielersuche
 				$param = array
@@ -133,7 +133,7 @@ class Spieler extends \Module
 					'limit'    => 500
 				);
 			}
-			if ($check_search['typ'] == 'zps')
+			if($check_search['typ'] == 'zps')
 			{
 				// Spielersuche
 				$param = array
@@ -266,6 +266,21 @@ class Spieler extends \Module
 			// Sichtbarkeit der Karteikarte festlegen
 			$this->Template->sichtbar = $gesperrt ? false : true;
 			$this->Template->sperre = $gesperrt;
+
+			// Spieler in tl_dwz_spi suchen
+			$objSpieler = \Schachbulle\ContaoDewisBundle\Models\DewisSpielerModel::findOneBy('dewisID', $resultArr['result']->member->pid);
+			$this->Template->addImage     = true;
+			if($objSpieler->addImage)
+			{
+				// Spielerfoto vorhanden
+				$objFile = \FilesModel::findByPk($objSpieler->singleSRC);
+			}
+			else
+			{
+				$objFile = \FilesModel::findByUuid($GLOBALS['TL_CONFIG']['dewis_playerDefaultImage']);
+			}
+			$objBild = new \stdClass();
+			\Controller::addImageToTemplate($objBild, array('singleSRC' => $objFile->path, 'size' => unserialize($GLOBALS['TL_CONFIG']['dewis_playerImageSize'])), \Config::get('maxImageWidth'), null, $objFile);
 			
 			/*********************************************************
 			 * Ausgabe Kopfdaten
@@ -280,6 +295,13 @@ class Spieler extends \Module
 			$this->Template->elo          = ($resultArr['result']->member->elo) ? $resultArr['result']->member->elo : '-';
 			$this->Template->fide_titel   = ($resultArr['result']->member->fideTitle) ? $resultArr['result']->member->fideTitle : '-';
 			$this->Template->fide_nation  = ($resultArr['result']->member->fideNation) ? ($resultArr['result']->member->gender == 'f' ? sprintf('<a href="https://ratings.fide.com/topfed.phtml?tops=1&ina=1&country=%s" target="_blank">%s</a>',$resultArr['result']->member->fideNation, $resultArr['result']->member->fideNation) : sprintf('<a href="https://ratings.fide.com/topfed.phtml?tops=0&ina=1&country=%s" target="_blank">%s</a>',$resultArr['result']->member->fideNation, $resultArr['result']->member->fideNation)) : '-';
+
+			$this->Template->image        = $objBild->singleSRC;
+			$this->Template->imageSize    = $objBild->imgSize;
+			$this->Template->imageTitle   = $objBild->imageTitle;
+			$this->Template->imageAlt     = $objBild->alt;
+			$this->Template->imageCaption = $objBild->caption;
+			$this->Template->thumbnail    = $objBild->src;
 
 			// Alte Datenbank abfragen
 			if(!\Schachbulle\ContaoDewisBundle\Helper\DeWIS::Karteisperre($id) && $altdb = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::AlteDatenbank($id))

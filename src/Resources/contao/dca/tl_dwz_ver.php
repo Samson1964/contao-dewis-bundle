@@ -94,14 +94,14 @@ $GLOBALS['TL_DCA']['tl_dwz_ver'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'__selector__'                => array('image'), 
-		'default'                     => '{name_legend},zpsver,verband,name,abkuerzung,status,statusdatum;{adresse_legend},empfaenger,plz,ort,strasse,telefon,email,adressdatum;{image_legend},image;{info_legend},info,homepage;{source_legend},elobase;{publish_legend},published'
+		'__selector__'                => array('addImage'), 
+		'default'                     => '{name_legend},zpsver,verband,name,abkuerzung,status,statusdatum;{adresse_legend},empfaenger,plz,ort,strasse,telefon,email,adressdatum;{image_legend},addImage;{info_legend},info,homepage;{source_legend},elobase;{publish_legend},published'
 	),
 
 	// Subpalettes
 	'subpalettes' => array
 	(
-		'image'                       => 'singleSRC,image_caption,image_size'
+		'addImage'                    => 'singleSRC'
 	),
 
 	// Fields
@@ -322,9 +322,9 @@ $GLOBALS['TL_DCA']['tl_dwz_ver'] = array
 			),
 			'sql'                     => "int(8) unsigned NOT NULL default '0'"
 		),
-		'image' => array
+		'addImage' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_dwz_ver']['image'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_dwz_ver']['addImage'],
 			'inputType'               => 'checkbox',
 			'filter'                  => true,
 			'eval'                    => array('submitOnChange'=>true, 'tl_class'=>'clr'),
@@ -344,25 +344,6 @@ $GLOBALS['TL_DCA']['tl_dwz_ver'] = array
 			),
 			'sql'                     => "binary(16) NULL",
 		),  
-		'image_size' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_dwz_ver']['image_size'],
-			'exclude'                 => true,
-			'inputType'               => 'imageSize',
-			'options'                 => $GLOBALS['TL_CROP'],
-			'reference'               => &$GLOBALS['TL_LANG']['MSC'],
-			'eval'                    => array('rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
-			'sql'                     => "varchar(64) NOT NULL default ''"
-		),
-		'image_caption' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_dwz_ver']['image_caption'],
-			'exclude'                 => true,
-			'search'                  => true,
-			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>255, 'allowHtml'=>true, 'tl_class'=>'w50'),
-			'sql'                     => "varchar(255) NOT NULL default ''"
-		),
 		'info' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_dwz_ver']['info'],

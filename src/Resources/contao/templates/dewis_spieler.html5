@@ -65,12 +65,18 @@
 			<table class="header">
 				<tbody>
 					<tr class="row_0">
-						<td class="col_0 bottom-line">Name:</td>
-						<td class="col_1 value bottom-line"><?= $this->spielername ?></td>
-						<td class="col_2 bottom-line">Geschlecht:</td>
-						<td class="col_3 value bottom-line"><?php if(!$GLOBALS['TL_CONFIG']['dewis_geschlecht_ausblenden']): ?><?= $this->geschlecht ?><?php endif; ?></td>
-						<td class="col_4 bottom-line">Geburtsjahr:</td>
-						<td class="col_5 value bottom-line"><?= $this->geburtsjahr ?></td>
+						<td class="col_0" rowspan="6" style="text-align:center;">
+							<?php if($this->addImage): ?>
+								<a href="<?= $this->image ?>" data-lightbox="playerpicture"><img src="<?= $this->thumbnail ?>"<?= $this->imageSize ?> alt="<?= $this->imageAlt ?>" title="<?= $this->imageTitle ?>"></a><br>
+								<a href="mailto:webmaster@schachbund.de" style="font-size:10px;">Foto senden</a>
+							<?php endif; ?>
+						</td>
+						<td class="col_1 bottom-line">Name:</td>
+						<td class="col_2 value bottom-line"><?= $this->spielername ?></td>
+						<td class="col_3 bottom-line">Geschlecht:</td>
+						<td class="col_4 value bottom-line"><?php if(!$GLOBALS['TL_CONFIG']['dewis_geschlecht_ausblenden']): ?><?= $this->geschlecht ?><?php endif; ?></td>
+						<td class="col_5 bottom-line">Geburtsjahr:</td>
+						<td class="col_6 value bottom-line"><?= $this->geburtsjahr ?></td>
 					</tr>
 					<?php $row = 1; ?>
 					<?php if($this->vereine): ?>
@@ -78,42 +84,42 @@
 						<?php foreach($this->vereine as $d): ?>
 							<?php $x++; $class = ($x == count($this->vereine)) ? ' bottom-line' : ''; ?>
 							<tr class="row_<?= $row ?>">
-								<td class="col_0<?= $class ?>">Verein:</td>
-								<td class="col_1 value<?= $class ?>"><?= $d['name'] ?></td>
-								<td class="col_2<?= $class ?>">ZPS-Nr.:</td>
-								<td class="col_3 value<?= $class ?>"><?= $d['zps'] ?></td>
-								<td class="col_4<?= $class ?>">Status:</td>
-								<td class="col_5 value<?= $class ?>"><?= $d['status'] ?></td>
+								<td class="col_1<?= $class ?>">Verein:</td>
+								<td class="col_2 value<?= $class ?>"><?= $d['name'] ?></td>
+								<td class="col_3<?= $class ?>">ZPS-Nr.:</td>
+								<td class="col_4 value<?= $class ?>"><?= $d['zps'] ?></td>
+								<td class="col_5<?= $class ?>">Status:</td>
+								<td class="col_6 value<?= $class ?>"><?= $d['status'] ?></td>
 							</tr>
 							<?php $row++; ?>
 						<?php endforeach; ?>
 					<?php endif; ?>
 					<tr class="row_<?= $row ?>">
-						<td class="col_0">FIDE-Elo:</td>
-						<td class="col_1 value"><?= $this->elo ?></td>
-						<td class="col_2">ID-Code:</td>
-						<td class="col_3 value"><?= $this->fide_id ?></td>
-						<td class="col_4">Titel:</td>
-						<td class="col_5 value"><?= $this->fide_titel ?></td>
+						<td class="col_1">FIDE-Elo:</td>
+						<td class="col_2 value"><?= $this->elo ?></td>
+						<td class="col_3">ID-Code:</td>
+						<td class="col_4 value"><?= $this->fide_id ?></td>
+						<td class="col_5">Titel:</td>
+						<td class="col_6 value"><?= $this->fide_titel ?></td>
 					</tr>
 					<?php $row++; ?>
 					<tr class="row_<?= $row ?> fide">
-						<td class="col_0 bottom-line">&nbsp;</td>
 						<td class="col_1 bottom-line">&nbsp;</td>
-						<td class="col_2 bottom-line">Nation:</td>
-						<td class="col_3 bottom-line value"><?= $this->fide_nation ?></td>
-						<td class="col_4 bottom-line">&nbsp;</td>
+						<td class="col_2 bottom-line">&nbsp;</td>
+						<td class="col_3 bottom-line">Nation:</td>
+						<td class="col_4 bottom-line value"><?= $this->fide_nation ?></td>
 						<td class="col_5 bottom-line">&nbsp;</td>
+						<td class="col_6 bottom-line">&nbsp;</td>
 					</tr>
 					<?php $row++; ?>
 					<tr class="row_<?= $row ?> historie">
-						<td class="col_0 bottom-line">Historie:</td>
-						<td class="col_1 col_2 col_3 col_4 col_5 value bottom-line" colspan="5"><?= $this->historie ?></td>
+						<td class="col_1 bottom-line">Historie:</td>
+						<td class="col_2 col_3 col_4 col_5 col_6 value bottom-line" colspan="5"><?= $this->historie ?></td>
 					</tr>
 					<?php $row++; ?>
 					<tr class="row_<?= $row ?> referent">
-						<td class="col_0 col_1" colspan="2">Zuständiger Wertungsreferent:</td>
-						<td class="col_2 col_3 col_4 col_5 value" colspan="4"><?= $this->referent ?></td>
+						<td class="col_1 col_2" colspan="2">Zuständiger Wertungsreferent:</td>
+						<td class="col_3 col_4 col_5 col_6 value" colspan="4"><?= $this->referent ?></td>
 					</tr>
 				</tbody>
 			</table>

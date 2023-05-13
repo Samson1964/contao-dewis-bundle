@@ -32,3 +32,8 @@ $GLOBALS['TL_LANG']['tl_settings']['dewis_elobase_db'] = array('Datenbank', 'Dat
 $GLOBALS['TL_LANG']['tl_settings']['dewis_elobase_user'] = array('Benutzer', 'Benutzer');
 $GLOBALS['TL_LANG']['tl_settings']['dewis_elobase_pass'] = array('Passwort', 'Passwort');
 $GLOBALS['TL_LANG']['tl_settings']['dewis_elobase_url'] = array('Link', 'Link zur alten Karteikarte');
+
+$GLOBALS['TL_LANG']['tl_settings']['dewis_playerDefaultImage'] = array('Spielerbild', 'Standardbild für Spieler');
+$GLOBALS['TL_LANG']['tl_settings']['dewis_playerImageSize'] = array('Bildgröße', 'Größe der Spielerbilder');
+$GLOBALS['TL_LANG']['tl_settings']['dewis_clubDefaultImage'] = array('Vereinsbild', 'Standardbild/-logo für Vereine');
+$GLOBALS['TL_LANG']['tl_settings']['dewis_clubImageSize'] = array('Bildgröße', 'Größe der Vereinsbilder/Logos');

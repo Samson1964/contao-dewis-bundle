@@ -104,3 +104,13 @@ $GLOBALS['TL_CONFIG']['dewis_karteisperre_gaeste'] = 1;
 $GLOBALS['TL_CONFIG']['dewis_passive_ausblenden'] = 0;
 $GLOBALS['TL_CONFIG']['dewis_geburtsjahr_ausblenden'] = 1;
 $GLOBALS['TL_CONFIG']['dewis_geschlecht_ausblenden'] = 1;
+
+/**
+ * -------------------------------------------------------------------------
+ * Models registrieren                                  
+ * -------------------------------------------------------------------------
+ */
+
+$GLOBALS['TL_MODELS']['tl_dwz_spi'] = \Schachbulle\ContaoDewisBundle\Models\DewisSpielerModel::class;
+$GLOBALS['TL_MODELS']['tl_dwz_ver'] = \Schachbulle\ContaoDewisBundle\Models\DewisVereinModel::class;
+

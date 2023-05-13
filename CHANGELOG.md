@@ -1,5 +1,15 @@
 # Abfrage der DeWIS-API
 
+## Version 1.6.0 (2023-05-13)
+
+* Change: tl_dwz_spi -> bei Bild alle Extras entfernt: alt,size,imagemargin,imageUrl,fullsize,caption,floating -> kommt in globale Bildeinstellung
+* Change: tl_dwz_ver -> bei Bild alle Extras entfernt: size,caption -> kommt in globale Bildeinstellung
+* Add: tl_settings -> Felder für Standardbilder und Bildgrößen Spieler und Vereine
+* Add: Model für Abfrage tl_dwz_spi
+* Add: Model für Abfrage tl_dwz_ver
+* Change: Template dewis_spieler -> mit Spielerbild
+* Change: Template dewis_verein -> mit Vereinslogo
+
 ## Version 1.5.7 (2023-02-08)
 
 * Fix: tl_member wird nicht übernommen -> PaletteManipulator eingebaut

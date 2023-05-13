@@ -6,7 +6,7 @@
 $GLOBALS['TL_DCA']['tl_settings']['palettes']['__selector__'][] = 'dewis_switchedOff';
 $GLOBALS['TL_DCA']['tl_settings']['palettes']['__selector__'][] = 'dewis_cache';
 $GLOBALS['TL_DCA']['tl_settings']['palettes']['__selector__'][] = 'dewis_elobase';
-$GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] .= ';{dewis_legend:hide},dewis_switchedOff,dewis_karteisperre_gaeste,dewis_passive_ausblenden,dewis_geburtsjahr_ausblenden,dewis_geschlecht_ausblenden,dewis_seite_spieler,dewis_seite_turnier,dewis_seite_verein,dewis_seite_verband,dewis_cache,dewis_elobase';
+$GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] .= ';{dewis_legend:hide},dewis_switchedOff,dewis_karteisperre_gaeste,dewis_passive_ausblenden,dewis_geburtsjahr_ausblenden,dewis_geschlecht_ausblenden,dewis_seite_spieler,dewis_seite_turnier,dewis_seite_verein,dewis_seite_verband,dewis_cache,dewis_elobase,dewis_playerDefaultImage,dewis_playerImageSize,dewis_clubDefaultImage,dewis_clubImageSize';
 $GLOBALS['TL_DCA']['tl_settings']['subpalettes']['dewis_switchedOff'] = 'dewis_switchedOffText';
 $GLOBALS['TL_DCA']['tl_settings']['subpalettes']['dewis_cache'] = 'dewis_cache_default,dewis_cache_verband,dewis_cache_referent';
 $GLOBALS['TL_DCA']['tl_settings']['subpalettes']['dewis_elobase'] = 'dewis_elobase_host,dewis_elobase_db,dewis_elobase_user,dewis_elobase_pass,dewis_elobase_url';
@@ -53,7 +53,7 @@ $GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_cache'] = array
 	)
 );
 
-// Anzahl Stunden, die der Standardcache gültig ist
+// Anzahl Stunden, die der Standardcache gÃ¼ltig ist
 $GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_cache_default'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['dewis_cache_default'],
@@ -65,7 +65,7 @@ $GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_cache_default'] = array
 	)
 );
 
-// Anzahl Stunden, die der Verbandcache gültig ist
+// Anzahl Stunden, die der Verbandcache gÃ¼ltig ist
 $GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_cache_verband'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['dewis_cache_verband'],
@@ -77,7 +77,7 @@ $GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_cache_verband'] = array
 	)
 );
 
-// Anzahl Stunden, die der Referentcache gültig ist
+// Anzahl Stunden, die der Referentcache gÃ¼ltig ist
 $GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_cache_referent'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['dewis_cache_referent'],
@@ -89,7 +89,7 @@ $GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_cache_referent'] = array
 	)
 );
 
-// Karteikarte für Gäste sperren
+// Karteikarte fÃ¼r GÃ¤ste sperren
 $GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_karteisperre_gaeste'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['dewis_karteisperre_gaeste'],
@@ -100,7 +100,7 @@ $GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_karteisperre_gaeste'] = array
 	)
 );
 
-// Karteikarte für Gäste sperren
+// Karteikarte fÃ¼r GÃ¤ste sperren
 $GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_passive_ausblenden'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['dewis_passive_ausblenden'],
@@ -133,7 +133,7 @@ $GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_geschlecht_ausblenden'] = arr
 	)
 );
 
-// Seite für das Spieler-Modul
+// Seite fÃ¼r das Spieler-Modul
 $GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_seite_spieler'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['dewis_seite_spieler'],
@@ -154,7 +154,7 @@ $GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_seite_spieler'] = array
 	)
 ); 
 
-// Seite für das Turnier-Modul
+// Seite fÃ¼r das Turnier-Modul
 $GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_seite_turnier'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['dewis_seite_turnier'],
@@ -175,7 +175,7 @@ $GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_seite_turnier'] = array
 	)
 ); 
 
-// Seite für das Verein-Modul
+// Seite fÃ¼r das Verein-Modul
 $GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_seite_verein'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['dewis_seite_verein'],
@@ -196,7 +196,7 @@ $GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_seite_verein'] = array
 	)
 ); 
 
-// Seite für das Verband-Modul
+// Seite fÃ¼r das Verband-Modul
 $GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_seite_verband'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['dewis_seite_verband'],
@@ -283,3 +283,65 @@ $GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_elobase_url'] = array
 		'tl_class'            => 'long clr',
 	)
 );
+
+$GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_playerDefaultImage'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['dewis_playerDefaultImage'],
+	'inputType'               => 'fileTree',
+	'eval'                    => array
+	(
+		'filesOnly'           => true,
+		'fieldType'           => 'radio',
+		'tl_class'            => 'w50'
+	)
+);
+
+$GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_playerImageSize'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['dewis_playerImageSize'],
+	'exclude'                 => true,
+	'inputType'               => 'imageSize',
+	'reference'               => &$GLOBALS['TL_LANG']['MSC'],
+	'eval'                    => array(
+		'rgxp'                => 'natural', 
+		'includeBlankOption'  => true, 
+		'nospace'             => true, 
+		'helpwizard'          => true, 
+		'tl_class'            => 'w50'
+	),
+	'options_callback' => static function ()
+	{
+		return System::getContainer()->get('contao.image.image_sizes')->getOptionsForUser(BackendUser::getInstance());
+	},
+); 
+
+$GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_clubDefaultImage'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['dewis_clubDefaultImage'],
+	'inputType'               => 'fileTree',
+	'eval'                    => array
+	(
+		'filesOnly'           => true,
+		'fieldType'           => 'radio',
+		'tl_class'            => 'w50 clr'
+	)
+);
+
+$GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_clubImageSize'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['dewis_clubImageSize'],
+	'exclude'                 => true,
+	'inputType'               => 'imageSize',
+	'reference'               => &$GLOBALS['TL_LANG']['MSC'],
+	'eval'                    => array(
+		'rgxp'                => 'natural', 
+		'includeBlankOption'  => true, 
+		'nospace'             => true, 
+		'helpwizard'          => true, 
+		'tl_class'            => 'w50'
+	),
+	'options_callback' => static function ()
+	{
+		return System::getContainer()->get('contao.image.image_sizes')->getOptionsForUser(BackendUser::getInstance());
+	},
+); 

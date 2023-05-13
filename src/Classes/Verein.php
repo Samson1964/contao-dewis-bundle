@@ -295,6 +295,24 @@ class Verein extends \Module
 				$this->Subtemplate->anzahl_vn = count($result);
 				$this->Template->searchresult = $this->Subtemplate->parse();
 			}
+
+			// Verein in tl_dwz_ver suchen
+			$objVerein = \Schachbulle\ContaoDewisBundle\Models\DewisVereinModel::findOneBy('zpsver', $zps);
+			//print_r($objVerein);
+			$this->Template->addImage     = true;
+			$this->Template->homepage     = $objVerein->homepage;
+			$this->Template->info         = $objVerein->info;
+			if($objVerein->addImage)
+			{
+				// Vereinslogo vorhanden
+				$objFile = \FilesModel::findByPk($objVerein->singleSRC);
+			}
+			else
+			{
+				$objFile = \FilesModel::findByUuid($GLOBALS['TL_CONFIG']['dewis_clubDefaultImage']);
+			}
+			$objBild = new \stdClass();
+			\Controller::addImageToTemplate($objBild, array('singleSRC' => $objFile->path, 'size' => unserialize($GLOBALS['TL_CONFIG']['dewis_clubImageSize'])), \Config::get('maxImageWidth'), null, $objFile);
 			
 			/*********************************************************
 			 * Ausgabe Kopfdaten
@@ -303,6 +321,9 @@ class Verein extends \Module
 			$this->Template->listenlink   = ($order == 'alpha') ? sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getVereinseite()."/%s.html?order=rang\">Rangliste</a>", $resultArr['result']->union->vkz, $resultArr['result']->union->name) : sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getVereinseite()."/%s.html?order=alpha\">Alphaliste</a>", $resultArr['result']->union->vkz, $resultArr['result']->union->name);
 			$this->Template->vereinsname  = $resultArr['result']->union->name;
 			$referent = $resultArr['result']->ratingOfficer; // Wertungsreferent zuweisen
+			$this->Template->image        = $objBild->singleSRC;
+			$this->Template->imageSize    = $objBild->imgSize;
+			$this->Template->thumbnail    = $objBild->src;
 
 
 			/*********************************************************

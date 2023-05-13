@@ -51,6 +51,32 @@
 
 		<div class="listenlink"><?= $this->listenlink ?></div>
 
+		<div class="table_responsiv">
+			<table class="header">
+				<tbody>
+					<tr class="row_0">
+						<td class="col_0" rowspan="2" style="text-align:center;" width="25%">
+							<?php if($this->addImage): ?>
+								<a href="<?= $this->image ?>" data-lightbox="clublogo"><img src="<?= $this->thumbnail ?>"<?= $this->imageSize ?>></a><br>
+								<a href="mailto:webmaster@schachbund.de" style="font-size:10px;">Logo senden</a>
+							<?php endif; ?>
+						</td>
+						<td class="col_1 top-line" width="25%">Homepage:</td>
+						<td class="col_2 value top-line">
+							<?php if($this->homepage): ?>
+								<a href="<?= $this->homepage ?>" target="_blank"><?= $this->homepage ?></a>
+							<?php endif; ?>
+						</td>
+					</tr>
+					<tr class="row_1">
+						<td class="col_1 top-line">Über den Verein:</td>
+						<td class="col_2 value top-line"><?= $this->info ?></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+
 		<?php
 			$GLOBALS['TL_CSS'][] = 'bundles/contaodewis/css/tablesorter.css';
 			$GLOBALS['TL_JAVASCRIPT'][] = 'bundles/contaodewis/js/jquery.tablesorter.min.js';

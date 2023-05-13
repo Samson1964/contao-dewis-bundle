@@ -133,7 +133,7 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 	'subpalettes' => array
 	(
 		'verstorben'                  => 'sterbetag,sterbeort',
-		'addImage'                    => 'singleSRC,alt,size,imagemargin,imageUrl,fullsize,caption,floating',
+		'addImage'                    => 'singleSRC',
 		'blocked'                     => 'grund,melder'
 	),
 
