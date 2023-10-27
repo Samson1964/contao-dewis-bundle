@@ -181,10 +181,11 @@ class Turnier extends \Module
 						{
 							$daten[] = array
 							(
-								'Turniercode'	=> $t->tcode,
-								'Turniername'	=> sprintf('<a href="'.\Schachbulle\ContaoDewisBundle\Helper\Helper::getTurnierseite().'/%s.html" title="%s">%s</a>', $t->tcode, $t->tname, \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Turnierkurzname($t->tname)),
-								'Turnierende'	=> substr($t->finishedOn,8,2).'.'.substr($t->finishedOn,5,2).'.'.substr($t->finishedOn,0,4),
-								'Auswerter'		=> ($gesperrt) ? 'Sie müssen sich anmelden, um diese Daten sehen zu können.' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Wertungsreferent($t->assessor1, false),
+								'Teilnehmer'  => $t->cntPlayer,
+								'Turniercode' => $t->tcode,
+								'Turniername' => sprintf('<a href="'.\Schachbulle\ContaoDewisBundle\Helper\Helper::getTurnierseite().'/%s.html" title="%s">%s</a>', $t->tcode, $t->tname, \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Turnierkurzname($t->tname)),
+								'Turnierende' => substr($t->finishedOn,8,2).'.'.substr($t->finishedOn,5,2).'.'.substr($t->finishedOn,0,4),
+								'Auswerter'   => ($gesperrt) ? 'Sie müssen sich anmelden, um diese Daten sehen zu können.' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Wertungsreferent($t->assessor1, false),
 							);
 						}
 					}

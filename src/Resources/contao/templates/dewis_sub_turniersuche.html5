@@ -58,6 +58,7 @@
 					<th class="right-line">Code</th>
 					<th class="right-line">Turnier</th>
 					<th class="right-line">Turnier-<br>ende</th>
+					<th class="right-line">Spieler</th>
 					<th>Auswerter</th>
 				</tr>
 			</thead>
@@ -69,6 +70,7 @@
 					<td class="right-line <?= $class ?>"><?= $d['Turniercode'] ?></td>
 					<td class="right-line <?= $class ?>"><?= $d['Turniername'] ?></td>
 					<td class="right-line <?= $class ?>"><?= $d['Turnierende'] ?></td>
+					<td class="right-line <?= $class ?>"><?= $d['Teilnehmer'] ?></td>
 					<td class="<?= $class ?>"><?= $d['Auswerter'] ?></td>
 				</tr>
 			<?php endforeach; ?>

@@ -1,5 +1,9 @@
 # Abfrage der DeWIS-API
 
+## Version 1.6.1 (2023-10-27)
+
+* Add: Ausgabe der Teilnehmeranzahl in der Turniersuche
+
 ## Version 1.6.0 (2023-05-13)
 
 * Change: tl_dwz_spi -> bei Bild alle Extras entfernt: alt,size,imagemargin,imageUrl,fullsize,caption,floating -> kommt in globale Bildeinstellung
