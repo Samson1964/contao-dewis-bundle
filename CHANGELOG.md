@@ -1,5 +1,14 @@
 # Abfrage der DeWIS-API
 
+## Version 1.6.2 (2023-11-22)
+
+* Change: tl_dwz_spi -> Operation editHeader nach links verschoben in Icon-Liste
+* Add: Toggle-Button Haste in tl_dwz_spi und tl_dwz_ver
+* Add: Abhängigkeit codefog/contao-haste
+* Add: Spezialfilter Spieler mit/ohne Homepage
+* Add: Filter Spieler mit/ohne Bild
+* Add: Spezialfilter Vereine mit/ohne Kurzporträt, mit/ohne Homepage
+
 ## Version 1.6.1 (2023-10-27)
 
 * Add: Ausgabe der Teilnehmeranzahl in der Turniersuche

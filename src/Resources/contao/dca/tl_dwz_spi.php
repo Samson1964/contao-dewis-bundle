@@ -22,7 +22,11 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 	(
 		'dataContainer'               => 'Table',
 		'ctable'                      => array('tl_dwz_spiver', 'tl_dwz_inf', 'tl_dwz_fid', 'tl_dwz_kar'),
-		'switchToEdit'                => true, 
+		'onload_callback'             => array
+		(
+			array('tl_dwz_spi', 'applyAdvancedFilter'),
+		),
+		'switchToEdit'                => true,
 		'enableVersioning'            => true,
 		'sql' => array
 		(
@@ -48,7 +52,8 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 			'mode'                    => 1,
 			'fields'                  => array('nachname', 'vorname'),
 			'flag'                    => 3,
-			'panelLayout'             => 'filter;sort;search,limit'
+			'panelLayout'             => 'myfilter;filter;sort,search,limit',
+			'panel_callback'          => array('myfilter' => array('tl_dwz_spi', 'generateAdvancedFilter')),
 		),
 		'label' => array
 		(
@@ -68,6 +73,12 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 		),
 		'operations' => array
 		(
+			'editHeader' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_dwz_spi']['editHeader'],
+				'href'                => 'act=edit',
+				'icon'                => 'header.gif',
+			),
 			'editKartei' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_dwz_spi']['editKartei'],
@@ -92,12 +103,6 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 				'href'                => 'table=tl_dwz_fid',
 				'icon'                => 'bundles/contaodewis/images/icon_fide.png',
 			),
-			'editHeader' => array
-			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_dwz_spi']['editHeader'],
-				'href'                => 'act=edit',
-				'icon'                => 'header.gif',
-			),
 			'copy' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_dwz_spi']['copy'],
@@ -113,6 +118,20 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 				'attributes'          => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\'))return false;Backend.getScrollOffset()"',
 				//'button_callback'     => array('tl_dwz_spi', 'deleteArchive')
 			),
+			'toggle' => array
+			(
+				'label'                => &$GLOBALS['TL_LANG']['tl_dwz_spi']['toggle'],
+				'attributes'           => 'onclick="Backend.getScrollOffset()"',
+				'haste_ajax_operation' => array
+				(
+					'field'            => 'published',
+					'options'          => array
+					(
+						array('value' => '', 'icon' => 'invisible.svg'),
+						array('value' => '1', 'icon' => 'visible.svg'),
+					),
+				),
+			),
 			'show' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_dwz_spi']['show'],
@@ -125,7 +144,7 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'__selector__'                => array('verstorben', 'addImage', 'blocked'), 
+		'__selector__'                => array('verstorben', 'addImage', 'blocked'),
 		'default'                     => '{name_legend},vorname,nachname,titel,geschlecht,typ;{geburt_legend:hide},geburtstag,geburtsort,verstorben;{contact_legend:hide},plz,ort,strasse,telefon1,email1,telefon2,email2,telefon3,email3,telefax;{club_legend:hide},dewisID,zpsver,zpsmgl,status,funktion;{fide_legend:hide},fideID,fideNation,fideElo,fideTitel;{elobase_legend:hide},altpkz,elobase;{dwz_legend:hide},dwzwoche,dwz,dwzindex;{image_legend:hide},addImage;{info_legend:hide},info,homepage;{ban_legend:hide},blocked,link_altkartei;{publish_legend},published'
 	),
 
@@ -199,8 +218,8 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 			),
 			'eval'                    => array
 			(
-				'mandatory'           => false, 
-				'maxlength'           => 1, 
+				'mandatory'           => false,
+				'maxlength'           => 1,
 				'tl_class'            => 'w50 clr',
 				'includeBlankOption'  => true,
 			),
@@ -223,8 +242,8 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 			),
 			'eval'                    => array
 			(
-				'mandatory'           => false, 
-				'maxlength'           => 1, 
+				'mandatory'           => false,
+				'maxlength'           => 1,
 				'tl_class'            => 'w50',
 				'includeBlankOption'  => true,
 			),
@@ -262,7 +281,7 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>40, 'tl_class'=>'w50'),
 			'sql'                     => "varchar(40) NOT NULL default ''"
-		),  
+		),
 		'verstorben' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_dwz_spi']['verstorben'],
@@ -301,7 +320,7 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>40, 'tl_class'=>'w50'),
 			'sql'                     => "varchar(40) NOT NULL default ''"
-		),  
+		),
 		'plz' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_dwz_spi']['plz'],
@@ -424,8 +443,8 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 			'inputType'               => 'text',
 			'eval'                    => array
 			(
-				'mandatory'           => false, 
-				'maxlength'			  => 5, 
+				'mandatory'           => false,
+				'maxlength'			  => 5,
 				'tl_class'            => 'w50'
 			),
 			'sql'                     => "varchar(5) NOT NULL default ''"
@@ -440,8 +459,8 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 			'inputType'               => 'text',
 			'eval'                    => array
 			(
-				'mandatory'           => false, 
-				'maxlength'			  => 4, 
+				'mandatory'           => false,
+				'maxlength'			  => 4,
 				'tl_class'            => 'w50'
 			),
 			'sql'                     => "varchar(4) NOT NULL default ''"
@@ -461,8 +480,8 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 			),
 			'eval'                    => array
 			(
-				'mandatory'           => false, 
-				'maxlength'           => 1, 
+				'mandatory'           => false,
+				'maxlength'           => 1,
 				'tl_class'            => 'w50',
 			),
 			'sql'                     => "varchar(1) NOT NULL default ''"
@@ -486,7 +505,7 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>8, 'tl_class'=>'w50'),
 			'sql'                     => "int(10) unsigned NOT NULL default '0'",
-		),  
+		),
 		'altpkz' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_dwz_spi']['altpkz'],
@@ -495,7 +514,7 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>8, 'tl_class'=>'w50'),
 			'sql'                     => "varchar(8) NOT NULL default ''"
-		),  
+		),
 		'dwzwoche' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_dwz_spi']['dwzwoche'],
@@ -504,8 +523,8 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 			'inputType'               => 'text',
 			'eval'                    => array
 			(
-				'mandatory'           => false, 
-				'maxlength'           => 7, 
+				'mandatory'           => false,
+				'maxlength'           => 7,
 				'tl_class'            => 'w50',
 			),
 			'sql'                     => "varchar(7) NOT NULL default ''"
@@ -519,9 +538,9 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 			'inputType'               => 'text',
 			'eval'                    => array
 			(
-				'mandatory'           => false, 
+				'mandatory'           => false,
 				'rgxp'                => 'digit',
-				'maxlength'           => 4, 
+				'maxlength'           => 4,
 				'tl_class'            => 'w50',
 			),
 			'sql'                     => "smallint(4) unsigned NOT NULL default '0'"
@@ -535,9 +554,9 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 			'inputType'               => 'text',
 			'eval'                    => array
 			(
-				'mandatory'           => false, 
+				'mandatory'           => false,
 				'rgxp'                => 'digit',
-				'maxlength'           => 3, 
+				'maxlength'           => 3,
 				'tl_class'            => 'w50',
 			),
 			'sql'                     => "smallint(3) unsigned NOT NULL default '0'"
@@ -553,8 +572,8 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 			'inputType'               => 'text',
 			'eval'                    => array
 			(
-				'mandatory'           => false, 
-				'maxlength'           => 3, 
+				'mandatory'           => false,
+				'maxlength'           => 3,
 				'tl_class'            => 'w50',
 			),
 			'sql'                     => "varchar(3) NOT NULL default ''"
@@ -568,9 +587,9 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 			'inputType'               => 'text',
 			'eval'                    => array
 			(
-				'mandatory'           => false, 
+				'mandatory'           => false,
 				'rgxp'                => 'digit',
-				'maxlength'           => 4, 
+				'maxlength'           => 4,
 				'tl_class'            => 'w50',
 			),
 			'sql'                     => "smallint(4) unsigned NOT NULL default '0'"
@@ -584,8 +603,8 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 			'inputType'               => 'text',
 			'eval'                    => array
 			(
-				'mandatory'           => false, 
-				'maxlength'           => 12, 
+				'mandatory'           => false,
+				'maxlength'           => 12,
 				'tl_class'            => 'w50',
 			),
 			'sql'                     => "varchar(12) NOT NULL default ''"
@@ -599,8 +618,8 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 			'inputType'               => 'text',
 			'eval'                    => array
 			(
-				'mandatory'           => false, 
-				'maxlength'           => 3, 
+				'mandatory'           => false,
+				'maxlength'           => 3,
 				'tl_class'            => 'w50',
 			),
 			'sql'                     => "varchar(3) NOT NULL default ''"
@@ -609,10 +628,11 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_dwz_spi']['addImage'],
 			'exclude'                 => true,
+			'filter'                  => true,
 			'inputType'               => 'checkbox',
 			'eval'                    => array('submitOnChange'=>true),
 			'sql'                     => "char(1) NOT NULL default ''"
-		), 
+		),
 		'singleSRC' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_dwz_spi']['singleSRC'],
@@ -620,7 +640,7 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 			'inputType'               => 'fileTree',
 			'eval'                    => array('filesOnly'=>true, 'extensions'=>Config::get('validImageTypes'), 'fieldType'=>'radio', 'mandatory'=>true),
 			'sql'                     => "binary(16) NULL"
-		), 
+		),
 		'alt' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_dwz_spi']['alt'],
@@ -693,7 +713,7 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 			'eval'                    => array('cols'=>4, 'tl_class'=>'w50'),
 			'reference'               => &$GLOBALS['TL_LANG']['MSC'],
 			'sql'                     => "varchar(12) NOT NULL default ''"
-		), 
+		),
 		'info' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_dwz_spi']['info'],
@@ -701,7 +721,7 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 			'search'                  => true,
 			'inputType'               => 'textarea',
 			'eval'                    => array('rte'=>'tinyMCE'),
-			'explanation'             => 'insertTags', 
+			'explanation'             => 'insertTags',
 			'sql'                     => "text NULL"
 		),
 		'homepage' => array
@@ -712,7 +732,7 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>false, 'rgxp'=>'url', 'decodeEntities'=>true, 'maxlength'=>255, 'tl_class'=>'long clr'),
 			'sql'                     => "varchar(255) NOT NULL default ''"
-		), 
+		),
 		'elobase' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_dwz_spi']['elobase'],
@@ -729,7 +749,7 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 			'inputType'               => 'checkbox',
 			'eval'                    => array('submitOnChange'=>true),
 			'sql'                     => "char(1) NOT NULL default ''"
-		), 
+		),
 		'link_altkartei' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_dwz_spi']['link_altkartei'],
@@ -747,7 +767,7 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 			'eval'                    => array('rte'=>'tinyMCE', 'helpwizard'=>true),
 			'explanation'             => 'insertTags',
 			'sql'                     => "mediumtext NULL"
-		),  
+		),
 		'melder' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_dwz_spi']['melder'],
@@ -758,8 +778,8 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 			'inputType'               => 'text',
 			'eval'                    => array
 			(
-				'mandatory'           => false, 
-				'maxlength'           => 40, 
+				'mandatory'           => false,
+				'maxlength'           => 40,
 				'tl_class'            => 'long'
 			),
 			'sql'                     => "varchar(40) NOT NULL default ''"
@@ -768,8 +788,14 @@ $GLOBALS['TL_DCA']['tl_dwz_spi'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_dwz_spi']['published'],
 			'inputType'               => 'checkbox',
+			'exclude'                 => true,
 			'filter'                  => true,
-			'eval'                    => array('tl_class' => 'w50','isBoolean' => true),
+			'default'                 => 1,
+			'eval'                    => array
+			(
+				'tl_class'            => 'w50',
+				'isBoolean'           => true
+			),
 			'sql'                     => "char(1) NOT NULL default ''"
 		),
 		'contaoMemberID' => array
@@ -806,7 +832,7 @@ class tl_dwz_spi extends Backend
 	 * @return string
 	 */
 	public function listSpieler($arrRow)
-	{ 
+	{
 		// Name und Vorname ausgeben
 		$temp = $arrRow['nachname'];
 		if($arrRow['vorname']) $temp .= ',' . $arrRow['vorname'];
@@ -879,6 +905,129 @@ class tl_dwz_spi extends Backend
 	public function pagePicker(DataContainer $dc)
 	{
 		return ' <a href="contao/page.php?do='.Input::get('do').'&amp;table='.$dc->table.'&amp;field='.$dc->field.'&amp;value='.str_replace(array('{{link_url::', '}}'), '', $dc->value).'" onclick="Backend.getScrollOffset();Backend.openModalSelector({\'width\':768,\'title\':\''.specialchars(str_replace("'", "\\'", $GLOBALS['TL_LANG']['MOD']['page'][0])).'\',\'url\':this.href,\'id\':\''.$dc->field.'\',\'tag\':\'ctrl_'.$dc->field . ((Input::get('act') == 'editAll') ? '_' . $dc->id : '').'\',\'self\':this});return false">' . Image::getHtml('pickpage.gif', $GLOBALS['TL_LANG']['MSC']['pagepicker'], 'style="vertical-align:top;cursor:pointer"') . '</a>';
+	}
+
+	/**
+	 * Funktion applyAdvancedFilter
+	 * Spezialfilter anwenden
+	 * @return -
+	 */
+	public function applyAdvancedFilter()
+	{
+
+		$session = \Session::getInstance()->getData();
+
+		// Filterwerte in der Sitzung speichern
+		foreach($_POST as $k => $v)
+		{
+			if(substr($k, 0, 4) != 'tds_')
+			{
+				continue;
+			}
+
+			// Filter zurücksetzen
+			if($k == \Input::post($k))
+			{
+				unset($session['filter']['tl_dwz_spiFilter'][$k]);
+			}
+			// Filter zuweisen
+			else
+			{
+				$session['filter']['tl_dwz_spiFilter'][$k] = \Input::post($k);
+			}
+		}
+
+		$this->Session->setData($session);
+
+		if(\Input::get('id') > 0 || !isset($session['filter']['tl_dwz_spiFilter']))
+		{
+			return;
+		}
+
+		$arrPlayers = null;
+
+		if(isset($session['filter']['tl_dwz_spiFilter']['tds_filter']))
+		{
+			switch($session['filter']['tl_dwz_spiFilter']['tds_filter'])
+			{
+				case '1': // Alle Spieler mit Homepage-Link
+					$objPlayers = \Database::getInstance()->prepare("SELECT * FROM tl_dwz_spi WHERE homepage != ?")
+					                                      ->execute('');
+					$arrPlayers = is_array($arrPlayers) ? array_intersect($arrPlayers, $objPlayers->fetchEach('id')) : $objPlayers->fetchEach('id');
+					break;
+
+				case '2': // Alle Spieler ohne Homepage-Link
+					$objPlayers = \Database::getInstance()->prepare("SELECT * FROM tl_dwz_spi WHERE homepage = ?")
+					                                      ->execute('');
+					$arrPlayers = is_array($arrPlayers) ? array_intersect($arrPlayers, $objPlayers->fetchEach('id')) : $objPlayers->fetchEach('id');
+					break;
+
+				default:
+
+			}
+		}
+
+		if(is_array($arrPlayers) && empty($arrPlayers))
+		{
+			$arrPlayers = array(0);
+		}
+
+		//$log = print_r($arrPlayers, true);
+		//log_message($log, 'fernschachverwaltung.log');
+
+		$GLOBALS['TL_DCA']['tl_dwz_spi']['list']['sorting']['root'] = $arrPlayers;
+
+	}
+
+	public function generateAdvancedFilter(DataContainer $dc)
+	{
+
+		if(\Input::get('id') > 0) return '';
+
+		$session = \Session::getInstance()->getData();
+
+		// Filters
+		$arrFilters = array
+		(
+			'tds_filter'   => array
+			(
+				'name'    => 'tds_filter',
+				'label'   => $GLOBALS['TL_LANG']['tl_dwz_spi']['filter_extended'],
+				'options' => array
+				(
+					'1'   => $GLOBALS['TL_LANG']['tl_dwz_spi']['filter_active_homepage'],
+					'2'   => $GLOBALS['TL_LANG']['tl_dwz_spi']['filter_without_homepage'],
+				)
+			),
+		);
+
+		$strBuffer = '<div class="tl_filter tds_filter tl_subpanel"><strong>' . $GLOBALS['TL_LANG']['tl_dwz_spi']['filter'] . ':</strong> ' . "\n";
+
+		// Generate filters
+		foreach ($arrFilters as $arrFilter)
+		{
+			$strOptions = '<option value="' . $arrFilter['name'] . '">' . $arrFilter['label'] . '</option>' . "\n";
+			$strOptions .= '<option value="' . $arrFilter['name'] . '">---</option>' . "\n";
+
+			// Prüfen ob ein Filter gesetzt ist
+			if(isset($session['filter']['tl_dwz_spiFilter']['tds_filter']))
+			{
+				$filterwert = $session['filter']['tl_dwz_spiFilter']['tds_filter'];
+			}
+			else $filterwert = '';
+
+			// Generate options
+			foreach($arrFilter['options'] as $k => $v)
+			{
+				$strOptions .= '<option value="' . $k . '"' . (((string)$filterwert === (string)$k) ? ' selected' : '') . '>' . $v . '</option>' . "\n";
+			}
+
+		}
+
+		$strBuffer .= '<select name="' . $arrFilter['name'] . '" id="' . $arrFilter['name'] . '" class="tl_select' . (isset($session['filter']['tl_dwz_spiFilter'][$arrFilter['name']]) ? ' active' : '') . '">'.$strOptions.'</select>' . "\n";
+		
+		return $strBuffer . '</div>';
+
 	}
 
 }

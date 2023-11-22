@@ -12,6 +12,7 @@
     "require": {
         "php": "^5.6 || ^7.0",
         "contao/core-bundle": "^4",
+        "codefog/contao-haste": "*",
         "schachbulle/contao-helper-bundle": ">=0",
         "terminal42/contao-avatar": ">=1",
         "components/flag-icon-css": "^3.3"

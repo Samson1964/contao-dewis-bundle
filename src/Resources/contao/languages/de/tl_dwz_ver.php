@@ -48,3 +48,15 @@ $GLOBALS['TL_LANG']['tl_dwz_ver']['copy'] = array('Verein kopieren', 'Verein %s 
 $GLOBALS['TL_LANG']['tl_dwz_ver']['delete'] = array('Verein löschen' ,'Verein %s löschen');
 $GLOBALS['TL_LANG']['tl_dwz_ver']['toggle'] = array('Verein aktivieren/deaktivieren', 'Verein %s aktivieren/deaktivieren');
 $GLOBALS['TL_LANG']['tl_dwz_ver']['show'] = array('Vereindetails anzeigen', 'Details des Vereins %s anzeigen');
+
+
+/**
+ * Spezialfilter
+ */
+
+$GLOBALS['TL_LANG']['tl_dwz_ver']['filter'] = 'Spezialfilter';
+$GLOBALS['TL_LANG']['tl_dwz_ver']['filter_extended'] = 'Spezialfilter';
+$GLOBALS['TL_LANG']['tl_dwz_ver']['filter_active_portrait'] = 'Vereine mit Kurzporträt';
+$GLOBALS['TL_LANG']['tl_dwz_ver']['filter_without_portrait'] = 'Vereine ohne Kurzporträt';
+$GLOBALS['TL_LANG']['tl_dwz_ver']['filter_active_homepage'] = 'Vereine mit Homepage';
+$GLOBALS['TL_LANG']['tl_dwz_ver']['filter_without_homepage'] = 'Vereine ohne Homepage';

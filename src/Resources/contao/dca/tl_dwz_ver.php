@@ -21,6 +21,10 @@ $GLOBALS['TL_DCA']['tl_dwz_ver'] = array
 	'config' => array
 	(
 		'dataContainer'               => 'Table',
+		'onload_callback'             => array
+		(
+			array('tl_dwz_ver', 'applyAdvancedFilter'),
+		),
 		'switchToEdit'                => true, 
 		'enableVersioning'            => true,
 		'sql' => array
@@ -41,7 +45,8 @@ $GLOBALS['TL_DCA']['tl_dwz_ver'] = array
 			'mode'                    => 1,
 			'fields'                  => array('zpsver'),
 			'flag'                    => 3,
-			'panelLayout'             => 'sort,filter;search,limit'
+			'panelLayout'             => 'myfilter;filter;sort,search,limit',
+			'panel_callback'          => array('myfilter' => array('tl_dwz_ver', 'generateAdvancedFilter')),
 		),
 		'label' => array
 		(
@@ -81,6 +86,20 @@ $GLOBALS['TL_DCA']['tl_dwz_ver'] = array
 				'icon'                => 'delete.gif',
 				'attributes'          => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\'))return false;Backend.getScrollOffset()"',
 				//'button_callback'     => array('tl_dwz_ver', 'deleteArchive')
+			),
+			'toggle' => array
+			(
+				'label'                => &$GLOBALS['TL_LANG']['tl_dwz_ver']['toggle'],
+				'attributes'           => 'onclick="Backend.getScrollOffset()"',
+				'haste_ajax_operation' => array
+				(
+					'field'            => 'published',
+					'options'          => array
+					(
+						array('value' => '', 'icon' => 'invisible.svg'),
+						array('value' => '1', 'icon' => 'visible.svg'),
+					),
+				),
 			),
 			'show' => array
 			(
@@ -382,8 +401,14 @@ $GLOBALS['TL_DCA']['tl_dwz_ver'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_dwz_ver']['published'],
 			'inputType'               => 'checkbox',
+			'exclude'                 => true,
 			'filter'                  => true,
-			'eval'                    => array('tl_class' => 'w50','isBoolean' => true),
+			'default'                 => 1,
+			'eval'                    => array
+			(
+				'tl_class'            => 'w50',
+				'isBoolean'           => true
+			),
 			'sql'                     => "char(1) NOT NULL default ''"
 		),
 	)
@@ -475,6 +500,140 @@ class tl_dwz_ver extends Backend
 		}
 
 		return $temp;
+	}
+
+	/**
+	 * Funktion applyAdvancedFilter
+	 * Spezialfilter anwenden
+	 * @return -
+	 */
+	public function applyAdvancedFilter()
+	{
+
+		$session = \Session::getInstance()->getData();
+
+		// Filterwerte in der Sitzung speichern
+		foreach($_POST as $k => $v)
+		{
+			if(substr($k, 0, 4) != 'tdv_')
+			{
+				continue;
+			}
+
+			// Filter zurücksetzen
+			if($k == \Input::post($k))
+			{
+				unset($session['filter']['tl_dwz_verFilter'][$k]);
+			}
+			// Filter zuweisen
+			else
+			{
+				$session['filter']['tl_dwz_verFilter'][$k] = \Input::post($k);
+			}
+		}
+
+		$this->Session->setData($session);
+
+		if(\Input::get('id') > 0 || !isset($session['filter']['tl_dwz_verFilter']))
+		{
+			return;
+		}
+
+		$arrClubs = null;
+
+		if(isset($session['filter']['tl_dwz_verFilter']['tdv_filter']))
+		{
+			switch($session['filter']['tl_dwz_verFilter']['tdv_filter'])
+			{
+				case '1': // Alle Vereine mit Homepage-Link
+					$objClubs = \Database::getInstance()->prepare("SELECT * FROM tl_dwz_ver WHERE homepage != ?")
+					                                    ->execute('');
+					$arrClubs = is_array($arrClubs) ? array_intersect($arrClubs, $objClubs->fetchEach('id')) : $objClubs->fetchEach('id');
+					break;
+
+				case '2': // Alle Vereine ohne Homepage-Link
+					$objClubs = \Database::getInstance()->prepare("SELECT * FROM tl_dwz_ver WHERE homepage = ?")
+					                                    ->execute('');
+					$arrClubs = is_array($arrClubs) ? array_intersect($arrClubs, $objClubs->fetchEach('id')) : $objClubs->fetchEach('id');
+					break;
+
+				case '3': // Alle Vereine mit Kurzporträt
+					$objClubs = \Database::getInstance()->prepare("SELECT * FROM tl_dwz_ver WHERE info != ?")
+					                                    ->execute('');
+					$arrClubs = is_array($arrClubs) ? array_intersect($arrClubs, $objClubs->fetchEach('id')) : $objClubs->fetchEach('id');
+					break;
+
+				case '4': // Alle Vereine ohne Kurzporträt
+					$objClubs = \Database::getInstance()->prepare("SELECT * FROM tl_dwz_ver WHERE info IS ?")
+					                                    ->execute(NULL);
+					$arrClubs = is_array($arrClubs) ? array_intersect($arrClubs, $objClubs->fetchEach('id')) : $objClubs->fetchEach('id');
+					break;
+
+				default:
+
+			}
+		}
+
+		if(is_array($arrClubs) && empty($arrClubs))
+		{
+			$arrClubs = array(0);
+		}
+
+		$GLOBALS['TL_DCA']['tl_dwz_ver']['list']['sorting']['root'] = $arrClubs;
+
+	}
+
+	public function generateAdvancedFilter(DataContainer $dc)
+	{
+
+		if(\Input::get('id') > 0) return '';
+
+		$session = \Session::getInstance()->getData();
+
+		// Filters
+		$arrFilters = array
+		(
+			'tdv_filter'   => array
+			(
+				'name'    => 'tdv_filter',
+				'label'   => $GLOBALS['TL_LANG']['tl_dwz_ver']['filter_extended'],
+				'options' => array
+				(
+					'1'   => $GLOBALS['TL_LANG']['tl_dwz_ver']['filter_active_homepage'],
+					'2'   => $GLOBALS['TL_LANG']['tl_dwz_ver']['filter_without_homepage'],
+					'3'   => $GLOBALS['TL_LANG']['tl_dwz_ver']['filter_active_portrait'],
+					'4'   => $GLOBALS['TL_LANG']['tl_dwz_ver']['filter_without_portrait'],
+				)
+			),
+		);
+
+		$strBuffer = '<div class="tl_filter tdv_filter tl_subpanel"><strong>' . $GLOBALS['TL_LANG']['tl_dwz_ver']['filter'] . ':</strong> ' . "\n";
+
+		// Generate filters
+		foreach ($arrFilters as $arrFilter)
+		{
+			$strOptions = '<option value="' . $arrFilter['name'] . '">' . $arrFilter['label'] . '</option>' . "\n";
+			$strOptions .= '<option value="' . $arrFilter['name'] . '">---</option>' . "\n";
+
+			// Prüfen ob ein Filter gesetzt ist
+			if(isset($session['filter']['tl_dwz_verFilter']['tdv_filter']))
+			{
+				$filterwert = $session['filter']['tl_dwz_verFilter']['tdv_filter'];
+			}
+			else $filterwert = '';
+
+			// Generate options
+			foreach($arrFilter['options'] as $k => $v)
+			{
+				$strOptions .= '<option value="' . $k . '"' . (((string)$filterwert === (string)$k) ? ' selected' : '') . '>' . $v . '</option>' . "\n";
+			}
+
+		}
+
+		$strBuffer .= '<select name="' . $arrFilter['name'] . '" id="' . $arrFilter['name'] . '" class="tl_select' . (isset($session['filter']['tl_dwz_verFilter'][$arrFilter['name']]) ? ' active' : '') . '">'.$strOptions.'</select>' . "\n";
+		
+		return $strBuffer . '</div>';
+
 	}
 
 }
