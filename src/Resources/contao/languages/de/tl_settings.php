@@ -37,3 +37,5 @@ $GLOBALS['TL_LANG']['tl_settings']['dewis_playerDefaultImage'] = array('Spielerb
 $GLOBALS['TL_LANG']['tl_settings']['dewis_playerImageSize'] = array('Bildgröße', 'Größe der Spielerbilder');
 $GLOBALS['TL_LANG']['tl_settings']['dewis_clubDefaultImage'] = array('Vereinsbild', 'Standardbild/-logo für Vereine');
 $GLOBALS['TL_LANG']['tl_settings']['dewis_clubImageSize'] = array('Bildgröße', 'Größe der Vereinsbilder/Logos');
+
+$GLOBALS['TL_LANG']['tl_settings']['dewis_eloLocal'] = array('Elo von lokaler Quelle laden', 'Elo von lokaler Quelle laden, nicht aus DeWIS');

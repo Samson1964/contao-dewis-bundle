@@ -6,7 +6,7 @@
 $GLOBALS['TL_DCA']['tl_settings']['palettes']['__selector__'][] = 'dewis_switchedOff';
 $GLOBALS['TL_DCA']['tl_settings']['palettes']['__selector__'][] = 'dewis_cache';
 $GLOBALS['TL_DCA']['tl_settings']['palettes']['__selector__'][] = 'dewis_elobase';
-$GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] .= ';{dewis_legend:hide},dewis_switchedOff,dewis_karteisperre_gaeste,dewis_passive_ausblenden,dewis_geburtsjahr_ausblenden,dewis_geschlecht_ausblenden,dewis_seite_spieler,dewis_seite_turnier,dewis_seite_verein,dewis_seite_verband,dewis_cache,dewis_elobase,dewis_playerDefaultImage,dewis_playerImageSize,dewis_clubDefaultImage,dewis_clubImageSize';
+$GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] .= ';{dewis_legend:hide},dewis_switchedOff,dewis_karteisperre_gaeste,dewis_passive_ausblenden,dewis_geburtsjahr_ausblenden,dewis_geschlecht_ausblenden,dewis_seite_spieler,dewis_seite_turnier,dewis_seite_verein,dewis_seite_verband,dewis_cache,dewis_elobase,dewis_playerDefaultImage,dewis_playerImageSize,dewis_clubDefaultImage,dewis_clubImageSize,dewis_eloLocal';
 $GLOBALS['TL_DCA']['tl_settings']['subpalettes']['dewis_switchedOff'] = 'dewis_switchedOffText';
 $GLOBALS['TL_DCA']['tl_settings']['subpalettes']['dewis_cache'] = 'dewis_cache_default,dewis_cache_verband,dewis_cache_referent';
 $GLOBALS['TL_DCA']['tl_settings']['subpalettes']['dewis_elobase'] = 'dewis_elobase_host,dewis_elobase_db,dewis_elobase_user,dewis_elobase_pass,dewis_elobase_url';
@@ -345,3 +345,14 @@ $GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_clubImageSize'] = array
 		return System::getContainer()->get('contao.image.image_sizes')->getOptionsForUser(BackendUser::getInstance());
 	},
 ); 
+
+// Elo von lokaler Quelle laden
+$GLOBALS['TL_DCA']['tl_settings']['fields']['dewis_eloLocal'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['dewis_eloLocal'],
+	'inputType'               => 'checkbox',
+	'eval'                    => array
+	(
+		'tl_class'            => 'clr w50',
+	)
+);

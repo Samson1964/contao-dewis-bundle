@@ -1,5 +1,11 @@
 # Abfrage der DeWIS-API
 
+## Version 1.7.0 (2024-03-06)
+
+* Add: Fallback für den Fall, das Elo-Zahlen nicht von DeWIS genommen werden sollen
+* Add: tl_settings.dewis_eloLocal -> Checkbox: Elo von lokaler Quelle (Tabelle elo) laden
+* Add: Klasse DeWIS, Funktion ModifiziereElo -> Lädt die Elo aus der lokalen Quelle, wenn erwünscht
+
 ## Version 1.6.2 (2023-11-22)
 
 * Change: tl_dwz_spi -> Operation editHeader nach links verschoben in Icon-Liste

@@ -101,6 +101,8 @@ class DeWIS
 			$GLOBALS['DeWIS-Cache']['dewis-queriestimes'] += $querytime;
 			//echo $params['funktion'];
 
+			// Elo optional aus lokaler Quelle laden
+			$result = self::ModifiziereElo($result, $params);
 			// DeWIS-Daten in Contao-Datenbank aktualisieren
 			self::AktualisiereDWZTabellen($result, $params);
 
@@ -901,7 +903,66 @@ class DeWIS
 		return '<div class="hinweis noprint">Aus datenschutzrechtlichen Gründen können Spielerdetails seit dem <a href="http://www.schachbund.de/news/aenderungen-beim-zugriff-auf-die-dwz.html">3. Juni 2016</a> nur noch von registrierten Nutzern angesehen werden. <a href="http://www.schachbund.de/registrierung.html">Hier geht es zur kostenlosen Registrierung</a>.</div>';
 	}
 
+	/**
+	 * Lädt die Elo aus der lokalen Quelle
+	 */
+	public function getElo($fideid)
+	{
+		$elo = '';
+		if($fideid)
+		{
+			// FIDE-ID in lokaler Datenbank suchen
+			$objPlayer = \Database::getInstance()->prepare("SELECT * FROM elo WHERE fideid = ?")
+			                                     ->execute($fideid);
+			if($objPlayer->numRows)
+			{
+				$elo = $objPlayer->rating;
+			}
+		}
+		return $elo;
+	}
 
+	/**
+	 * Aktualisiert die Elo anhand der lokalen Quelle
+	 *
+	 * @param object $result           Abfrageergebnis DeWIS
+	 * @param array $parameter         Abfrageparameter die an DeWIS geliefert wurden
+	 *
+	 */
+	public function ModifiziereElo($result, $parameter)
+	{
+		// Lokale Elo verwenden aktiviert?
+		if($GLOBALS['TL_CONFIG']['dewis_eloLocal'])
+		{
+			//echo "<pre>";
+			//print_r($result);
+			//echo "</pre>";
+			switch($parameter["funktion"])
+			{
+				case "Spielerliste": // Spielerliste einer Suche
+				case "Vereinsliste": // Vereinsliste
+				case "Verbandsliste": // Bestenliste eines Verbands
+					if($result->members)
+					{
+						foreach($result->members as $key => $value)
+						{
+							$result->members[$key]->elo = self::getElo($result->members[$key]->idfide);
+						}
+					}
+					break;
+				case "Karteikarte": // Karteikarte nach ID
+				case "KarteikarteZPS": // Karteikarte nach ZPS
+					if($result->member)
+					{
+						$result->member->elo = self::getElo($result->member->idfide);
+					}
+					break;
+
+				default:
+			}
+		}
+		return $result;
+	}
 
 	/**
 	 * Aktualisiert die Tabellen tl_dwz_xxx mit den Daten aus DeWIS
