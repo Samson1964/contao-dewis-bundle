@@ -1,5 +1,9 @@
 # Abfrage der DeWIS-API
 
+## Version 1.7.2 (2024-03-18)
+
+* Fix: Caching muß nach der Elo-Korrektur erfolgen
+
 ## Version 1.7.1 (2024-03-07)
 
 * Change: DeWIS-Klasse -> württembergische Vereine korrigiert: C0220 SV statt SC, neu: C030D Schachklub Freibauer Esslingen, verschwunden in MIVIS ist: C0130 SC Bad Schussenried

@@ -95,17 +95,17 @@ class DeWIS
 			$tende = microtime(true) - $tstart;
 			$querytime = sprintf("%1.3f", $tende);
 			$cachemode = false;
-			// im Cache speichern
-			if($GLOBALS['TL_CONFIG']['dewis_cache'] || $params['cachetime']) $cache->store($params['cachekey'], $result, $cachetime);
-			$GLOBALS['DeWIS-Cache']['dewis-queries']++;
-			$GLOBALS['DeWIS-Cache']['dewis-queriestimes'] += $querytime;
-			//echo $params['funktion'];
 
 			// Elo optional aus lokaler Quelle laden
 			$result = self::ModifiziereElo($result, $params);
 			// DeWIS-Daten in Contao-Datenbank aktualisieren
 			self::AktualisiereDWZTabellen($result, $params);
 
+			// im Cache speichern
+			if($GLOBALS['TL_CONFIG']['dewis_cache'] || $params['cachetime']) $cache->store($params['cachekey'], $result, $cachetime);
+			$GLOBALS['DeWIS-Cache']['dewis-queries']++;
+			$GLOBALS['DeWIS-Cache']['dewis-queriestimes'] += $querytime;
+			//echo $params['funktion'];
 		}
 		else
 		{
