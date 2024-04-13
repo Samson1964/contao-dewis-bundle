@@ -1,5 +1,10 @@
 # Abfrage der DeWIS-API
 
+## Version 1.7.3 (2024-04-13)
+
+* Fix: Invalid argument supplied for foreach() in Turnier.php on line 201
+* Fix: count(): Parameter must be an array or an object that implements Countable in Turnier.php on line 231
+
 ## Version 1.7.2 (2024-03-18)
 
 * Fix: Caching muß nach der Elo-Korrektur erfolgen

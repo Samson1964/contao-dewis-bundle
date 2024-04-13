@@ -198,20 +198,23 @@ class Turnier extends \Module
 
 			// Hilfsarray für Sortierung anlegen
 			$sortArray = array();
-			foreach($daten as $arr)
+			if(is_array($daten))
 			{
-				foreach($arr as $key=>$value)
+				foreach($daten as $arr)
 				{
-					if(!isset($sortArray[$key]))
+					foreach($arr as $key=>$value)
 					{
-						$sortArray[$key] = array();
+						if(!isset($sortArray[$key]))
+						{
+							$sortArray[$key] = array();
+						}
+						$sortArray[$key][] = $value;
 					}
-					$sortArray[$key][] = $value;
 				}
 			}
 			
 			$orderby = 'Turniercode'; // Sortierschlüssel
-			if (is_array($sortArray[$orderby])) array_multisort($sortArray[$orderby],SORT_DESC,$daten); 
+			if(is_array($sortArray[$orderby])) array_multisort($sortArray[$orderby],SORT_DESC,$daten); 
 
 			/*********************************************************
 			 * Seitentitel ändern
@@ -228,7 +231,7 @@ class Turnier extends \Module
 
 			$this->Subtemplate = new \FrontendTemplate($this->subTemplate);
 			$this->Subtemplate->daten = $daten;
-			$this->Subtemplate->anzahl = count($daten);
+			$this->Subtemplate->anzahl = is_array($daten) ? count($daten) : 0;
 			$this->Subtemplate->search_keyword = $keyword;
 			$this->Subtemplate->search_verband = $zps;
 			$this->Subtemplate->search_from = $from_month.'/'.$from_year;
