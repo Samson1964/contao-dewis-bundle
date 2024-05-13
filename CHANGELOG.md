@@ -1,5 +1,11 @@
 # Abfrage der DeWIS-API
 
+## Version 1.7.4 (2024-05-13)
+
+* Fix: PHP Warning strpos(): Empty needle in Verein.php on line 171
+* Fix: PHP Warning strpos(): Empty needle in Verein.php on line 195
+* Add: DeWIS_Download um Downloads im neuen Format (mit Spieler-ID) ergänzt
+
 ## Version 1.7.3 (2024-04-13)
 
 * Fix: Invalid argument supplied for foreach() in Turnier.php on line 201

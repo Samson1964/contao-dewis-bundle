@@ -42,7 +42,27 @@ class DeWIS_Download
 			'export/csv/LV-G-csv.zip', 'export/dos/LV-G-dos.zip', 'export/sql/LV-G-sql.zip',
 			'export/csv/LV-H-csv.zip', 'export/dos/LV-H-dos.zip', 'export/sql/LV-H-sql.zip',
 			'export/csv/LV-L-csv.zip', 'export/dos/LV-L-dos.zip', 'export/sql/LV-L-sql.zip',
-			'export/csv/LV-M-csv.zip', 'export/dos/LV-M-dos.zip', 'export/sql/LV-M-sql.zip'
+			'export/csv/LV-M-csv.zip', 'export/dos/LV-M-dos.zip', 'export/sql/LV-M-sql.zip',
+			'export/csv/LV-0-csv_v2.zip', 'export/dos/LV-0-dos_v2.zip', 'export/sql/LV-0-sql_v2.zip',
+			'export/csv/LV-1-csv_v2.zip', 'export/dos/LV-1-dos_v2.zip', 'export/sql/LV-1-sql_v2.zip',
+			'export/csv/LV-2-csv_v2.zip', 'export/dos/LV-2-dos_v2.zip', 'export/sql/LV-2-sql_v2.zip',
+			'export/csv/LV-3-csv_v2.zip', 'export/dos/LV-3-dos_v2.zip', 'export/sql/LV-3-sql_v2.zip',
+			'export/csv/LV-4-csv_v2.zip', 'export/dos/LV-4-dos_v2.zip', 'export/sql/LV-4-sql_v2.zip',
+			'export/csv/LV-5-csv_v2.zip', 'export/dos/LV-5-dos_v2.zip', 'export/sql/LV-5-sql_v2.zip',
+			'export/csv/LV-6-csv_v2.zip', 'export/dos/LV-6-dos_v2.zip', 'export/sql/LV-6-sql_v2.zip',
+			'export/csv/LV-7-csv_v2.zip', 'export/dos/LV-7-dos_v2.zip', 'export/sql/LV-7-sql_v2.zip',
+			'export/csv/LV-8-csv_v2.zip', 'export/dos/LV-8-dos_v2.zip', 'export/sql/LV-8-sql_v2.zip',
+			'export/csv/LV-9-csv_v2.zip', 'export/dos/LV-9-dos_v2.zip', 'export/sql/LV-9-sql_v2.zip',
+			'export/csv/LV-A-csv_v2.zip', 'export/dos/LV-A-dos_v2.zip', 'export/sql/LV-A-sql_v2.zip',
+			'export/csv/LV-B-csv_v2.zip', 'export/dos/LV-B-dos_v2.zip', 'export/sql/LV-B-sql_v2.zip',
+			'export/csv/LV-C-csv_v2.zip', 'export/dos/LV-C-dos_v2.zip', 'export/sql/LV-C-sql_v2.zip',
+			'export/csv/LV-D-csv_v2.zip', 'export/dos/LV-D-dos_v2.zip', 'export/sql/LV-D-sql_v2.zip',
+			'export/csv/LV-E-csv_v2.zip', 'export/dos/LV-E-dos_v2.zip', 'export/sql/LV-E-sql_v2.zip',
+			'export/csv/LV-F-csv_v2.zip', 'export/dos/LV-F-dos_v2.zip', 'export/sql/LV-F-sql_v2.zip',
+			'export/csv/LV-G-csv_v2.zip', 'export/dos/LV-G-dos_v2.zip', 'export/sql/LV-G-sql_v2.zip',
+			'export/csv/LV-H-csv_v2.zip', 'export/dos/LV-H-dos_v2.zip', 'export/sql/LV-H-sql_v2.zip',
+			'export/csv/LV-L-csv_v2.zip', 'export/dos/LV-L-dos_v2.zip', 'export/sql/LV-L-sql_v2.zip',
+			'export/csv/LV-M-csv_v2.zip', 'export/dos/LV-M-dos_v2.zip', 'export/sql/LV-M-sql_v2.zip'
 		);
 		
 		$url = 'https://dwz.svw.info/services/files/';

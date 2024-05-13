@@ -168,7 +168,7 @@ class Verein extends \Module
 				// Nichts im Cache, Daten deshalb neu übernehmen
 				foreach($liste['verbaende'] as $key => $value)
 				{
-					$pos = strpos($value['order'], $search);
+					if(!empty($search)) $pos = strpos($value['order'], $search);
 					if($pos !== false)
 					{
 						$result_vb[] = array
@@ -192,7 +192,7 @@ class Verein extends \Module
 				// Nichts im Cache, Daten deshalb neu übernehmen
 				foreach($liste['vereine'] as $key => $value)
 				{
-					$pos = strpos($value['order'], $search);
+					if(!empty($search)) $pos = strpos($value['order'], $search);
 					if($pos !== false)
 					{
 						$result_vn[] = array
