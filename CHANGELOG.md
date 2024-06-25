@@ -1,5 +1,11 @@
 # Abfrage der DeWIS-API
 
+## Version 1.7.5 (2024-06-25)
+
+* Change: DeWIS.getElo in getFIDE umbenannt, weil neben der Elo, auch der Titel und die Nation zurückgegeben werden.
+* Change: DeWIS.ModifiziereElo lädt jetzt auch Titel und Nation
+* Change: tl_settings.dewis_eloLocal -> gilt jetzt auch für FIDE-Titel und -Nation
+
 ## Version 1.7.4 (2024-05-13)
 
 * Fix: PHP Warning strpos(): Empty needle in Verein.php on line 171

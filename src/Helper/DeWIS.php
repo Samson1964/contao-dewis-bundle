@@ -904,11 +904,11 @@ class DeWIS
 	}
 
 	/**
-	 * Lädt die Elo aus der lokalen Quelle
+	 * Lädt die FIDE-Daten Elo, Titel, Nation aus der lokalen Quelle
 	 */
-	public function getElo($fideid)
+	public function getFIDE($fideid)
 	{
-		$elo = '';
+		$fide = array();
 		if($fideid)
 		{
 			// FIDE-ID in lokaler Datenbank suchen
@@ -916,10 +916,15 @@ class DeWIS
 			                                     ->execute($fideid);
 			if($objPlayer->numRows)
 			{
-				$elo = $objPlayer->rating;
+				$fide = array
+				(
+					'land'  => $objPlayer->country,
+					'elo'   => $objPlayer->rating,
+					'titel' => $objPlayer->title
+				);
 			}
 		}
-		return $elo;
+		return $fide;
 	}
 
 	/**
@@ -946,7 +951,10 @@ class DeWIS
 					{
 						foreach($result->members as $key => $value)
 						{
-							$result->members[$key]->elo = self::getElo($result->members[$key]->idfide);
+							$fide = self::getFIDE($result->members[$key]->idfide);
+							$result->members[$key]->elo = $fide['elo'];
+							$result->members[$key]->fideTitle = $fide['titel'];
+							$result->members[$key]->fideNation = $fide['land'];
 						}
 					}
 					break;
@@ -954,7 +962,10 @@ class DeWIS
 				case "KarteikarteZPS": // Karteikarte nach ZPS
 					if($result->member)
 					{
-						$result->member->elo = self::getElo($result->member->idfide);
+						$fide = self::getFIDE($result->member->idfide);
+						$result->member->elo = $fide['elo'];
+						$result->member->fideTitle = $fide['titel'];
+						$result->member->fideNation = $fide['land'];
 					}
 					break;
 
