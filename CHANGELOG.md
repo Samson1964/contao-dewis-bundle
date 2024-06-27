@@ -1,5 +1,9 @@
 # Abfrage der DeWIS-API
 
+## Version 1.8.0 (2024-06-27)
+
+* Add: Public-Klasse DeWIS_Converter zum Laden der CSV-Datei Deutschland und Konvertieren derselben
+
 ## Version 1.7.5 (2024-06-25)
 
 * Change: DeWIS.getElo in getFIDE umbenannt, weil neben der Elo, auch der Titel und die Nation zurückgegeben werden.
