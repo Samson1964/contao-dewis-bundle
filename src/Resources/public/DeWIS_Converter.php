@@ -18,6 +18,7 @@ class DeWIS_Converter
 	protected $zielpfad;
 	protected $packpfad;
 	protected $archivpfad;
+	protected $exportpfad;
 	protected $spieler = array();
 	protected $vereine = array();
 	protected $verbaende = array();
@@ -36,6 +37,8 @@ class DeWIS_Converter
 		if(!file_exists($this->packpfad)) mkdir($this->packpfad, 0777);
 		$this->archivpfad = substr($_SERVER['DOCUMENT_ROOT'], 0, -3).'files/dewis/'.date('Y').'/'; // web-Ordner entfernen und Zielordner anhängen
 		if(!file_exists($this->archivpfad)) mkdir($this->archivpfad, 0777);
+		$this->exportpfad = substr($_SERVER['DOCUMENT_ROOT'], 0, -3).'files/dewis/export/'; // web-Ordner entfernen und Zielordner anhängen
+		if(!file_exists($this->exportpfad)) mkdir($this->exportpfad, 0777);
 		$this->suchen = array('Ü', 'Ö', 'Ä', 'ü', 'ö', 'ä', 'ß', 'ú', 'ó', 'á', 'é', 'à', 'ò');
 		$this->ersetzen = array('Ue', 'Oe', 'Ae', 'ue', 'oe', 'ae', 'ss', 'u', 'o', 'a', 'e', 'a', 'o');
 		
@@ -123,6 +126,40 @@ class DeWIS_Converter
 			unlink($this->packpfad.'spieler.sql');
 			unlink($this->packpfad.'vereine.sql');
 			unlink($this->packpfad.'verbaende.sql');
+			
+			// Kopien der Dateien im Exportverzeichnis anlegen
+			$csvpfad = $this->exportpfad.'csv/';
+			$sqlpfad = $this->exportpfad.'sql/';
+			if(!file_exists($csvpfad)) mkdir($csvpfad, 0777);
+			if(!file_exists($sqlpfad)) mkdir($sqlpfad, 0777);
+			foreach($this->archive as $item)
+			{
+				// Pfade anlegen
+				if($item['verband'])
+				{
+					// Mitgliedsverband
+					$quelle = $this->archivpfad.'lv'.strtolower($item['verband']).'/LV-'.$item['verband'].'-csv_'.date('Ymd').'.zip';
+					$ziel = $csvpfad.'LV-'.$item['verband'].'-csv.zip';
+					echo "Kopiere $quelle => $ziel<br>";
+					copy($quelle, $ziel);
+					$quelle = $this->archivpfad.'lv'.strtolower($item['verband']).'/LV-'.$item['verband'].'-sql_'.date('Ymd').'.zip';
+					$ziel = $sqlpfad.'LV-'.$item['verband'].'-sql.zip';
+					echo "Kopiere $quelle => $ziel<br>";
+					copy($quelle, $ziel);
+				}
+				else
+				{
+					// $verband ist leer, also DSB
+					$quelle = $this->archivpfad.'csv/LV-0-csv_'.date('Ymd').'.zip';
+					$ziel = $csvpfad.'LV-0-csv.zip';
+					echo "Kopiere $quelle => $ziel<br>";
+					copy($quelle, $ziel);
+					$quelle = $this->archivpfad.'sql/LV-0-sql_'.date('Ymd').'.zip';
+					$ziel = $sqlpfad.'LV-0-sql.zip';
+					echo "Kopiere $quelle => $ziel<br>";
+					copy($quelle, $ziel);
+				}
+			}
 			
 		}
 		else

@@ -1,5 +1,9 @@
 # Abfrage der DeWIS-API
 
+## Version 1.8.1 (2024-06-30)
+
+* Change: Klasse DeWIS_Converter modifiziert, das Downloads gleich mit in das öff. Verzeichnis kopiert werden.
+
 ## Version 1.8.0 (2024-06-27)
 
 * Add: Public-Klasse DeWIS_Converter zum Laden der CSV-Datei Deutschland und Konvertieren derselben
