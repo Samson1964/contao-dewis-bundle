@@ -77,7 +77,7 @@ class DeWIS_Download
 			// Datei laden
 			echo "Lade $link<br>\n";
 			$ch = curl_init($url.$link);
-			$zieldatei = fopen($zielpfad.$dateiname.'_'.$datum.'.'.$suffix, 'w');
+			$zieldatei = fopen($zielpfad.$dateiname.'_'.$datum.'_dewis-version.'.$suffix, 'w');
 			curl_setopt($ch, CURLOPT_FILE, $zieldatei);
 			curl_setopt($ch, CURLOPT_TIMEOUT, 3600);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);

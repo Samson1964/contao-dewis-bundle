@@ -231,7 +231,13 @@ class Verband extends \Module
 					{
 
 						// FIDE-Nation laden
-						$nation = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Nation($m->pid); // Abfrage ausführen
+						// Ab v1.8.2 Funktion Nation deaktiviert, da DeWIS alte Daten liefert
+						// getFIDE holt die Daten dagegen aus der Tabelle elo
+						// $nation = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Nation($m->pid); // Abfrage ausführen
+						$fide = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::getFIDE($m->idfide); // Abfrage ausführen
+						$nation = $fide['land'];
+						$fide_elo = $fide['elo'];
+						$fide_titel = $fide['titel'];
 
 						if($german && $nation != 'GER' && $nation != '' && $nation != '-')
 						{
@@ -257,8 +263,10 @@ class Verband extends \Module
 							'Geschlecht'  => ($m->gender == 'm') ? '&nbsp;' : ($m->gender == 'f' ? 'f' : strtolower($m->gender)),
 							'KW'          => ($gesperrt) ? '&nbsp;' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Kalenderwoche($m->tcode),
 							'DWZ'         => (!$m->rating && $m->tcode) ? 'Restp.' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::DWZ($m->rating, $m->ratingIndex),
-							'Elo'         => ($m->elo) ? $m->elo : '-----',
-							'FIDE-Titel'  => $m->fideTitle,
+							//'Elo'         => ($m->elo) ? $m->elo : '-----',
+							//'FIDE-Titel'  => $m->fideTitle,
+							'Elo'         => ($fide_elo) ? $fide_elo : '-----',
+							'FIDE-Titel'  => $fide_titel,
 							'FIDE-Nation' => $flag_content,
 							'Verein'      => sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getVereinseite()."/%s.html\">%s</a>", $m->vkz, \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Vereinskurzname($m->club))
 						);

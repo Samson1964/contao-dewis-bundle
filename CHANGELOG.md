@@ -1,5 +1,13 @@
 # Abfrage der DeWIS-API
 
+## Version 1.9.0 (2024-07-03)
+
+* Fix: Klasse Verband liefert keine aktuellen Nationen -> kommen aus DeWIS statt korrekter Nation aus FIDE-Daten
+* Add: verein.php, spieler.php und verband.php aus der bisher ausgelagerten API (nur zu Analysezwecken)
+* Add: api.php im public-Ordner -> die neue API
+* Change: Klasse DeWIS_Converter -> Anpassung SQL-Schema für readme.txt (bei PRIMARY KEY PID Mgl_Nr hinzugefügt)
+* Change: Klasse DeWIS_Download -> im Zieldateinamen "_dewis-version" hinzugefügt, damit auch diese Dateien wieder auf dem DSB-Server gesichert werden können.
+
 ## Version 1.8.1 (2024-06-30)
 
 * Change: Klasse DeWIS_Converter modifiziert, das Downloads gleich mit in das öff. Verzeichnis kopiert werden.

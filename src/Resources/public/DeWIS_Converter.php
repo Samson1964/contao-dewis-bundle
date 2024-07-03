@@ -566,7 +566,7 @@ class DeWIS_Converter
 			$content .= '  `FIDE_Titel`         char(2)               DEFAULT NULL,'."\r\n";
 			$content .= '  `FIDE_ID`            int(8)       unsigned DEFAULT NULL,'."\r\n";
 			$content .= '  `FIDE_Land`          char(3)               DEFAULT NULL,'."\r\n";
-			$content .= '  PRIMARY KEY `PID` (`PID`, `ZPS`),'."\r\n";
+			$content .= '  PRIMARY KEY `PID` (`PID`, `ZPS`, `Mgl_Nr`),'."\r\n";
 			$content .= '  KEY `ZPS` (`ZPS`, `Mgl_Nr`),'."\r\n";
 			$content .= '  KEY `FIDE_ID` (`FIDE_ID`),'."\r\n";
 			$content .= '  KEY `Spielername` (`Spielername`),'."\r\n";
