@@ -2,27 +2,10 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2012 Leo Feyer
+ * Copyright (C) 2005-2024 Leo Feyer
  *
  * @link http://www.contao.org
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
- * 
- * Modul Banner - Check Helper 
- * 
- * PHP version 5
- * @copyright  Glen Langer 2007..2015
- * @author     Glen Langer
- * @package    Banner
- * @license    LGPL
- */
-
-
-/**
- * Class BannerCheckHelper
- *
- * @copyright  Glen Langer 2015
- * @author     Glen Langer
- * @package    Banner
  */
 
 namespace Schachbulle\ContaoDewisBundle\Helper;
@@ -339,7 +322,7 @@ class Helper extends \Frontend
 	 * Liefert den Alias der Spielerseite zurück
 	 * @return         Alias
 	 */
-	public function getSpielerseite($alias = true)
+	public static function getSpielerseite($alias = true)
 	{
 		if($GLOBALS['TL_CONFIG']['dewis_seite_spieler'])
 		{

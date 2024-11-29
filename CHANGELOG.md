@@ -1,5 +1,10 @@
 # Abfrage der DeWIS-API
 
+## Version 2.0.0 (2024-11-29)
+
+* Change: Kompatibilität mit PHP 8 in composer.json
+* Change: Helper::getSpielerseite() auf public static statt nur public
+
 ## Version 1.9.0 (2024-07-03)
 
 * Fix: Klasse Verband liefert keine aktuellen Nationen -> kommen aus DeWIS statt korrekter Nation aus FIDE-Daten
