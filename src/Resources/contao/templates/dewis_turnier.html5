@@ -329,7 +329,7 @@
 								<td class="right-line<?= $class ?>"><?= $d['Ergebnis'] ?></td>
 								<?php for($r = 1; $r <= $this->turnierheader['Runden']; $r++): ?>
 									<td class="right-line<?= $class ?>">
-										<?php if($d['Ergebnisse'][$r]): ?>
+										<?php if(isset($d['Ergebnisse'][$r])): ?>
 											<?php for($e = 0; $e < count($d['Ergebnisse'][$r]); $e++): ?>
 												<div class="<?= $d['Ergebnisse'][$r][$e]['Farbe'] ?>">
 													<span class="result"><?= $d['Ergebnisse'][$r][$e]['Ergebnis'] ?></span>&nbsp;

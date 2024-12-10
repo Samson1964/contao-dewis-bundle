@@ -1,5 +1,47 @@
 # Abfrage der DeWIS-API
 
+## Version 2.0.1 (2024-12-10)
+
+* Fix: Non-static method Schachbulle\ContaoDewisBundle\Helper\Helper::getVereinseite() cannot be called statically -> public static statt nur public
+* Fix: Warning: Undefined array key "dwz_gender_options" in src/Resources/contao/dca/tl_module.php (line 122) -> &$ davorgesetzt statt nur $
+* Fix: Warning: Undefined array key "dewis_switchedOff" in src/Classes/Verband.php (line 76) -> Prüfung mit isset
+* Fix: Non-static method Schachbulle\ContaoDewisBundle\Helper\DeWIS::Blacklist() cannot be called statically -> public static statt nur public
+* Fix: Non-static method Schachbulle\ContaoDewisBundle\Helper\Helper::getMitglied() cannot be called statically -> public static statt nur public
+* Fix: Non-static method Schachbulle\ContaoDewisBundle\Helper\Helper::Navigation() cannot be called statically -> public static statt nur public
+* Fix: Non-static method Schachbulle\ContaoDewisBundle\Helper\Helper::getVerbandseite() cannot be called statically -> public static statt nur public
+* Fix: Non-static method Schachbulle\ContaoDewisBundle\Helper\Helper::getTurnierseite() cannot be called statically -> public static statt nur public
+* Fix: Non-static method Schachbulle\ContaoDewisBundle\Helper\DeWIS::Verbandsliste() cannot be called statically -> public static statt nur public
+* Fix: Non-static method Schachbulle\ContaoDewisBundle\Helper\DeWIS::autoQuery() cannot be called statically -> public static statt nur public
+* Fix: Warning: Undefined array key "cachetime" in src/Helper/DeWIS.php (line 86) -> Prüfung mit isset
+* Fix: Warning: Undefined variable $result in src/Helper/DeWIS.php (line 90) -> Prüfung mit isset
+* Fix: Non-static method Schachbulle\ContaoDewisBundle\Helper\DeWIS::Abfrage() cannot be called statically -> public static statt nur public
+* Fix: Non-static method Schachbulle\ContaoDewisBundle\Helper\DeWIS::AddWuerttemberg() cannot be called statically -> public static statt nur public
+* Fix: Non-static method Schachbulle\ContaoDewisBundle\Helper\DeWIS::ModifiziereElo() cannot be called statically -> public static statt nur public
+* Fix: Warning: Undefined array key "dewis_eloLocal" in src/Helper/DeWIS.php (line 940) -> Prüfung mit isset
+* Fix: Non-static method Schachbulle\ContaoDewisBundle\Helper\DeWIS::AktualisiereDWZTabellen() cannot be called statically -> public static statt nur public
+* Change: DeWIS.php/Helper.php -> alle public function durch public static function ersetzt
+* Fix: Warning: Undefined global variable $DeWIS-Cache in src/Helper/DeWIS.php (line 106) -> Prüfung mit isset
+* Fix: Warning: Undefined array key "nocache" in src/Helper/DeWIS.php (line 70) -> Prüfung mit isset
+* Fix: Warning: Undefined global variable $DeWIS-Cache in src/Helper/DeWIS.php (line 115) -> Prüfung mit isset
+* Fix: Non-static method Schachbulle\ContaoDewisBundle\Helper\DeWIS::org() cannot be called statically -> protected static statt nur protected
+* Fix: Non-static method Schachbulle\ContaoDewisBundle\Helper\DeWIS::sub_org() cannot be called statically -> protected static statt nur protected
+* Fix: Warning: Undefined array key "ZPS" in src/Helper/DeWIS.php (line 448) -> Prüfung mit isset
+* Fix: Warning: Undefined array key "dewis-queries" in src/Helper/DeWIS.php (line 106) -> Prüfung mit isset
+* Fix: Warning: Undefined array key 10029745 in src/Classes/Verband.php (line 226) -> Prüfung mit isset
+* Fix: An exception occurred while executing a query: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'db107305_42.elo' doesn't exist -> Abfrage dewis_eloLocal fehlte
+* Fix: Warning: Undefined array key "dewis-queriestimes" in src/Helper/DeWIS.php (line 108) -> Prüfung mit isset
+* Fix: Warning: Undefined array key "dewis_switchedOff" in src/Classes/Verein.php (line 73) -> Prüfung mit isset
+* Fix: Warning: Attempt to read property "homepage" on null in src/Classes/Verein.php (line 303) -> Prüfung mit isset
+* Fix: Warning: Attempt to read property "info" on null in src/Classes/Verein.php (line 304) -> Prüfung mit isset
+* Fix: Warning: Attempt to read property "addImage" on null in src/Classes/Verein.php (line 305) -> Prüfung mit isset
+* Fix: Warning: Undefined array key 10131923 in src/Classes/Verein.php (line 354) -> Prüfung mit isset
+* Fix: Warning: Undefined array key "dewis-queries" in src/Resources/contao/templates/queries.html5 (line 12) -> in DeWIS.php Variablenzuweisung ergänzt
+* Fix: Warning: Undefined array key "dewis_switchedOff" in src/Classes/Spieler.php (line 78) -> Prüfung mit isset
+* Fix: Warning: Undefined array key 1 in src/Helper/Helper.php (line 645) 
+* Fix: Warning: Undefined array key 10856739 in src/Classes/Spieler.php (line 158) 
+* Fix: und weitere Änderungen wegen PHP 8
+* Unlösbar: Vereinslogos werden in Originalgröße angezeigt -> kann in Entwicklungsumgebung nicht nachvollzogen werden.
+
 ## Version 2.0.0 (2024-11-29)
 
 * Change: Kompatibilität mit PHP 8 in composer.json

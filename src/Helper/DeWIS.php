@@ -56,7 +56,7 @@ class DeWIS
 	 * );
 	 * @return      Array mit den Rückgabewerten
 	*/
-	public function autoQuery($params)
+	public static function autoQuery($params)
 	{
 
 		// Cache nur berücksichtigen, wenn nocache-Parameter nicht true ist
@@ -67,7 +67,7 @@ class DeWIS
 			$cache->eraseExpired(); // Cache aufräumen, abgelaufene Schlüssel löschen
 
 			// Cache laden
-			if($cache->isCached($params['cachekey']) && !$params['nocache'])
+			if($cache->isCached($params['cachekey']) && !isset($params['nocache']))
 			{
 				$result = $cache->retrieve($params['cachekey']);
 			}
@@ -83,11 +83,11 @@ class DeWIS
 				default:
 					$cachetime = 3600;
 			}
-			if($params['cachetime']) $cachetime = $params['cachetime'];
+			if(isset($params['cachetime'])) $cachetime = $params['cachetime'];
 		}
 
 		// DeWIS-Abfrage, wenn Cache leer
-		if(!$result)
+		if(!isset($result))
 		{
 			// Abfrage DeWIS
 			$tstart = microtime(true);
@@ -102,9 +102,12 @@ class DeWIS
 			self::AktualisiereDWZTabellen($result, $params);
 
 			// im Cache speichern
-			if($GLOBALS['TL_CONFIG']['dewis_cache'] || $params['cachetime']) $cache->store($params['cachekey'], $result, $cachetime);
-			$GLOBALS['DeWIS-Cache']['dewis-queries']++;
-			$GLOBALS['DeWIS-Cache']['dewis-queriestimes'] += $querytime;
+			if(isset($GLOBALS['TL_CONFIG']['dewis_cache']) == true || $params['cachetime']) $cache->store($params['cachekey'], $result, $cachetime);
+			if(isset($GLOBALS['DeWIS-Cache']['dewis-queries'])) $GLOBALS['DeWIS-Cache']['dewis-queries']++;
+			else $GLOBALS['DeWIS-Cache']['dewis-queries'] = 1;
+			if(isset($GLOBALS['DeWIS-Cache']['dewis-queriestimes'])) $GLOBALS['DeWIS-Cache']['dewis-queriestimes'] += $querytime;
+			else $GLOBALS['DeWIS-Cache']['dewis-queriestimes'] = $querytime;
+			$GLOBALS['DeWIS-Cache']['cache-queries'] = 0;
 			//echo $params['funktion'];
 		}
 		else
@@ -112,7 +115,10 @@ class DeWIS
 			// Cache-Modus
 			$querytime = false;
 			$cachemode = true;
-			$GLOBALS['DeWIS-Cache']['cache-queries']++;
+			if(isset($GLOBALS['DeWIS-Cache']['cache-queries'])) $GLOBALS['DeWIS-Cache']['cache-queries']++;
+			else $GLOBALS['DeWIS-Cache']['cache-queries'] = 1;
+			$GLOBALS['DeWIS-Cache']['dewis-queries'] = 0;
+			$GLOBALS['DeWIS-Cache']['dewis-queriestimes'] = 0;
 		}
 
 		return array
@@ -129,7 +135,7 @@ class DeWIS
 	*
 	* @param boolean $status         1 = anzeigen, 0 = nicht anzeigen
 	*/
-	public function Abfrage($parameter)
+	public static function Abfrage($parameter)
 	{
 		try
 		{
@@ -312,7 +318,7 @@ class DeWIS
 	/*
 	* Wandelt Unixzeit in JJJJ-MM-TT um
 	*/
-	public function SOAP_Datum($zeit)
+	public static function SOAP_Datum($zeit)
 	{
 		return date("Y-m-d",$zeit);
 	}
@@ -320,7 +326,7 @@ class DeWIS
 	/*
 	* Gibt die Antwortzeit des Servers zurück
 	*/
-	public function Antwortzeit()
+	public static function Antwortzeit()
 	{
 		return self::$answertime;
 	}
@@ -328,7 +334,7 @@ class DeWIS
 	/*
 	* Fehler der SOAP-Abfrage zurückgeben
 	*/
-	public function ZeigeFehler()
+	public static function ZeigeFehler()
 	{
 		return self::$error;
 	}
@@ -336,7 +342,7 @@ class DeWIS
 	/*
 	* Fehlercode der SOAP-Abfrage zurückgeben
 	*/
-	public function ZeigeFehlercode()
+	public static function ZeigeFehlercode()
 	{
 		return self::$errorcode;
 	}
@@ -346,34 +352,34 @@ class DeWIS
 	*
 	* @param boolean $status         1 = anzeigen, 0 = nicht anzeigen
 	*/
-	public function ZeigeGeburtsjahr($status)
+	public static function ZeigeGeburtsjahr($status)
 	{
 		if($status) $this->viewyear = TRUE;
 		else $this->viewyear = FALSE;
 	}
 
-	public function DWZ($rating, $ratingIndex)
+	public static function DWZ($rating, $ratingIndex)
 	{
 		return ($rating == 0 && $ratingIndex == 0) ? '' : sprintf("%s -%s", str_replace(' ', '&nbsp;&nbsp;', sprintf("%4d", $rating)), str_replace(' ', '&nbsp;&nbsp;', sprintf("%3d", $ratingIndex)));
 	}
 
-	public function Punkte($points)
+	public static function Punkte($points)
 	{
 		return ($points == 0.5) ? '½' : str_replace('.5', '½', $points * 1);
 	}
 
-	public function Kalenderwoche($string)
+	public static function Kalenderwoche($string)
 	{
 		return $string ? substr($string, 2, 2) . '/' . (substr($string, 0, 1) > '9' ? '20' . (ord(substr($string, 0, 1)) - 65) : '19' . substr($string, 0, 1)) . substr($string, 1, 1) : '&nbsp;';
 	}
 
-	public function AlteDatenbank($id)
+	public static function AlteDatenbank($id)
 	{
 		# --------------------------------------------------------
 		# Sucht in der alten Datenbank nach dem Spieler mit der ID
 		# --------------------------------------------------------
 
-		if($GLOBALS['TL_CONFIG']['dewis_elobase'])
+		if(isset($GLOBALS['TL_CONFIG']['dewis_elobase']))
 		{
 			// Mit MySQL-Server verbinden
 			$mysqli = new \mysqli($GLOBALS['TL_CONFIG']['dewis_elobase_host'],$GLOBALS['TL_CONFIG']['dewis_elobase_user'],$GLOBALS['TL_CONFIG']['dewis_elobase_pass'],$GLOBALS['TL_CONFIG']['dewis_elobase_db']);
@@ -407,7 +413,7 @@ class DeWIS
 		else return false;
 	}
 
-	public function Verbandsliste($zps)
+	public static function Verbandsliste($zps)
 	{
 
 		// Abfrageparameter einstellen
@@ -429,7 +435,7 @@ class DeWIS
 		return array('verbaende' => $verbaende, 'vereine' => $vereine);
 	}
 
-	protected function org($result)
+	protected static function org($result)
 	{
 
 		\Schachbulle\ContaoDewisBundle\Helper\DeWIS::sub_org($result, $liste);
@@ -440,11 +446,11 @@ class DeWIS
 
 		foreach ($liste as $l)
 		{
-			if ($l['childs'] or $l['parent'] == '000')
+			if($l['childs'] or $l['parent'] == '000')
 			{
 				$l['childs'] = array();
 				$verbaende['' . $l['zps']] = $l;
-				if ($l['ZPS'] != '000')
+				if(isset($l['ZPS']) != '000')
 				{
 					$verbaende['' . $l['parent']]['childs'][] = $l['zps'];
 				}
@@ -463,7 +469,7 @@ class DeWIS
 		return array($verbaende, $vereine);
 	}
 
-	protected function sub_org($a, &$liste)
+	protected static function sub_org($a, &$liste)
 	{
 		$c = (is_array($a->children) && count($a->children) > 0) ? true : false; // Kindelemente (LV, Bezirke, Vereine)? true/false
 		$p = (isset($a->p) && isset($liste[$a->p]['zps'])) ? $liste[$a->p]['zps'] : $a->vkz; // Elternelement speichern
@@ -494,7 +500,7 @@ class DeWIS
 	 *
 	 * @return array
 	 */
-	public function getParamsFromUrl($arrFragments)
+	public static function getParamsFromUrl($arrFragments)
 	{
 		//echo "<!--";
 		//print_r($arrFragments);
@@ -593,7 +599,7 @@ class DeWIS
 	 * PurgeJob-Funktion:
 	 * Berechnet die Cache-Größe
 	 */
-	public function calcCache()
+	public static function calcCache()
 	{
 		$speicher = array
 		(
@@ -627,7 +633,7 @@ class DeWIS
 	 * PurgeJob-Funktion:
 	 * Stellt im BE unter Systemwartung die Cache-Löschung zur Verfügung
 	 */
-	public function purgeCache()
+	public static function purgeCache()
 	{
 		$speicher = array
 		(
@@ -661,7 +667,7 @@ class DeWIS
 	 *
 	 * @return array
 	 */
-	public function debug($value)
+	public static function debug($value)
 	{
 		echo '<pre>';
 		print_r($value);
@@ -674,7 +680,7 @@ class DeWIS
 	 *
 	 * @return string
 	 */
-	public function Vereinskurzname($value)
+	public static function Vereinskurzname($value)
 	{
 		$ersetzen = array
 		(
@@ -691,7 +697,7 @@ class DeWIS
 	 *
 	 * @return string
 	 */
-	public function Turnierkurzname($value)
+	public static function Turnierkurzname($value)
 	{
 		if(mb_detect_encoding($value,'UTF-8, ISO-8859-1') === 'UTF-8')
 		{
@@ -711,7 +717,7 @@ class DeWIS
 	 *
 	 * @return string
 	 */
-	public function Wertungsreferent($id, $address = true)
+	public static function Wertungsreferent($id, $address = true)
 	{
 
 		// Abfrageparameter einstellen
@@ -749,7 +755,7 @@ class DeWIS
 	 *
 	 * @return string
 	 */
-	public function Turnierauswertung($code)
+	public static function Turnierauswertung($code)
 	{
 
 		// Abfrageparameter
@@ -771,7 +777,7 @@ class DeWIS
 	 *
 	 * @return float
 	 */
-	public function Gewinnerwartung ($dwz, $gegnerdwz)
+	public static function Gewinnerwartung ($dwz, $gegnerdwz)
 	{
 		if ($dwz == 0 || $gegnerdwz == 0) return false;
 		return (sprintf ("%5.3f", 1/(1+pow(10,($gegnerdwz-$dwz)/400))));
@@ -781,7 +787,7 @@ class DeWIS
 	 * Schätzt die Turnierleistung, wenn zu wenig Partien
 	 *
 	 */
-	public function LeistungSchaetzen($niveau = 0, $punkte, $partien, $dwz, $pd = '')
+	public static function LeistungSchaetzen($niveau = 0, $punkte, $partien, $dwz, $pd = '')
 	{
 
 		if($pd == '')
@@ -819,7 +825,7 @@ class DeWIS
 	 * Liefert die Blacklist zurück
 	 *
 	 */
-	public function Blacklist()
+	public static function Blacklist()
 	{
 		// Gesperrte ID's einlesen
 		//$result = \Database::getInstance()->prepare("SELECT dewis_id FROM tl_dewis_blacklist WHERE published = '1'")
@@ -846,7 +852,7 @@ class DeWIS
 	 * Liefert den Status der Sperre der alten Karteikarte zurück
 	 *
 	 */
-	public function Karteisperre($id)
+	public static function Karteisperre($id)
 	{
 		$result = \Database::getInstance()->prepare("SELECT link_altkartei FROM tl_dwz_spi WHERE dewisID = ?")
 		                                  ->execute($id);
@@ -867,7 +873,7 @@ class DeWIS
 	 * @return      string  FIDE-Nation, z.B. GER bzw. leer
 	 *
 	 */
-	public function Nation($id)
+	public static function Nation($id)
 	{
 		$result = \Database::getInstance()->prepare("SELECT fideNation FROM tl_dwz_spi WHERE dewisID = ?")
 		                                  ->execute($id);
@@ -898,7 +904,7 @@ class DeWIS
 	 * Liefert den Hinweistext zwecks Anmeldung zurück
 	 *
 	 */
-	public function Registrierungshinweis()
+	public static function Registrierungshinweis()
 	{
 		return '<div class="hinweis noprint">Aus datenschutzrechtlichen Gründen können Spielerdetails seit dem <a href="http://www.schachbund.de/news/aenderungen-beim-zugriff-auf-die-dwz.html">3. Juni 2016</a> nur noch von registrierten Nutzern angesehen werden. <a href="http://www.schachbund.de/registrierung.html">Hier geht es zur kostenlosen Registrierung</a>.</div>';
 	}
@@ -906,7 +912,7 @@ class DeWIS
 	/**
 	 * Lädt die FIDE-Daten Elo, Titel, Nation aus der lokalen Quelle
 	 */
-	public function getFIDE($fideid)
+	public static function getFIDE($fideid)
 	{
 		$fide = array();
 		if($fideid)
@@ -934,10 +940,10 @@ class DeWIS
 	 * @param array $parameter         Abfrageparameter die an DeWIS geliefert wurden
 	 *
 	 */
-	public function ModifiziereElo($result, $parameter)
+	public static function ModifiziereElo($result, $parameter)
 	{
 		// Lokale Elo verwenden aktiviert?
-		if($GLOBALS['TL_CONFIG']['dewis_eloLocal'])
+		if(isset($GLOBALS['TL_CONFIG']['dewis_eloLocal']) == true)
 		{
 			//echo "<pre>";
 			//print_r($result);
@@ -982,7 +988,7 @@ class DeWIS
 	 * @param array $parameter         Abfrageparameter die an DeWIS geliefert wurden
 	 *
 	 */
-	public function AktualisiereDWZTabellen($result, $parameter)
+	public static function AktualisiereDWZTabellen($result, $parameter)
 	{
 		switch($parameter["funktion"])
 		{
@@ -1132,7 +1138,7 @@ class DeWIS
 		}
 	}
 
-	function AddWuerttemberg($result)
+	public static function AddWuerttemberg($result)
 	{
 		// Landesverbände durchlaufen
 		for($index_lv = 0; $index_lv < count($result->children); $index_lv++)

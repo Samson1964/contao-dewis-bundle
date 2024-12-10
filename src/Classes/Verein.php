@@ -70,7 +70,7 @@ class Verein extends \Module
 		global $objPage;
 		
 		// DWZ-Abfragen abgeschaltet?
-		if($GLOBALS['TL_CONFIG']['dewis_switchedOff'])
+		if(isset($GLOBALS['TL_CONFIG']['dewis_switchedOff']))
 		{
 			$this->Template = new \FrontendTemplate('dewis_abgeschaltet');
 			$this->Template->content = $GLOBALS['TL_CONFIG']['dewis_switchedOffText'];
@@ -300,9 +300,9 @@ class Verein extends \Module
 			$objVerein = \Schachbulle\ContaoDewisBundle\Models\DewisVereinModel::findOneBy('zpsver', $zps);
 			//print_r($objVerein);
 			$this->Template->addImage     = true;
-			$this->Template->homepage     = $objVerein->homepage;
-			$this->Template->info         = $objVerein->info;
-			if($objVerein->addImage)
+			$this->Template->homepage     = isset($objVerein->homepage) ? $objVerein->homepage : '';
+			$this->Template->info         = isset($objVerein->info) ? $objVerein->info : '';
+			if(isset($objVerein->addImage))
 			{
 				// Vereinslogo vorhanden
 				$objFile = \FilesModel::findByPk($objVerein->singleSRC);
@@ -351,7 +351,7 @@ class Verein extends \Module
 						$z++;
 						$key = ($order == 'alpha') ? \StringUtil::generateAlias($m->surname.$m->firstname.$z) : sprintf('%05d-%04d-%s-%03d', 10000 - $m->rating, 1000 - $m->ratingIndex, ($m->tcode) ? $m->tcode : 'Z', $z);
 						// Daten zuweisen
-						if(!$Blacklist[$m->pid])
+						if(!isset($Blacklist[$m->pid]))
 						{ 
 							$daten[$key] = array
 							(

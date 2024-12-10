@@ -350,7 +350,7 @@ class Helper extends \Frontend
 	 * Liefert den Alias der Turnierseite zurück
 	 * @return         Alias
 	 */
-	public function getTurnierseite($alias = true)
+	public static function getTurnierseite($alias = true)
 	{
 		if($GLOBALS['TL_CONFIG']['dewis_seite_turnier'])
 		{
@@ -378,7 +378,7 @@ class Helper extends \Frontend
 	 * Liefert den Alias der Vereinseite zurück
 	 * @return         Alias
 	 */
-	public function getVereinseite($alias = true)
+	public static function getVereinseite($alias = true)
 	{
 		if($GLOBALS['TL_CONFIG']['dewis_seite_verein'])
 		{
@@ -407,7 +407,7 @@ class Helper extends \Frontend
 	 * @param          alias true = nur das Alias zurückgeben, false = komplette URL zurückgeben
 	 * @return         Alias
 	 */
-	public function getVerbandseite($alias = true)
+	public static function getVerbandseite($alias = true)
 	{
 		if($GLOBALS['TL_CONFIG']['dewis_seite_verband'])
 		{
@@ -431,7 +431,7 @@ class Helper extends \Frontend
 
 	}
 
-	public function getMitglied()
+	public static function getMitglied()
 	{
 		//\Schachbulle\ContaoDewisBundle\Helper\DeWIS::debug(\FrontendUser::getInstance());
 		return \FrontendUser::getInstance(); //$this->user;
@@ -440,7 +440,7 @@ class Helper extends \Frontend
 	/**
 	 * Leitet auf die im System definierte 404-Seite weiter
 	 */
-	public function get404()
+	public static function get404()
 	{
 		throw new \CoreBundle\Exception\PageNotFoundException('Page not found: '.\Environment::get('uri'));
 	}
@@ -450,7 +450,7 @@ class Helper extends \Frontend
 	 * @param id	ID in DeWIS
 	 * @return		ID des Contao-Mitgliedes
 	 */
-	public function Karteizuweisung($id)
+	public static function Karteizuweisung($id)
 	{
 		$objSpieler = \Database::getInstance()->prepare('SELECT contaoMemberID FROM tl_dwz_spi WHERE dewisID = ?')
 		                                      ->limit(1) 
@@ -463,7 +463,7 @@ class Helper extends \Frontend
 	 * @param id	ID in DeWIS
 	 * @return		Karteikarte gesperrt true/false
 	 */
-	public function Karteisperre($id)
+	public static function Karteisperre($id)
 	{
 		$objCheckUser = \Database::getInstance()->prepare('SELECT dewisCard FROM tl_member WHERE id=?')
 		                                        ->execute($id); 
@@ -475,7 +475,7 @@ class Helper extends \Frontend
 	 * @param 		-
 	 * @return		Array mit den Links
 	 */
-	public function Navigation()
+	public static function Navigation()
 	{
 		return array
 		(
@@ -491,7 +491,7 @@ class Helper extends \Frontend
 	 * @param 		-
 	 * @return		Array mit Anzahl Tage je Monat
 	 */
-	function Monatstage($jahr)
+	public static function Monatstage($jahr)
 	{
 		$monate = array
 		(
@@ -522,7 +522,7 @@ class Helper extends \Frontend
 		}
 	}
 
-	public function datum_mysql2php($datum) 
+	public static function datum_mysql2php($datum) 
 	{
 		return $datum ? substr($datum, 8, 2) . '.' . substr($datum, 5, 2) . '.' . substr($datum, 0, 4) : '';
 	}
@@ -532,7 +532,7 @@ class Helper extends \Frontend
 	 * @param 		Array
 	 * @return		Array
 	 */
-	public function Mittelwerte($array)
+	public static function Mittelwerte($array)
 	{
 		
 		$value = 0;
@@ -587,7 +587,7 @@ class Helper extends \Frontend
 	 * @param 		Array
 	 * @return		Array
 	 */
-	public function Spielername($t, $gesperrt, $mode = 0)
+	public static function Spielername($t, $gesperrt, $mode = 0)
 	{
 		if($mode == 0) return ($gesperrt) ? sprintf("%s,%s%s", $t->surname, $t->firstname, $t->title ? ',' . $t->title : '') : sprintf("<a href=\"".self::getSpielerseite()."/%s.html\">%s</a>", $t->pid, sprintf("%s,%s%s", $t->surname, $t->firstname, $t->title ? ',' . $t->title : ''));
 		elseif($mode == 1) return ($gesperrt) ? sprintf("%s %s %s", $t->fideTitle, $t->firstname, $t->surname) : sprintf("<a href=\"".self::getSpielerseite()."/%s.html\">%s</a>", $t->pid, sprintf("%s %s %s", $t->fideTitle, $t->firstname, $t->surname));
@@ -601,7 +601,7 @@ class Helper extends \Frontend
 	 * @param		String ($extract = 'item' oder 'val')
 	 * @return		Array
 	 */
-	public function ArrayExtract($array, $extract)
+	public static function ArrayExtract($array, $extract)
 	{
 		//echo "<pre>";
 		//echo count($array);
@@ -620,7 +620,7 @@ class Helper extends \Frontend
 	 * @param $search      Suchbegriff
 	 * @return array       Array mit Typ und Vorname+Nachname und Vorname+Nachname gedreht
 	 */
-	public function checkSearchstringPlayer($search)
+	public static function checkSearchstringPlayer($search)
 	{
 		if (is_numeric($search)) $typ = 'pkz'; // Eine PKZ wurde übergeben
 		elseif (strlen($search) == 10 && substr($search,5,1) == '-') $typ = 'zps'; // Eine ZPS wurde übergeben
@@ -642,7 +642,7 @@ class Helper extends \Frontend
 			// Name am Komma trennen
 			$typ = 'name';
 			$strKomma = explode(',', $search);
-			if ($strKomma[1])
+			if(isset($strKomma[1]))
 			{
 				// Suchbegriff entspricht Nachname, Vorname
 				$nachname = trim($strKomma[0]);
@@ -654,7 +654,7 @@ class Helper extends \Frontend
 				$vorname = '';
 				// Auf Leerzeichen als Trennzeichen überprüfen
 				$strLeer = explode(' ', $search);
-				if ($strLeer[1])
+				if(isset($strLeer[1]))
 				{
 					// Suchbegriff entspricht Vorname Nachname (wahrscheinlich)
 					$nachname2 = trim($strLeer[1]);
@@ -684,7 +684,7 @@ class Helper extends \Frontend
 	 * @param     string $ioc      dreistelliger IOC-Code
 	 * @return    string           CSS-Klassen für Verwendung CSS-Datei des Bundles components/flag-icon-css
 	 */
-	public function Laendercode($ioc)
+	public static function Laendercode($ioc)
 	{
 		$ioc = trim(strtoupper($ioc));
 		if(!$ioc) return '';

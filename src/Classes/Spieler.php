@@ -75,7 +75,7 @@ class Spieler extends \Module
 		global $objPage;
 
 		// DWZ-Abfragen abgeschaltet?
-		if($GLOBALS['TL_CONFIG']['dewis_switchedOff'])
+		if(isset($GLOBALS['TL_CONFIG']['dewis_switchedOff']))
 		{
 			$this->Template = new \FrontendTemplate('dewis_abgeschaltet');
 			$this->Template->content = $GLOBALS['TL_CONFIG']['dewis_switchedOffText'];
@@ -155,7 +155,7 @@ class Spieler extends \Module
 				foreach($resultArr['result']->members as $m)
 				{
 					
-					if($Blacklist[$m->pid] || ($GLOBALS['TL_CONFIG']['dewis_passive_ausblenden'] && $m->state == 'P'))
+					if(isset($Blacklist[$m->pid]) || ($GLOBALS['TL_CONFIG']['dewis_passive_ausblenden'] && $m->state == 'P'))
 					{
 						// Blacklist und Passive überspringen
 					}
@@ -175,7 +175,7 @@ class Spieler extends \Module
 			}
 
 			// Leerzeichen in Suche, deshalb Abfrage wiederholen
-			if ($strLeer[1])
+			if(isset($strLeer[1]))
 			{
 				// Spielersuche
 				$param = array
@@ -231,7 +231,7 @@ class Spieler extends \Module
 
 		
 		// Kartei anfordern, wenn ID numerisch
-		if($id && !$Blacklist[$id])
+		if($id && !isset($Blacklist[$id]))
 		{
 			// Prüfung $id, ob numerisch (ID) oder String (ZPS)
 			if(is_numeric($id))
@@ -270,7 +270,7 @@ class Spieler extends \Module
 			// Spieler in tl_dwz_spi suchen
 			$objSpieler = \Schachbulle\ContaoDewisBundle\Models\DewisSpielerModel::findOneBy('dewisID', $resultArr['result']->member->pid);
 			$this->Template->addImage     = true;
-			if($objSpieler->addImage)
+			if(isset($objSpieler->addImage))
 			{
 				// Spielerfoto vorhanden
 				$objFile = \FilesModel::findByPk($objSpieler->singleSRC);

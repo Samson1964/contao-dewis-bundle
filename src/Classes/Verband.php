@@ -73,7 +73,7 @@ class Verband extends \Module
 		global $objPage;
 		
 		// DWZ-Abfragen abgeschaltet?
-		if($GLOBALS['TL_CONFIG']['dewis_switchedOff'])
+		if(isset($GLOBALS['TL_CONFIG']['dewis_switchedOff']) == true)
 		{
 			$this->Template = new \FrontendTemplate('dewis_abgeschaltet');
 			$this->Template->content = $GLOBALS['TL_CONFIG']['dewis_switchedOffText'];
@@ -223,21 +223,27 @@ class Verband extends \Module
 				foreach($liste as $m)
 				{
 					
-					if($Blacklist[$m->pid] || ($GLOBALS['TL_CONFIG']['dewis_passive_ausblenden'] && $m->state == 'P'))
+					if(isset($Blacklist[$m->pid]) || ($GLOBALS['TL_CONFIG']['dewis_passive_ausblenden'] && $m->state == 'P'))
 					{
 						// Passive überspringen
 					}
 					else
 					{
-
 						// FIDE-Nation laden
-						// Ab v1.8.2 Funktion Nation deaktiviert, da DeWIS alte Daten liefert
-						// getFIDE holt die Daten dagegen aus der Tabelle elo
-						// $nation = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Nation($m->pid); // Abfrage ausführen
-						$fide = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::getFIDE($m->idfide); // Abfrage ausführen
-						$nation = $fide['land'];
-						$fide_elo = $fide['elo'];
-						$fide_titel = $fide['titel'];
+						if(isset($GLOBALS['TL_CONFIG']['dewis_eloLocal']))
+						{
+							// Daten aus Tabelle elo holen
+							$fide = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::getFIDE($m->idfide); // Abfrage ausführen
+							$nation = $fide['land'];
+							$fide_elo = $fide['elo'];
+							$fide_titel = $fide['titel'];
+						}
+						else
+						{
+							$nation = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Nation($m->pid); // Abfrage ausführen
+							$fide_elo = ($m->elo) ? $m->elo : '-----';
+							$fide_titel = $m->fideTitle;
+						}
 
 						if($german && $nation != 'GER' && $nation != '' && $nation != '-')
 						{
@@ -263,8 +269,6 @@ class Verband extends \Module
 							'Geschlecht'  => ($m->gender == 'm') ? '&nbsp;' : ($m->gender == 'f' ? 'f' : strtolower($m->gender)),
 							'KW'          => ($gesperrt) ? '&nbsp;' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Kalenderwoche($m->tcode),
 							'DWZ'         => (!$m->rating && $m->tcode) ? 'Restp.' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::DWZ($m->rating, $m->ratingIndex),
-							//'Elo'         => ($m->elo) ? $m->elo : '-----',
-							//'FIDE-Titel'  => $m->fideTitle,
 							'Elo'         => ($fide_elo) ? $fide_elo : '-----',
 							'FIDE-Titel'  => $fide_titel,
 							'FIDE-Nation' => $flag_content,

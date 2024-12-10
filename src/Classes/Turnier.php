@@ -69,7 +69,7 @@ class Turnier extends \Module
 		global $objPage;
 		
 		// DWZ-Abfragen abgeschaltet?
-		if($GLOBALS['TL_CONFIG']['dewis_switchedOff'])
+		if(isset($GLOBALS['TL_CONFIG']['dewis_switchedOff']))
 		{
 			$this->Template = new \FrontendTemplate('dewis_abgeschaltet');
 			$this->Template->content = $GLOBALS['TL_CONFIG']['dewis_switchedOffText'];
@@ -232,7 +232,7 @@ class Turnier extends \Module
 			$this->Subtemplate = new \FrontendTemplate($this->subTemplate);
 			$this->Subtemplate->daten = $daten;
 			$this->Subtemplate->anzahl = is_array($daten) ? count($daten) : 0;
-			$this->Subtemplate->search_keyword = $keyword;
+			$this->Subtemplate->search_keyword = isset($keyword) ? $keyword : '';
 			$this->Subtemplate->search_verband = $zps;
 			$this->Subtemplate->search_from = $from_month.'/'.$from_year;
 			$this->Subtemplate->search_to = $to_month.'/'.$to_year;
@@ -263,9 +263,9 @@ class Turnier extends \Module
 				{
 					$playerArr[$t->pid] = array
 					(
-						'Spielername'	=> $Blacklist[$t->pid] ? '***' : \Schachbulle\ContaoDewisBundle\Helper\Helper::Spielername($t, $gesperrt),
-						'Spielername'	=> $Blacklist[$t->pid] ? '***' : ($gesperrt ? sprintf("%s,%s%s", $t->surname, $t->firstname, $t->title ? ',' . $t->title : '') : sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getSpielerseite()."/%s.html\">%s</a>", $t->pid, sprintf("%s,%s%s", $t->surname, $t->firstname, $t->title ? ',' . $t->title : ''))),
-						'Scoresheet'	=> $Blacklist[$t->pid] ? '' : ($gesperrt ? '' : sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getTurnierseite()."/%s/%s.html\">SC</a>", $result_tausw->tournament->tcode, $t->pid)),
+						'Spielername'	=> isset($Blacklist[$t->pid]) ? '***' : \Schachbulle\ContaoDewisBundle\Helper\Helper::Spielername($t, $gesperrt),
+						'Spielername'	=> isset($Blacklist[$t->pid]) ? '***' : ($gesperrt ? sprintf("%s,%s%s", $t->surname, $t->firstname, $t->title ? ',' . $t->title : '') : sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getSpielerseite()."/%s.html\">%s</a>", $t->pid, sprintf("%s,%s%s", $t->surname, $t->firstname, $t->title ? ',' . $t->title : ''))),
+						'Scoresheet'	=> isset($Blacklist[$t->pid]) ? '' : ($gesperrt ? '' : sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getTurnierseite()."/%s/%s.html\">SC</a>", $result_tausw->tournament->tcode, $t->pid)),
 						'DSB-Mitglied'	=> sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getTurnierseite()."/%s/%s.html\">SC</a>", $result_tausw->tournament->tcode, $t->pid),
 						'DWZ'			=> ($t->ratingOld) ? $t->ratingOld : '',
 						'Punkte'		=> 0,
@@ -324,7 +324,7 @@ class Turnier extends \Module
 					foreach ($r->games as $g) 
 					{
 						// Es kann mehrere Ergebnisse je Runde geben, deshalb das Subarray!
-						if(!$playerArr[$g->idWhite]['Spielername']) $playerArr[$g->idWhite]['Spielername'] = $g->white;
+						if(!isset($playerArr[$g->idWhite]['Spielername'])) $playerArr[$g->idWhite]['Spielername'] = $g->white;
 						$resultArr[$g->idWhite][$r->no][] = array
 						(
 							'Gegner'   => $g->idBlack,
@@ -332,7 +332,7 @@ class Turnier extends \Module
 							'Farbe'    => 'white',
 							'Nummer'   => 0,
 						); 
-						if(!$playerArr[$g->idBlack]['Spielername']) $playerArr[$g->idBlack]['Spielername'] = $g->black;
+						if(!isset($playerArr[$g->idBlack]['Spielername'])) $playerArr[$g->idBlack]['Spielername'] = $g->black;
 						$resultArr[$g->idBlack][$r->no][] = array
 						(
 							'Gegner'   => $g->idWhite,
@@ -358,16 +358,21 @@ class Turnier extends \Module
 						{
 							case '1':
 							case '+':
-								$playerArr[$playerId]['Punkte'] += 1;
-								$playerArr[$playerId]['Partien'] += 1;
+								if(isset($playerArr[$playerId]['Punkte'])) $playerArr[$playerId]['Punkte'] += 1;
+								else $playerArr[$playerId]['Punkte'] = 1;
+								if(isset($playerArr[$playerId]['Partien'])) $playerArr[$playerId]['Partien'] += 1;
+								else $playerArr[$playerId]['Partien'] = 1;
 								break;
 							case '½':
-								$playerArr[$playerId]['Punkte'] += .5;
-								$playerArr[$playerId]['Partien'] += 1;
+								if(isset($playerArr[$playerId]['Punkte'])) $playerArr[$playerId]['Punkte'] += .5;
+								else $playerArr[$playerId]['Punkte'] = .5;
+								if(isset($playerArr[$playerId]['Partien'])) $playerArr[$playerId]['Partien'] += 1;
+								else $playerArr[$playerId]['Partien'] = 1;
 								break;
 							case '0':
 							case '-':
-								$playerArr[$playerId]['Partien'] += 1;
+								if(isset($playerArr[$playerId]['Partien'])) $playerArr[$playerId]['Partien'] += 1;
+								else $playerArr[$playerId]['Partien'] = 1;
 								break;
 							default:
 						}
@@ -385,7 +390,11 @@ class Turnier extends \Module
 				{
 					foreach($dataArr as $opp)
 					{
-						$playerArr[$playerId]['Buchholz'] += $playerArr[$opp['Gegner']]['Punkte'];
+						if(isset($playerArr[$opp['Gegner']]['Punkte']))
+						{
+							if(isset($playerArr[$playerId]['Buchholz'])) $playerArr[$playerId]['Buchholz'] += $playerArr[$opp['Gegner']]['Punkte'];
+							else $playerArr[$playerId]['Buchholz'] = $playerArr[$opp['Gegner']]['Punkte'];
+						}
 					}
 				}
 			}
@@ -399,17 +408,18 @@ class Turnier extends \Module
 			foreach($playerArr as $playerId => $dataArr)
 			{
 				$i++;
+				if(!isset($playerArr[$playerId]['Punkte'])) $playerArr[$playerId]['Punkte'] = 0;
 				$key = sprintf('%04d-%03d-%04d-%04d', 9999 - $playerArr[$playerId]['Punkte'] * 10, $playerArr[$playerId]['Partien'], 9999 - $playerArr[$playerId]['Buchholz'], $i);
 				$tempArr[$key] = array
 				(
-					'Spielername'	=> $playerArr[$playerId]['Spielername'],
-					'Scoresheet'	=> $playerArr[$playerId]['Scoresheet'],
-					'DSB-Mitglied'	=> $playerArr[$playerId]['DSB-Mitglied'],
-					'DWZ'			=> $playerArr[$playerId]['DWZ'],
-					'Punkte'		=> $playerArr[$playerId]['Punkte'],
-					'Partien'		=> $playerArr[$playerId]['Partien'],
-					'Buchholz'		=> $playerArr[$playerId]['Buchholz'],
-					'ID'			=> $playerId,
+					'Spielername'   => $playerArr[$playerId]['Spielername'],
+					'Scoresheet'    => isset($playerArr[$playerId]['Scoresheet']) ? $playerArr[$playerId]['Scoresheet'] : '',
+					'DSB-Mitglied'  => isset($playerArr[$playerId]['DSB-Mitglied']) ? $playerArr[$playerId]['DSB-Mitglied'] : '',
+					'DWZ'           => isset($playerArr[$playerId]['DWZ']) ? $playerArr[$playerId]['DWZ'] : '',
+					'Punkte'        => isset($playerArr[$playerId]['Punkte']) ? $playerArr[$playerId]['Punkte'] : '',
+					'Partien'       => $playerArr[$playerId]['Partien'],
+					'Buchholz'      => $playerArr[$playerId]['Buchholz'],
+					'ID'            => $playerId,
 				);
 			}
 
@@ -575,17 +585,17 @@ class Turnier extends \Module
 
 			$theader = array
 			(
-				'Ergebnisse'	=> sprintf('<a href="'.\Schachbulle\ContaoDewisBundle\Helper\Helper::getTurnierseite().'/%s/Ergebnisse.html">Turnierergebnisse</a>', $result_tausw->tournament->tcode),
-				'Turniercode'	=> $result_tausw->tournament->tcode,
-				'Turniername'	=> $result_tausw->tournament->tname,
-				'Turnierende'	=> \Schachbulle\ContaoDewisBundle\Helper\Helper::datum_mysql2php($result_tausw->tournament->finishedOn),
-				'Berechnet'		=> sprintf("%s %s", \Schachbulle\ContaoDewisBundle\Helper\Helper::datum_mysql2php(substr($result_tausw->tournament->computedOn, 0, 10)), substr($result_tausw->tournament->computedOn, 11, 5)),
-				'Nachberechnet'	=> $result_tausw->tournament->recomputedOn == 'NULL' || $result_tausw->tournament->recomputedOn == '' ? '&nbsp;' : sprintf("%s %s", \Schachbulle\ContaoDewisBundle\Helper\Helper::datum_mysql2php(substr($result_tausw->tournament->recomputedOn, 0, 10)), substr($result_tausw->tournament->recomputedOn, 11, 5)),
-				'Auswerter1'	=> ($gesperrt) ? 'Sie müssen sich anmelden, um diese Daten sehen zu können.' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Wertungsreferent($result_tausw->tournament->assessor1),
-				'Auswerter2'	=> ($gesperrt) ? 'Sie müssen sich anmelden, um diese Daten sehen zu können.' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Wertungsreferent($result_tausw->tournament->assessor2, false),
-				'Spieler'		=> $result_tausw->tournament->cntPlayer,
-				'Partien'		=> $result_tausw->tournament->cntGames,
-				'Runden'		=> $result_tausw->tournament->rounds,
+				'Ergebnisse'    => sprintf('<a href="'.\Schachbulle\ContaoDewisBundle\Helper\Helper::getTurnierseite().'/%s/Ergebnisse.html">Turnierergebnisse</a>', $result_tausw->tournament->tcode),
+				'Turniercode'   => $result_tausw->tournament->tcode,
+				'Turniername'   => $result_tausw->tournament->tname,
+				'Turnierende'   => \Schachbulle\ContaoDewisBundle\Helper\Helper::datum_mysql2php($result_tausw->tournament->finishedOn),
+				'Berechnet'     => sprintf("%s %s", \Schachbulle\ContaoDewisBundle\Helper\Helper::datum_mysql2php(substr($result_tausw->tournament->computedOn, 0, 10)), substr($result_tausw->tournament->computedOn, 11, 5)),
+				'Nachberechnet' => $result_tausw->tournament->recomputedOn == 'NULL' || $result_tausw->tournament->recomputedOn == '' ? '&nbsp;' : sprintf("%s %s", \Schachbulle\ContaoDewisBundle\Helper\Helper::datum_mysql2php(substr($result_tausw->tournament->recomputedOn, 0, 10)), substr($result_tausw->tournament->recomputedOn, 11, 5)),
+				'Auswerter1'    => ($gesperrt) ? 'Sie müssen sich anmelden, um diese Daten sehen zu können.' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Wertungsreferent($result_tausw->tournament->assessor1),
+				'Auswerter2'    => ($gesperrt) ? 'Sie müssen sich anmelden, um diese Daten sehen zu können.' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Wertungsreferent($result_tausw->tournament->assessor2, false),
+				'Spieler'       => $result_tausw->tournament->cntPlayer,
+				'Partien'       => $result_tausw->tournament->cntGames,
+				'Runden'        => $result_tausw->tournament->rounds,
 			);
 
 			/*********************************************************
@@ -608,11 +618,11 @@ class Turnier extends \Module
 
 					$daten[$key] = array
 					(
-						'PKZ'			=> $t->pid,
-						'Spielername'	=> $Blacklist[$t->pid] ? '***' : \Schachbulle\ContaoDewisBundle\Helper\Helper::Spielername($t, $gesperrt),
-						'Scoresheet'	=> $Blacklist[$t->pid] ? '' : ($gesperrt ? '' : sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getTurnierseite()."/%s/%s.html\">SC</a>", $result_tausw->tournament->tcode, $t->pid)),
-						'DWZ alt'		=> \Schachbulle\ContaoDewisBundle\Helper\DeWIS::DWZ($t->ratingOld, $t->ratingOldIndex),
-						'DWZ neu'		=> \Schachbulle\ContaoDewisBundle\Helper\DeWIS::DWZ($t->ratingNew, $t->ratingNewIndex),
+						'PKZ'           => $t->pid,
+						'Spielername'   => isset($Blacklist[$t->pid]) ? '***' : \Schachbulle\ContaoDewisBundle\Helper\Helper::Spielername($t, $gesperrt),
+						'Scoresheet'    => isset($Blacklist[$t->pid]) ? '' : ($gesperrt ? '' : sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getTurnierseite()."/%s/%s.html\">SC</a>", $result_tausw->tournament->tcode, $t->pid)),
+						'DWZ alt'       => \Schachbulle\ContaoDewisBundle\Helper\DeWIS::DWZ($t->ratingOld, $t->ratingOldIndex),
+						'DWZ neu'       => \Schachbulle\ContaoDewisBundle\Helper\DeWIS::DWZ($t->ratingNew, $t->ratingNewIndex),
 						'MglNr'         => sprintf("%04d", $t->membership),
 						'VKZ'           => sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getVereinseite()."/%s.html\">%s</a>", $t->vkz, sprintf("%s-%s", $t->vkz, sprintf("%04d", $t->membership))),
 						'ZPS'           => sprintf("%s-%s", $t->vkz, sprintf("%04d", $t->membership)),
@@ -757,7 +767,7 @@ class Turnier extends \Module
 			// Zähler anlegen
 			$counter = array(0, 0);
 			// Statistik anlegen, wenn noch nicht vorhanden
-			if(!$daten[$Turnierheader['Turniercode']])
+			if(!isset($daten[$Turnierheader['Turniercode']]))
 			{
 				$daten[$Turnierheader['Turniercode']] = array();
 			}
