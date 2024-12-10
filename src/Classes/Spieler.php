@@ -75,7 +75,7 @@ class Spieler extends \Module
 		global $objPage;
 
 		// DWZ-Abfragen abgeschaltet?
-		if(isset($GLOBALS['TL_CONFIG']['dewis_switchedOff']))
+		if(isset($GLOBALS['TL_CONFIG']['dewis_switchedOff']) && $GLOBALS['TL_CONFIG']['dewis_switchedOff'])
 		{
 			$this->Template = new \FrontendTemplate('dewis_abgeschaltet');
 			$this->Template->content = $GLOBALS['TL_CONFIG']['dewis_switchedOffText'];

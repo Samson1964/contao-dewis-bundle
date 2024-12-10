@@ -1,5 +1,9 @@
 # Abfrage der DeWIS-API
 
+## Version 2.0.2 (2024-12-10)
+
+* Fix: DWZ--Abfrage nicht möglich, wird ständig angezeigt
+
 ## Version 2.0.1 (2024-12-10)
 
 * Fix: Non-static method Schachbulle\ContaoDewisBundle\Helper\Helper::getVereinseite() cannot be called statically -> public static statt nur public
