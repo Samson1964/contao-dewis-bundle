@@ -1,5 +1,10 @@
 # Abfrage der DeWIS-API
 
+## Version 2.0.3 (2024-12-11)
+
+* Fix: Warning: Attempt to read property "path" on null in src/Classes/Verein.php (line 315) -> Abfrage mit isset funktioniert hier nicht
+* Fix: Warning: Attempt to read property "path" on null in src/Classes/Spieler.php (line 283) -> Abfrage mit isset funktioniert hier nicht
+
 ## Version 2.0.2 (2024-12-10)
 
 * Fix: DWZ--Abfrage nicht möglich, wird ständig angezeigt

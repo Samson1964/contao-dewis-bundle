@@ -302,7 +302,7 @@ class Verein extends \Module
 			$this->Template->addImage     = true;
 			$this->Template->homepage     = isset($objVerein->homepage) ? $objVerein->homepage : '';
 			$this->Template->info         = isset($objVerein->info) ? $objVerein->info : '';
-			if(isset($objVerein->addImage))
+			if($objVerein->addImage)
 			{
 				// Vereinslogo vorhanden
 				$objFile = \FilesModel::findByPk($objVerein->singleSRC);

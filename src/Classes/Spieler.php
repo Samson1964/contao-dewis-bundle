@@ -270,7 +270,7 @@ class Spieler extends \Module
 			// Spieler in tl_dwz_spi suchen
 			$objSpieler = \Schachbulle\ContaoDewisBundle\Models\DewisSpielerModel::findOneBy('dewisID', $resultArr['result']->member->pid);
 			$this->Template->addImage     = true;
-			if(isset($objSpieler->addImage))
+			if($objSpieler->addImage)
 			{
 				// Spielerfoto vorhanden
 				$objFile = \FilesModel::findByPk($objSpieler->singleSRC);
