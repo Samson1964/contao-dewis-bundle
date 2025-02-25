@@ -25,52 +25,53 @@ class api
 {
 
 	var $token = '';
-	var $function = '';
+	var $modul = '';
 	var $value = '';
-	var $format = '';
 	var $limit = '';
-	var $ausgabe = array();
+	var $json = array();
+	var $id = 0; // Datensatz aus API-Tabelle
 
 	public function __construct()
 	{
-		$this->token = \Input::get('token');
-		$this->modul = \Input::get('modul');
-		$this->value = \Input::get('value');
-		$this->format = \Input::get('format');
-		$this->limit = \Input::get('limit');
+		// URL-Parameter speichern
+		$this->token = (string)\Input::get('token');
+		$this->modul = (string)\Input::get('modul');
+		$this->value = (string)\Input::get('value');
+		$this->limit = (string)\Input::get('limit');
 
+		// Ausgabe-Array vorbereiten
+		$this->json = array(
+			'error'  => false,
+			'status' => '',
+			'data'   => array()
+		);
+
+		// Format der Ausgabe
 		header("Access-Control-Allow-Origin: *");
+		header("Content-type: application/json; charset=utf-8");
 
-		switch($this->modul)
+		// Token überprüfen
+		if(self::checkToken())
 		{
-			case 'verein': self::Verein(); break;
-			case 'verband': self::Verband(); break;
-			case 'spieler': self::Spieler(); break;
-			default: self::Fehler();
+			// Token i.O, Modul aufrufen
+			switch($this->modul)
+			{
+				case 'verein': self::Verein(); break;
+				case 'verband': self::Verband(); break;
+				case 'spieler': self::Spieler(); break;
+				default:
+					$this->json['status'] = 'Parameter modul fehlt/falsch';
+					$this->json['error'] = true;
+			}
+		}
+		else
+		{
+			$this->json['error'] = true;
 		}
 
-		switch($this->format)
-		{
-			case 'array':
-				header("Content-type: application/php-serialized; charset=utf-8");
-				echo $this->ausgabe['array'];
-				break;
-			case 'csv':
-				header("Content-type: text/csv; charset=utf-8");
-				echo $this->ausgabe['csv'];
-				break;
-			case 'xml':
-				header("Content-type: application/xml; charset=utf-8");
-				echo $this->ausgabe['xml'];
-				break;
-			case 'json':
-				header("Content-type: application/json; charset=utf-8");
-				echo $this->ausgabe['json'];
-				break;
-			default:
-				header("Content-type: application/json; charset=utf-8");
-				echo $this->ausgabe['json'];
-		}
+		self::setStatistik();
+		// Ausgabe
+		echo json_encode($this->json);
 		return;
 	}
 
@@ -82,86 +83,37 @@ class api
 			'funktion' => 'Vereinsliste',
 			'zps'      => $this->value,
 		);
-		$daten = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::autoQuery($param); // Abfrage ausführen
+		$dewis = new \Schachbulle\ContaoDewisBundle\Helper\DeWIS();
+		$daten = $dewis->autoQuery($param); // Abfrage ausführen
+
 		if($daten['result'])
 		{
-			//echo "<pre>";
-			//print_r($daten);
-			//echo "</pre>";
-
 			// Daten umwandeln und ausliefern
 			$zaehler = 0;
-			// XML-Kopf
-			$dom = new \DOMDocument('1.0','utf-8');
-			$root = $dom->createElement('Liste');
-			$dom->appendChild($root);
-			// CSV-Kopf
-			$this->ausgabe['csv'] = 'id|nachname|vorname|titel|verein|mglnr|status|dwz|dwzindex|turniercode|turnierende';
-			if(!$GLOBALS['TL_CONFIG']['dewis_geschlecht_ausblenden']) $this->ausgabe['csv'] .= '|geschlecht';
-			if(!$GLOBALS['TL_CONFIG']['dewis_geburtsjahr_ausblenden']) $this->ausgabe['csv'] .= '|geburtsjahr';
-			$this->ausgabe['csv'] .= '|fideid|fideelo|fidetitel'."\r\n";
 
 			foreach($daten['result']->members as $m)
 			{
 				// Ausgabe für serialisiertes Array
-				$this->ausgabe['array'][$zaehler]['id'] = $m->pid;
-				$this->ausgabe['array'][$zaehler]['nachname'] = $m->surname;
-				$this->ausgabe['array'][$zaehler]['vorname'] = $m->firstname;
-				$this->ausgabe['array'][$zaehler]['titel'] = $m->title;
-				$this->ausgabe['array'][$zaehler]['verein'] = $daten['result']->union->vkz;
-				$this->ausgabe['array'][$zaehler]['mglnr'] = $m->membership;
-				$this->ausgabe['array'][$zaehler]['status'] = $m->state;
-				$this->ausgabe['array'][$zaehler]['dwz'] = $m->rating;
-				$this->ausgabe['array'][$zaehler]['dwzindex'] = $m->ratingIndex;
-				$this->ausgabe['array'][$zaehler]['turniercode'] = $m->tcode;
-				$this->ausgabe['array'][$zaehler]['turnierende'] = $m->finishedOn;
-				if(!$GLOBALS['TL_CONFIG']['dewis_geschlecht_ausblenden']) $this->ausgabe['array'][$zaehler]['geschlecht'] = $m->gender;
-				if(!$GLOBALS['TL_CONFIG']['dewis_geburtsjahr_ausblenden']) $this->ausgabe['array'][$zaehler]['geburtsjahr'] = $m->yearOfBirth;
-				$this->ausgabe['array'][$zaehler]['fideid'] = $m->idfide ? $m->idfide : '';
-				$this->ausgabe['array'][$zaehler]['fideelo'] = $m->elo ? $m->elo : '';
-				$this->ausgabe['array'][$zaehler]['fidetitel'] = $m->fideTitle ? $m->fideTitle : '';
-				// XML-Ausgabe
-				$root->appendChild($firstNode = $dom->createElement('Spieler'));
-				//$firstNode->setAttribute('Index',$zaehler);
-				$firstNode->appendChild($dom->createElement('id',$m->pid));
-				$firstNode->appendChild($dom->createElement('nachname',$m->surname));
-				$firstNode->appendChild($dom->createElement('vorname',$m->firstname));
-				$firstNode->appendChild($dom->createElement('titel',$m->title));
-				$firstNode->appendChild($dom->createElement('verein',$daten['result']->union->vkz));
-				$firstNode->appendChild($dom->createElement('mglnr',$m->membership));
-				$firstNode->appendChild($dom->createElement('status',$m->state));
-				$firstNode->appendChild($dom->createElement('dwz',$m->rating));
-				$firstNode->appendChild($dom->createElement('dwzindex',$m->ratingIndex));
-				$firstNode->appendChild($dom->createElement('turniercode',$m->tcode));
-				$firstNode->appendChild($dom->createElement('turnierende',$m->finishedOn));
-				if(!$GLOBALS['TL_CONFIG']['dewis_geschlecht_ausblenden']) $firstNode->appendChild($dom->createElement('geschlecht',$m->gender));
-				if(!$GLOBALS['TL_CONFIG']['dewis_geburtsjahr_ausblenden']) $firstNode->appendChild($dom->createElement('geburtsjahr',$m->yearOfBirth));
-				$firstNode->appendChild($dom->createElement('fideid',$m->idfide));
-				$firstNode->appendChild($dom->createElement('fideelo',$m->elo));
-				$firstNode->appendChild($dom->createElement('fidetitel',$m->fideTitle));
-				// CSV-Ausgabe
-				$this->ausgabe['csv'] .= $m->pid;
-				$this->ausgabe['csv'] .= '|'.$m->surname;
-				$this->ausgabe['csv'] .= '|'.$m->firstname;
-				$this->ausgabe['csv'] .= '|'.$m->title;
-				$this->ausgabe['csv'] .= '|'.$daten['result']->union->vkz;
-				$this->ausgabe['csv'] .= '|'.$m->membership;
-				$this->ausgabe['csv'] .= '|'.$m->state;
-				$this->ausgabe['csv'] .= '|'.$m->rating;
-				$this->ausgabe['csv'] .= '|'.$m->ratingIndex;
-				$this->ausgabe['csv'] .= '|'.$m->tcode;
-				$this->ausgabe['csv'] .= '|'.$m->finishedOn;
-				if(!$GLOBALS['TL_CONFIG']['dewis_geschlecht_ausblenden']) $this->ausgabe['csv'] .= '|'.$m->gender;
-				if(!$GLOBALS['TL_CONFIG']['dewis_geburtsjahr_ausblenden']) $this->ausgabe['csv'] .= '|'.$m->yearOfBirth;
-				$this->ausgabe['csv'] .= '|'.$m->idfide;
-				$this->ausgabe['csv'] .= '|'.$m->elo;
-				$this->ausgabe['csv'] .= '|'.$m->fideTitle."\r\n";
+				$this->json['data'][$zaehler]['id'] = $m->pid;
+				$this->json['data'][$zaehler]['nachname'] = $m->surname;
+				$this->json['data'][$zaehler]['vorname'] = $m->firstname;
+				$this->json['data'][$zaehler]['titel'] = $m->title;
+				$this->json['data'][$zaehler]['verein'] = $daten['result']->union->vkz;
+				$this->json['data'][$zaehler]['mglnr'] = $m->membership;
+				$this->json['data'][$zaehler]['status'] = $m->state;
+				$this->json['data'][$zaehler]['dwz'] = $m->rating;
+				$this->json['data'][$zaehler]['dwzindex'] = $m->ratingIndex;
+				$this->json['data'][$zaehler]['turniercode'] = $m->tcode;
+				$this->json['data'][$zaehler]['turnierende'] = $m->finishedOn;
+				if(!$GLOBALS['TL_CONFIG']['dewis_geschlecht_ausblenden']) $this->json['data'][$zaehler]['geschlecht'] = $m->gender;
+				if(!$GLOBALS['TL_CONFIG']['dewis_geburtsjahr_ausblenden']) $this->json['data'][$zaehler]['geburtsjahr'] = $m->yearOfBirth;
+				$this->json['data'][$zaehler]['fideid'] = $m->idfide ? $m->idfide : '';
+				$this->json['data'][$zaehler]['fideelo'] = $m->elo ? $m->elo : '';
+				$this->json['data'][$zaehler]['fidetitel'] = $m->fideTitle ? $m->fideTitle : '';
 				$zaehler++;
 			}
 		}
-		$this->ausgabe['xml'] = $dom->saveXML();
-		$this->ausgabe['json'] = json_encode($this->ausgabe['array']);
-		$this->ausgabe['array'] = serialize($this->ausgabe['array']);
+		return;
 	}
 
 	public function Verband()
@@ -173,86 +125,37 @@ class api
 			'zps'      => $this->value,
 			'limit'    => $this->limit ? $this->limit : 100,
 		);
-		$daten = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::autoQuery($param); // Abfrage ausführen
+		$dewis = new \Schachbulle\ContaoDewisBundle\Helper\DeWIS();
+		$daten = $dewis->autoQuery($param); // Abfrage ausführen
+
 		if($daten['result'])
 		{
-			//echo "<pre>";
-			//print_r($daten);
-			//echo "</pre>";
-
 			// Daten umwandeln und ausliefern
 			$zaehler = 0;
-			// XML-Kopf
-			$dom = new \DOMDocument('1.0','utf-8');
-			$root = $dom->createElement('Liste');
-			$dom->appendChild($root);
-			// CSV-Kopf
-			$this->ausgabe['csv'] = 'id|nachname|vorname|titel|verein|mglnr|status|dwz|dwzindex|turniercode|turnierende';
-			if(!$GLOBALS['TL_CONFIG']['dewis_geschlecht_ausblenden']) $this->ausgabe['csv'] .= '|geschlecht';
-			if(!$GLOBALS['TL_CONFIG']['dewis_geburtsjahr_ausblenden']) $this->ausgabe['csv'] .= '|geburtsjahr';
-			$this->ausgabe['csv'] .= '|fideid|fideelo|fidetitel\r\n';
-			
-			foreach($daten['result']->members as $m) 
+
+			foreach($daten['result']->members as $m)
 			{
 				// Ausgabe für serialisiertes Array
-				$this->ausgabe['array'][$zaehler]['id'] = $m->pid;
-				$this->ausgabe['array'][$zaehler]['nachname'] = $m->surname;
-				$this->ausgabe['array'][$zaehler]['vorname'] = $m->firstname;
-				$this->ausgabe['array'][$zaehler]['titel'] = $m->title;
-				$this->ausgabe['array'][$zaehler]['verein'] = $m->vkz;
-				$this->ausgabe['array'][$zaehler]['mglnr'] = $m->membership;
-				$this->ausgabe['array'][$zaehler]['status'] = $m->state;
-				$this->ausgabe['array'][$zaehler]['dwz'] = $m->rating;
-				$this->ausgabe['array'][$zaehler]['dwzindex'] = $m->ratingIndex;
-				$this->ausgabe['array'][$zaehler]['turniercode'] = $m->tcode;
-				$this->ausgabe['array'][$zaehler]['turnierende'] = $m->finishedOn;
-				if(!$GLOBALS['TL_CONFIG']['dewis_geschlecht_ausblenden']) $this->ausgabe['array'][$zaehler]['geschlecht'] = $m->gender;
-				if(!$GLOBALS['TL_CONFIG']['dewis_geburtsjahr_ausblenden']) $this->ausgabe['array'][$zaehler]['geburtsjahr'] = $m->yearOfBirth;
-				$this->ausgabe['array'][$zaehler]['fideid'] = $m->idfide ? $m->idfide : '';
-				$this->ausgabe['array'][$zaehler]['fideelo'] = $m->elo ? $m->elo : '';
-				$this->ausgabe['array'][$zaehler]['fidetitel'] = $m->fideTitle ? $m->fideTitle : '';
-				// XML-Ausgabe
-				$root->appendChild($firstNode = $dom->createElement('Spieler'));
-				//$firstNode->setAttribute('Index',$zaehler);
-				$firstNode->appendChild($dom->createElement('id',$m->pid));
-				$firstNode->appendChild($dom->createElement('nachname',$m->surname));
-				$firstNode->appendChild($dom->createElement('vorname',$m->firstname));
-				$firstNode->appendChild($dom->createElement('titel',$m->title));
-				$firstNode->appendChild($dom->createElement('verein',$m->vkz));
-				$firstNode->appendChild($dom->createElement('mglnr',$m->membership));
-				$firstNode->appendChild($dom->createElement('status',$m->state));
-				$firstNode->appendChild($dom->createElement('dwz',$m->rating));
-				$firstNode->appendChild($dom->createElement('dwzindex',$m->ratingIndex));
-				$firstNode->appendChild($dom->createElement('turniercode',$m->tcode));
-				$firstNode->appendChild($dom->createElement('turnierende',$m->finishedOn));
-				if(!$GLOBALS['TL_CONFIG']['dewis_geschlecht_ausblenden']) $firstNode->appendChild($dom->createElement('geschlecht',$m->gender));
-				if(!$GLOBALS['TL_CONFIG']['dewis_geburtsjahr_ausblenden']) $firstNode->appendChild($dom->createElement('geburtsjahr',$m->yearOfBirth));
-				$firstNode->appendChild($dom->createElement('fideid',$m->idfide));
-				$firstNode->appendChild($dom->createElement('fideelo',$m->elo));
-				$firstNode->appendChild($dom->createElement('fidetitel',$m->fideTitle));
-				// CSV-Ausgabe
-				$this->ausgabe['csv'] .= $m->pid;
-				$this->ausgabe['csv'] .= '|'.$m->surname;
-				$this->ausgabe['csv'] .= '|'.$m->firstname;
-				$this->ausgabe['csv'] .= '|'.$m->title;
-				$this->ausgabe['csv'] .= '|'.$m->vkz;
-				$this->ausgabe['csv'] .= '|'.$m->membership;
-				$this->ausgabe['csv'] .= '|'.$m->state;
-				$this->ausgabe['csv'] .= '|'.$m->rating;
-				$this->ausgabe['csv'] .= '|'.$m->ratingIndex;
-				$this->ausgabe['csv'] .= '|'.$m->tcode;
-				$this->ausgabe['csv'] .= '|'.$m->finishedOn;
-				if(!$GLOBALS['TL_CONFIG']['dewis_geschlecht_ausblenden']) $this->ausgabe['csv'] .= '|'.$m->gender;
-				if(!$GLOBALS['TL_CONFIG']['dewis_geburtsjahr_ausblenden']) $this->ausgabe['csv'] .= '|'.$m->yearOfBirth;
-				$this->ausgabe['csv'] .= '|'.$m->idfide;
-				$this->ausgabe['csv'] .= '|'.$m->elo;
-				$this->ausgabe['csv'] .= '|'.$m->fideTitle.'\r\n';
+				$this->json['data'][$zaehler]['id'] = $m->pid;
+				$this->json['data'][$zaehler]['nachname'] = $m->surname;
+				$this->json['data'][$zaehler]['vorname'] = $m->firstname;
+				$this->json['data'][$zaehler]['titel'] = $m->title;
+				$this->json['data'][$zaehler]['verein'] = $m->vkz;
+				$this->json['data'][$zaehler]['mglnr'] = $m->membership;
+				$this->json['data'][$zaehler]['status'] = $m->state;
+				$this->json['data'][$zaehler]['dwz'] = $m->rating;
+				$this->json['data'][$zaehler]['dwzindex'] = $m->ratingIndex;
+				$this->json['data'][$zaehler]['turniercode'] = $m->tcode;
+				$this->json['data'][$zaehler]['turnierende'] = $m->finishedOn;
+				if(!$GLOBALS['TL_CONFIG']['dewis_geschlecht_ausblenden']) $this->json['data'][$zaehler]['geschlecht'] = $m->gender;
+				if(!$GLOBALS['TL_CONFIG']['dewis_geburtsjahr_ausblenden']) $this->json['data'][$zaehler]['geburtsjahr'] = $m->yearOfBirth;
+				$this->json['data'][$zaehler]['fideid'] = $m->idfide ? $m->idfide : '';
+				$this->json['data'][$zaehler]['fideelo'] = $m->elo ? $m->elo : '';
+				$this->json['data'][$zaehler]['fidetitel'] = $m->fideTitle ? $m->fideTitle : '';
 				$zaehler++;
 			}
 		}
-		$this->ausgabe['xml'] = $dom->saveXML();
-		$this->ausgabe['json'] = json_encode($this->ausgabe['array']);
-		$this->ausgabe['array'] = serialize($this->ausgabe['array']);
+		return;
 	}
 
 	public function Spieler()
@@ -263,130 +166,182 @@ class api
 			'funktion' => 'Karteikarte',
 			'id'       => $this->value,
 		);
-		$daten = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::autoQuery($param); // Abfrage ausführen
-		//echo "<pre>";
-		//print_r($daten);
-		//echo "</pre>";
+		$dewis = new \Schachbulle\ContaoDewisBundle\Helper\DeWIS();
+		$daten = $dewis->autoQuery($param); // Abfrage ausführen
+
 		if($daten['result'])
 		{
 
 			// Daten umwandeln und ausliefern
 			$zaehler = 0;
-			// XML-Kopf
-			$dom = new \DOMDocument("1.0","utf-8");
-			$root = $dom->createElement("Liste");
-			$dom->appendChild($root);
-			// CSV-Kopf
-			$this->ausgabe['csv'] = 'id|nachname|vorname|titel|dwz|dwzindex';
-			if(!$GLOBALS['TL_CONFIG']['dewis_geschlecht_ausblenden']) $this->ausgabe['csv'] .= '|geschlecht';
-			if(!$GLOBALS['TL_CONFIG']['dewis_geburtsjahr_ausblenden']) $this->ausgabe['csv'] .= '|geburtsjahr';
-			$this->ausgabe['csv'] .= '|fideid|fideelo|fidetitel|fidenation\r\n';
-			
-			// CSV
-			$this->ausgabe['csv'] .= $daten['result']->member->pid.'|';
-			$this->ausgabe['csv'] .= $daten['result']->member->surname.'|';
-			$this->ausgabe['csv'] .= $daten['result']->member->firstname.'|';
-			$this->ausgabe['csv'] .= $daten['result']->member->title.'|';
-			$this->ausgabe['csv'] .= $daten['result']->member->rating.'|';
-			$this->ausgabe['csv'] .= $daten['result']->member->ratingIndex.'|';
-			if(!$GLOBALS['TL_CONFIG']['dewis_geschlecht_ausblenden']) $this->ausgabe['csv'] .= $daten['result']->member->gender.'|';
-			if(!$GLOBALS['TL_CONFIG']['dewis_geburtsjahr_ausblenden']) $this->ausgabe['csv'] .= $daten['result']->member->yearOfBirth.'|';
-			$this->ausgabe['csv'] .= $daten['result']->member->idfide.'|';
-			$this->ausgabe['csv'] .= $daten['result']->member->elo.'|';
-			$this->ausgabe['csv'] .= $daten['result']->member->fideTitle.'|';
-			$this->ausgabe['csv'] .= $daten['result']->member->fideNation.'\r\n';
-			
+
 			// Array
-			$this->ausgabe['array']['spieler']['id'] = $daten['result']->member->pid;
-			$this->ausgabe['array']['spieler']['nachname'] = $daten['result']->member->surname;
-			$this->ausgabe['array']['spieler']['vorname'] = $daten['result']->member->firstname;
-			$this->ausgabe['array']['spieler']['titel'] = $daten['result']->member->title;
-			$this->ausgabe['array']['spieler']['dwz'] = $daten['result']->member->rating;
-			$this->ausgabe['array']['spieler']['dwzindex'] = $daten['result']->member->ratingIndex;
-			if(!$GLOBALS['TL_CONFIG']['dewis_geschlecht_ausblenden']) $this->ausgabe['array']['spieler']['geschlecht'] = $daten['result']->member->gender;
-			if(!$GLOBALS['TL_CONFIG']['dewis_geburtsjahr_ausblenden']) $this->ausgabe['array']['spieler']['geburtstag'] = $daten['result']->member->yearOfBirth;
-			$this->ausgabe['array']['spieler']['fideid'] = $daten['result']->member->idfide;
-			$this->ausgabe['array']['spieler']['fideelo'] = $daten['result']->member->elo;
-			$this->ausgabe['array']['spieler']['fidetitel'] = $daten['result']->member->fideTitle;
-			$this->ausgabe['array']['spieler']['fidenation'] = $daten['result']->member->fideNation;
-			
+			$this->json['data']['spieler']['id'] = $daten['result']->member->pid;
+			$this->json['data']['spieler']['nachname'] = $daten['result']->member->surname;
+			$this->json['data']['spieler']['vorname'] = $daten['result']->member->firstname;
+			$this->json['data']['spieler']['titel'] = $daten['result']->member->title;
+			$this->json['data']['spieler']['dwz'] = $daten['result']->member->rating;
+			$this->json['data']['spieler']['dwzindex'] = $daten['result']->member->ratingIndex;
+			if(!$GLOBALS['TL_CONFIG']['dewis_geschlecht_ausblenden']) $this->json['data']['spieler']['geschlecht'] = $daten['result']->member->gender;
+			if(!$GLOBALS['TL_CONFIG']['dewis_geburtsjahr_ausblenden']) $this->json['data']['spieler']['geburtstag'] = $daten['result']->member->yearOfBirth;
+			$this->json['data']['spieler']['fideid'] = $daten['result']->member->idfide;
+			$this->json['data']['spieler']['fideelo'] = $daten['result']->member->elo;
+			$this->json['data']['spieler']['fidetitel'] = $daten['result']->member->fideTitle;
+			$this->json['data']['spieler']['fidenation'] = $daten['result']->member->fideNation;
+
 			// Ranglistenplazierungen
-			$this->ausgabe['csv'] .= 'zpsver|organisation|rang|auswerter\r\n';
 			$x = 0;
 			foreach($daten['result']->ranking[1] as $r)
 			{
-				$this->ausgabe['csv'] .= $r->vkz.'|';
-				$this->ausgabe['csv'] .= $r->organization.'|';
-				$this->ausgabe['csv'] .= $r->rank.'|';
-				$this->ausgabe['csv'] .= $r->assessor.'\r\n';
-				$this->ausgabe['array']['rang'][$x]['zpsver'] = $r->vkz;
-				$this->ausgabe['array']['rang'][$x]['organisation'] = $r->organization;
-				$this->ausgabe['array']['rang'][$x]['rang'] = $r->rank;
-				$this->ausgabe['array']['rang'][$x]['auswerter'] = $r->assessor;
+				$this->json['data']['rang'][$x]['zpsver'] = $r->vkz;
+				$this->json['data']['rang'][$x]['organisation'] = $r->organization;
+				$this->json['data']['rang'][$x]['rang'] = $r->rank;
+				$this->json['data']['rang'][$x]['auswerter'] = $r->assessor;
 				$x++;
 			}
-			
+
 			// Mitgliedschaften
-			$this->ausgabe['csv'] .= 'zpsver|vereinsname|zpsmgl|status\r\n';
 			$x = 0;
 			foreach ($daten['result']->memberships as $r)
 			{
-				$this->ausgabe['csv'] .= $r->vkz.'|';
-				$this->ausgabe['csv'] .= $r->club.'|';
-				$this->ausgabe['csv'] .= $r->membership.'|';
-				$this->ausgabe['csv'] .= $r->state.'\r\n';
-				$this->ausgabe['array']['mitgliedschaft'][$x]['zpsver'] = $r->vkz;
-				$this->ausgabe['array']['mitgliedschaft'][$x]['vereinsname'] = $r->club;
-				$this->ausgabe['array']['mitgliedschaft'][$x]['zpsmgl'] = $r->membership;
-				$this->ausgabe['array']['mitgliedschaft'][$x]['status'] = $r->state;
+				$this->json['data']['mitgliedschaft'][$x]['zpsver'] = $r->vkz;
+				$this->json['data']['mitgliedschaft'][$x]['vereinsname'] = $r->club;
+				$this->json['data']['mitgliedschaft'][$x]['zpsmgl'] = $r->membership;
+				$this->json['data']['mitgliedschaft'][$x]['status'] = $r->state;
 				$x++;
 			}
-			
+
 			// Turniere
-			$this->ausgabe['csv'] .= 'turniercode|turniername|dwzalt|dwzaltindex|punkte|partien|nichtgewertet|erwartungswert|gegner|koeffizient|dwzneu|dwzneuindex|leistung\r\n';
 			$x = 0;
 			foreach($daten['result']->tournaments as $r)
 			{
-				$this->ausgabe['csv'] .= $r->tcode.'|';
-				$this->ausgabe['csv'] .= $r->tname.'|';
-				$this->ausgabe['csv'] .= $r->ratingOld.'|';
-				$this->ausgabe['csv'] .= $r->ratingOldIndex.'|';
-				$this->ausgabe['csv'] .= $r->points.'|';
-				$this->ausgabe['csv'] .= $r->games.'|';
-				$this->ausgabe['csv'] .= $r->unratedGames.'|';
-				$this->ausgabe['csv'] .= $r->we.'|';
-				$this->ausgabe['csv'] .= $r->level.'|';
-				$this->ausgabe['csv'] .= $r->eCoefficient.'|';
-				$this->ausgabe['csv'] .= $r->ratingNew.'|';
-				$this->ausgabe['csv'] .= $r->ratingNewIndex.'|';
-				$this->ausgabe['csv'] .= $r->achievement.'\r\n';
-				$this->ausgabe['array']['turnier'][$x]['turniercode'] = $r->tcode;
-				$this->ausgabe['array']['turnier'][$x]['turniername'] = $r->tname;
-				$this->ausgabe['array']['turnier'][$x]['dwzalt'] = $r->ratingOld;
-				$this->ausgabe['array']['turnier'][$x]['dwzaltindex'] = $r->ratingOldIndex;
-				$this->ausgabe['array']['turnier'][$x]['punkte'] = $r->points;
-				$this->ausgabe['array']['turnier'][$x]['partien'] = $r->games;
-				$this->ausgabe['array']['turnier'][$x]['ungewertet'] = $r->unratedGames;
-				$this->ausgabe['array']['turnier'][$x]['erwartungswert'] = $r->we;
-				$this->ausgabe['array']['turnier'][$x]['gegner'] = $r->level;
-				$this->ausgabe['array']['turnier'][$x]['koeffizient'] = $r->eCoefficient;
-				$this->ausgabe['array']['turnier'][$x]['dwzneu'] = $r->ratingNew;
-				$this->ausgabe['array']['turnier'][$x]['dwzneuindex'] = $r->ratingNewIndex;
-				$this->ausgabe['array']['turnier'][$x]['leistung'] = $r->achievement;
+				$this->json['data']['turnier'][$x]['turniercode'] = $r->tcode;
+				$this->json['data']['turnier'][$x]['turniername'] = $r->tname;
+				$this->json['data']['turnier'][$x]['dwzalt'] = $r->ratingOld;
+				$this->json['data']['turnier'][$x]['dwzaltindex'] = $r->ratingOldIndex;
+				$this->json['data']['turnier'][$x]['punkte'] = $r->points;
+				$this->json['data']['turnier'][$x]['partien'] = $r->games;
+				$this->json['data']['turnier'][$x]['ungewertet'] = $r->unratedGames;
+				$this->json['data']['turnier'][$x]['erwartungswert'] = $r->we;
+				$this->json['data']['turnier'][$x]['gegner'] = $r->level;
+				$this->json['data']['turnier'][$x]['koeffizient'] = $r->eCoefficient;
+				$this->json['data']['turnier'][$x]['dwzneu'] = $r->ratingNew;
+				$this->json['data']['turnier'][$x]['dwzneuindex'] = $r->ratingNewIndex;
+				$this->json['data']['turnier'][$x]['leistung'] = $r->achievement;
 				$x++;
 			}
 		}
-		//$this->ausgabe['xml'] = $dom->saveXML();
-		$this->ausgabe['json'] = json_encode($this->ausgabe['array']);
-		$this->ausgabe['array'] = serialize($this->ausgabe['array']);
+		return;
 	}
 
-	public function Fehler()
+	/**
+	 * Statistik aktualisieren
+	 */
+	public function setStatistik()
 	{
-		// Spielersuche
-		echo 'Ungültige Parameter';
-		exit();
+		// Statistik laden
+		$objRecord = \Database::getInstance()->prepare('SELECT * FROM tl_dwz_api WHERE id=?')
+		                                     ->execute($this->id);
+		if($objRecord->numRows > 0)
+		{
+			// Statistik aktualisieren
+			$statistik = @unserialize($objRecord->hits);
+			$statistik[] = array(
+				'datum'  => time(),
+				'fehler' => $this->json['error'],
+				'status' => $this->json['status'],
+				'modul'  => $this->modul,
+				'ip'     => $_SERVER['REMOTE_ADDR'],
+			);
+			$set = serialize($statistik);
+			$objSave = \Database::getInstance()->prepare('UPDATE tl_dwz_api SET hits=? WHERE id=?')
+			                                   ->execute($set, $this->id);
+		}
 	}
+
+	/**
+	 * Überprüfung des Tokens
+	 * @return:          true/false
+	 */
+	public function checkToken()
+	{
+		// In API-Tabelle nach Token suchen
+		$objRecord = \Database::getInstance()->prepare('SELECT * FROM tl_dwz_api WHERE `key`=?')
+		                                     ->execute($this->token);
+		if($objRecord->numRows > 0)
+		{
+			$this->id = $objRecord->id;
+			$zeit = time();
+			
+			// Zugriff in diesem Zeitraum erlaubt?
+			if($objRecord->published)
+			{
+				if($objRecord->start && $objRecord->start > $zeit)
+				{
+					// API-Schlüssel noch nicht gestartet
+					$this->json['status'] = 'API-Schlüssel noch nicht gültig';
+					return false;
+				}
+				if($objRecord->stop && $objRecord->stop < $zeit)
+				{
+					// API-Schlüssel wurde beendet
+					$this->json['status'] = 'API-Schlüssel nicht mehr gültig';
+					return false;
+				}
+			}
+			else
+			{
+				// API-Schlüssel wurde nicht veröffentlicht
+				$this->json['status'] = 'API-Schlüssel nicht veröffentlicht';
+				return false;
+			}
+
+			// Token vorhanden, jetzt IP-Adresse prüfen
+			$ip = $_SERVER['REMOTE_ADDR'];
+			if($objRecord->ip == $ip)
+			{
+				// Modul prüfen
+				$module = @unserialize($objRecord->modules);
+				if(is_array($module))
+				{
+					if($this->modul)
+					{
+						if(in_array($this->modul, $module))
+						{
+							return true;
+						}
+						else
+						{
+							$this->json['status'] = 'Modul '.$this->modul.' nicht erlaubt';
+							return false;
+						}
+					}
+					else
+					{
+						$this->json['status'] = 'Modul nicht gefunden';
+						return false;
+					}
+				}
+				else
+				{
+					$this->json['status'] = 'Kein Modul erlaubt';
+					return false;
+				}
+			}
+			else
+			{
+				$this->json['status'] = 'Ungültige IP-Adresse: '.$ip;
+				return false;
+			}
+		}
+		else
+		{
+			// Token nicht gefunden
+			$this->json['status'] = 'Ungültiger API-Schlüssel (Token)';
+			return false;
+		}
+	}
+
 }
 
 /**

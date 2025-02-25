@@ -1,0 +1,18 @@
+<?php $this->extend('block_unsearchable'); ?>
+
+<?php $this->block('content'); ?>
+
+<?php if($this->form == 'versendet'): ?>
+	Sie haben eine E-Mail mit Ihrem Schlüssel bekommen.
+<?php else: ?>
+	<?php if(isset($this->fehler)): ?>
+		<div style="color:red;">
+			<?= $this->fehler ?>
+		</div>
+	<?php endif; ?>
+	<div class="form block">
+		<?= $this->form ?>
+	</div>
+<?php endif; ?>
+
+<?php $this->endblock(); ?>

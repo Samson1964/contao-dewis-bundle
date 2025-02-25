@@ -1,5 +1,13 @@
 # Abfrage der DeWIS-API
 
+## Version 2.1.0 (2025-02-25)
+
+* Add: Abhängigkeit menatwork/contao-multicolumnwizard-bundle
+* Add: tl_dwz_api für Verwaltung der API-Schlüssel
+* Change: api.php überarbeitet
+* Add: Logging der Zugriffe auf die API
+* Add: tl_settings -> Adminname und -adresse plus Betreff für API-Mails
+
 ## Version 2.0.3 (2024-12-11)
 
 * Fix: Warning: Attempt to read property "path" on null in src/Classes/Verein.php (line 315) -> Abfrage mit isset funktioniert hier nicht

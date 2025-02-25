@@ -58,7 +58,6 @@ class DeWIS
 	*/
 	public static function autoQuery($params)
 	{
-
 		// Cache nur berücksichtigen, wenn nocache-Parameter nicht true ist
 		if($GLOBALS['TL_CONFIG']['dewis_cache'] || $params['cachetime'])
 		{

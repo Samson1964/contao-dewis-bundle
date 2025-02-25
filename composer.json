@@ -15,6 +15,7 @@
         "codefog/contao-haste": "*",
         "schachbulle/contao-helper-bundle": "*",
         "terminal42/contao-avatar": ">=1",
+        "menatwork/contao-multicolumnwizard-bundle": "*",
         "components/flag-icon-css": "^3.3"
     },
     "conflict": {

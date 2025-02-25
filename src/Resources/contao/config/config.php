@@ -58,6 +58,13 @@ $GLOBALS['BE_MOD']['dewis'] = array
 		),
 		'icon'           => 'bundles/contaodewis/images/icon_bearbeiter.png',
 	),
+	'dwz-api'    => array
+	(
+		'tables'         => array
+		(
+			'tl_dwz_api', 
+		),
+	),
 );
 
 /**
@@ -72,6 +79,7 @@ $GLOBALS['FE_MOD']['dewis'] = array
 	'dewis_turnier'         => 'Schachbulle\ContaoDewisBundle\Classes\Turnier',
 	'dewis_suche'           => 'Schachbulle\ContaoDewisBundle\Classes\Suche',
 	'dewis_bestenliste'     => 'Schachbulle\ContaoDewisBundle\Modules\Bestenliste',
+	'dewis_apiform'         => 'Schachbulle\ContaoDewisBundle\Modules\ApiForm',
 );
 
 // http://de.contaowiki.org/Strukturierte_URLs
