@@ -39,3 +39,7 @@ $GLOBALS['TL_LANG']['tl_settings']['dewis_clubDefaultImage'] = array('Vereinsbil
 $GLOBALS['TL_LANG']['tl_settings']['dewis_clubImageSize'] = array('Bildgröße', 'Größe der Vereinsbilder/Logos');
 
 $GLOBALS['TL_LANG']['tl_settings']['dewis_eloLocal'] = array('FIDE-Daten von lokaler Quelle laden', 'Die FIDE-Daten (Nation, Titel, Elo) werden aus der Tabelle elo geladen und nicht aus DeWIS.');
+
+$GLOBALS['TL_LANG']['tl_settings']['dewis_adminName'] = array('Admin-Name', 'Name des Admins');
+$GLOBALS['TL_LANG']['tl_settings']['dewis_adminMail'] = array('Admin-E-Mail', 'E-Mail des Admins');
+$GLOBALS['TL_LANG']['tl_settings']['dewis_apiSubject'] = array('Betreff für die API-E-Mail', 'Betreff für die API-E-Mail');

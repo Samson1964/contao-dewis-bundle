@@ -1,5 +1,10 @@
 # Abfrage der DeWIS-API
 
+## Version 2.1.1 (2025-03-31)
+
+* Add: Übersetzungen tl_settings
+* Change: Elo-Verlinkung in DWZ-Karteikarten -> Spieler-Klasse
+
 ## Version 2.1.0 (2025-02-25)
 
 * Add: Abhängigkeit menatwork/contao-multicolumnwizard-bundle

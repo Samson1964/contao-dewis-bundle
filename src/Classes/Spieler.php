@@ -291,10 +291,10 @@ class Spieler extends \Module
 			$this->Template->geschlecht   = $GLOBALS['TL_CONFIG']['dewis_geschlecht_ausblenden'] ? '*' : ($resultArr['result']->member->gender == 'm' ? 'M' : ($resultArr['result']->member->gender == 'f' ? 'W' : strtoupper($resultArr['result']->member->gender)));
 			$this->Template->dewis_id     = $resultArr['result']->member->pid;
 			$this->Template->dwz          = $resultArr['result']->member->rating." - ".$resultArr['result']->member->ratingIndex;
-			$this->Template->fide_id      = ($resultArr['result']->member->idfide) ? sprintf('<a href="http://ratings.fide.com/card.phtml?event=%s" target="_blank">%s</a>',$resultArr['result']->member->idfide,$resultArr['result']->member->idfide) : '-';
+			$this->Template->fide_id      = ($resultArr['result']->member->idfide) ? sprintf('<a href="https://ratings.fide.com/profile/%s" target="_blank">%s</a>',$resultArr['result']->member->idfide,$resultArr['result']->member->idfide) : '-';
 			$this->Template->elo          = ($resultArr['result']->member->elo) ? $resultArr['result']->member->elo : '-';
 			$this->Template->fide_titel   = ($resultArr['result']->member->fideTitle) ? $resultArr['result']->member->fideTitle : '-';
-			$this->Template->fide_nation  = ($resultArr['result']->member->fideNation) ? ($resultArr['result']->member->gender == 'f' ? sprintf('<a href="https://ratings.fide.com/topfed.phtml?tops=1&ina=1&country=%s" target="_blank">%s</a>',$resultArr['result']->member->fideNation, $resultArr['result']->member->fideNation) : sprintf('<a href="https://ratings.fide.com/topfed.phtml?tops=0&ina=1&country=%s" target="_blank">%s</a>',$resultArr['result']->member->fideNation, $resultArr['result']->member->fideNation)) : '-';
+			$this->Template->fide_nation  = ($resultArr['result']->member->fideNation) ? ($resultArr['result']->member->gender == 'f' ? sprintf('<a href="https://ratings.fide.com/rankings.phtml?tops=1&ina=1&country=%s" target="_blank">%s</a>',$resultArr['result']->member->fideNation, $resultArr['result']->member->fideNation) : sprintf('<a href="https://ratings.fide.com/topfed.phtml?tops=0&ina=1&country=%s" target="_blank">%s</a>',$resultArr['result']->member->fideNation, $resultArr['result']->member->fideNation)) : '-';
 
 			$this->Template->image        = $objBild->singleSRC;
 			$this->Template->imageSize    = $objBild->imgSize;
