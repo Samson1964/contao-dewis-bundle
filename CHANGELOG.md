@@ -1,5 +1,11 @@
 # Abfrage der DeWIS-API
 
+## Version 2.1.2 (2025-07-01)
+
+* Fix: Warning: Undefined array key 10029745 in src/Modules/Bestenliste.php (line 109) -> isset hinzugefügt
+* Fix: Warning: Undefined variable $gesperrt in src/Modules/Bestenliste.php (line 127) -> Variable durch false ersetzt
+* Add: Bestenliste-Modul Übersetzungen ergänzt
+
 ## Version 2.1.1 (2025-03-31)
 
 * Add: Übersetzungen tl_settings

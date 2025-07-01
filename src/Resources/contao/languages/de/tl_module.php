@@ -11,6 +11,7 @@
  * Back end modules
  */
 $GLOBALS['TL_LANG']['tl_module']['options_legend'] = 'Einstellungen';
+$GLOBALS['TL_LANG']['tl_module']['dwzbestenliste_legend'] = 'Anzahl Spieler und Geschlecht';
 
 $GLOBALS['TL_LANG']['tl_module']['dewis_searchkey'] = array('URL-Parameter','Parameter in der URL, der die Suche in Gang setzt');
 $GLOBALS['TL_LANG']['tl_module']['dewis_spieler'] = array('Spielersuche','Suche nach Spielern aktivieren');

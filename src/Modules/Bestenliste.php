@@ -106,9 +106,9 @@ class Bestenliste extends \Module
 				foreach($liste as $m)
 				{
 					
-					if($Blacklist[$m->pid] || ($GLOBALS['TL_CONFIG']['dewis_passive_ausblenden'] && $m->state == 'P'))
+					if(isset($Blacklist[$m->pid]) || ($GLOBALS['TL_CONFIG']['dewis_passive_ausblenden'] && $m->state == 'P'))
 					{
-						// Passive überspringen
+						// Blacklist-Spieler oder passive Spieler überspringen
 					}
 					else
 					{
@@ -124,7 +124,7 @@ class Bestenliste extends \Module
 							(
 								'Platz'       => $z,
 								'PKZ'         => $m->pid,
-								'Spielername' => \Schachbulle\ContaoDewisBundle\Helper\Helper::Spielername($m, $gesperrt, 1),
+								'Spielername' => \Schachbulle\ContaoDewisBundle\Helper\Helper::Spielername($m, false, 1),
 								'DWZ'         => (!$m->rating && $m->tcode) ? 'Restp.' : \Schachbulle\ContaoDewisBundle\Helper\DeWIS::DWZ($m->rating, $m->ratingIndex),
 								'FIDE-Titel'  => $m->fideTitle,
 								'Verein'      => sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getVereinseite()."/%s.html\">%s</a>", $m->vkz, \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Vereinskurzname($m->club))
