@@ -142,6 +142,7 @@ class DeWIS_Converter
 					$ziel = $csvpfad.'LV-'.$item['verband'].'-csv.zip';
 					echo "Kopiere $quelle => $ziel<br>";
 					copy($quelle, $ziel);
+
 					$quelle = $this->archivpfad.'lv'.strtolower($item['verband']).'/LV-'.$item['verband'].'-sql_'.date('Ymd').'.zip';
 					$ziel = $sqlpfad.'LV-'.$item['verband'].'-sql.zip';
 					echo "Kopiere $quelle => $ziel<br>";
@@ -154,6 +155,7 @@ class DeWIS_Converter
 					$ziel = $csvpfad.'LV-0-csv.zip';
 					echo "Kopiere $quelle => $ziel<br>";
 					copy($quelle, $ziel);
+
 					$quelle = $this->archivpfad.'sql/LV-0-sql_'.date('Ymd').'.zip';
 					$ziel = $sqlpfad.'LV-0-sql.zip';
 					echo "Kopiere $quelle => $ziel<br>";
@@ -273,7 +275,9 @@ class DeWIS_Converter
 		// readme.txt anlegen
 		self::Readme($verband, $vereinsanzahl, $spieleranzahl, 'csv');
 
+		// --------------------------------------------------------------------
 		// CSV-Dateien packen
+		// --------------------------------------------------------------------
 		$files = array
 		(
 			$this->packpfad.'spieler.csv',
@@ -283,8 +287,16 @@ class DeWIS_Converter
 		);
 		$zip = new ZipArchive;
 
-		if($verband) $ziel = $csvpfad.'LV-'.$verband.'-csv_'.date('Ymd').'.zip';
-		else $ziel = $csvpfad.'LV-0-csv_'.date('Ymd').'.zip';
+		if($verband) 
+		{
+			$ziel = $csvpfad.'LV-'.$verband.'-csv_'.date('Ymd').'.zip';
+			$datei = 'LV-'.$verband.'-csv_'.date('Ymd').'.zip';
+		}
+		else 
+		{
+			$ziel = $csvpfad.'LV-0-csv_'.date('Ymd').'.zip';
+			$datei = 'LV-0-csv_'.date('Ymd').'.zip';
+		}
 
 		if($zip->open($ziel,ZipArchive::CREATE))
 		{
@@ -293,12 +305,17 @@ class DeWIS_Converter
 				$zip->addFile(realpath($file), str_replace($this->packpfad, '', $file));
 			}
 			$zip->close();
+			// Datei in Dateiverwaltung eintragen
+			$pfad = substr(str_replace(TL_ROOT, '', $csvpfad), 1);
+			self::writeDbafs($pfad, $datei);
 		}
 
 		// readme.txt anlegen
 		self::Readme($verband, $vereinsanzahl, $spieleranzahl, 'sql');
 
+		// --------------------------------------------------------------------
 		// SQL-Dateien packen
+		// --------------------------------------------------------------------
 		$files = array
 		(
 			$this->packpfad.'spieler.sql',
@@ -308,9 +325,18 @@ class DeWIS_Converter
 		);
 		$zip = new ZipArchive;
 
-		if($verband) $ziel = $sqlpfad.'LV-'.$verband.'-sql_'.date('Ymd').'.zip';
-		else $ziel = $sqlpfad.'LV-0-sql_'.date('Ymd').'.zip';
+		if($verband) 
+		{
+			$ziel = $sqlpfad.'LV-'.$verband.'-sql_'.date('Ymd').'.zip';
+			$datei = 'LV-'.$verband.'-sql_'.date('Ymd').'.zip';
+		}
+		else 
+		{
+			$ziel = $sqlpfad.'LV-0-sql_'.date('Ymd').'.zip';
+			$datei = 'LV-0-sql_'.date('Ymd').'.zip';
+		}
 
+		// Dateien packen
 		if($zip->open($ziel,ZipArchive::CREATE))
 		{
 			foreach($files as $file)
@@ -318,6 +344,9 @@ class DeWIS_Converter
 				$zip->addFile(realpath($file), str_replace($this->packpfad, '', $file));
 			}
 			$zip->close();
+			// Datei in Dateiverwaltung eintragen
+			$pfad = substr(str_replace(TL_ROOT, '', $sqlpfad), 1);
+			self::writeDbafs($pfad, $datei);
 		}
 
 	}
@@ -467,7 +496,7 @@ class DeWIS_Converter
 			default: $verbandsname = '00000 - Deutscher Schachbund'; break;
 		}
 		
-		$content .= 'Landesverband: '.$verbandsname."\r\n";
+		$content = 'Landesverband: '.$verbandsname."\r\n";
 		$content .= ''."\r\n";
 		$content .= 'DWZ-Datenbank vom '.date('d.m.Y').' - '.$spieler.' Spieler in '.$vereine.' Vereinen'."\r\n";
 		$content .= ''."\r\n";
@@ -575,6 +604,38 @@ class DeWIS_Converter
 		}
 		file_put_contents($this->packpfad.'readme.txt', utf8_decode($content));
 	}
+
+	/**
+	 * Generiert den Datensatz in tl_files
+	 * (copied from FormFileUpload.php)
+	 *   
+	 * @param string $strUploadFolder  ohne Prefix TL_ROOT/, ohne Suffix /
+	 * @param string $filename
+	 */
+	protected function writeDbafs($strUploadFolder, $filename)
+	{
+		// Generate the DB entries
+		$strFile = $strUploadFolder . '/' . $filename;
+		$objFile = \FilesModel::findByPath($strFile);
+		
+		// Existing file is being replaced (see contao/core#4818)
+		if ($objFile !== null)
+		{
+			$objFile->tstamp = time();
+			$objFile->path   = $strFile;
+			$objFile->hash   = md5_file(TL_ROOT . '/' . $strFile);
+			$objFile->save();
+		}
+		else
+		{
+			\Dbafs::addResource($strFile);
+		}
+		
+		// Update the hash of the target folder
+		\Dbafs::updateFolderHashes($strUploadFolder);
+		
+	}
+
 }
 
 /**

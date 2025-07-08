@@ -218,10 +218,10 @@ $GLOBALS['TL_DCA']['tl_dwz_ver'] = array
 			'eval'                    => array
 			(
 				'mandatory'           => false, 
-				'maxlength'           => 40, 
+				'maxlength'           => 255, 
 				'tl_class'            => 'w50'
 			),
-			'sql'                     => "varchar(40) NOT NULL default ''"
+			'sql'                     => "varchar(255) NOT NULL default ''"
 		),
 		'abkuerzung' => array
 		(

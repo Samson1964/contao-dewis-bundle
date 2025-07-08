@@ -106,7 +106,7 @@ class Bestenliste extends \Module
 				foreach($liste as $m)
 				{
 					
-					if(isset($Blacklist[$m->pid]) || ($GLOBALS['TL_CONFIG']['dewis_passive_ausblenden'] && $m->state == 'P'))
+					if(isset($Blacklist[$m->pid]) || $m->state == 'P')
 					{
 						// Blacklist-Spieler oder passive Spieler überspringen
 					}

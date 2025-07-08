@@ -1,5 +1,13 @@
 # Abfrage der DeWIS-API
 
+## Version 2.1.3 (2025-07-08)
+
+* Fix: Bestenliste-Modul gibt Spieler doppelt aus -> Passive werden mit angezeigt
+* Change: tl_dwz_ver.name von 40 auf 255 Zeichen erhöht
+* Add: Klasse AktualisiereVereine für die Aktualisierung von tl_dwz_ver
+* Add: Klasse AktualisiereSpieler für die Aktualisierung von tl_dwz_spi -> Funktion AktualisiereDWZTabellen aus DeWIS-Klasse hierhin verschoben
+* Add: Funktion writeDbafs in Klasse DeWIS_Converter -> hat bisher gefehlt
+
 ## Version 2.1.2 (2025-07-01)
 
 * Fix: Warning: Undefined array key 10029745 in src/Modules/Bestenliste.php (line 109) -> isset hinzugefügt
