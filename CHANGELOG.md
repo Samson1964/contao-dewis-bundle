@@ -1,5 +1,10 @@
 # Abfrage der DeWIS-API
 
+## Version 2.1.4 (2025-07-09)
+
+* Fix: Warning: Undefined property: stdClass::$vkz in src/Helper/AktualisiereVereine.php (line 31) -> $result->union statt $result->members
+* Fix: Unsupported operand types: string - string in src/Helper/DeWIS.php (line 782) 
+
 ## Version 2.1.3 (2025-07-08)
 
 * Fix: Bestenliste-Modul gibt Spieler doppelt aus -> Passive werden mit angezeigt

@@ -776,9 +776,12 @@ class DeWIS
 	 *
 	 * @return float
 	 */
-	public static function Gewinnerwartung ($dwz, $gegnerdwz)
+	public static function Gewinnerwartung($dwz, $gegnerdwz)
 	{
-		if ($dwz == 0 || $gegnerdwz == 0) return false;
+		// Umwandeln in Integer, falls ein String übergeben wurde
+		$dwz = (int)$dwz;
+		$gegnerdwz = (int)$gegnerdwz;
+		if($dwz == 0 || $gegnerdwz == 0) return false;
 		return (sprintf ("%5.3f", 1/(1+pow(10,($gegnerdwz-$dwz)/400))));
 	}
 
