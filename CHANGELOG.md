@@ -1,5 +1,14 @@
 # Abfrage der DeWIS-API
 
+## Version 2.2.0 (2025-09-10)
+
+* Change: Verein-Klasse \Controller::addImageToTemplate ersetzt durch \System::getContainer()->get('contao.image.studio')->createFigureBuilder() -> soll Fehler "Vereinslogos werden in Originalgröße angezeigt" reparieren
+* Change: Spieler-Klasse -> auch hier den FigureBuilder eingestellt
+* Add: tl_dwz_ver.altname -> alternativer Vereinsname, der öffentlich angezeigt wird
+* Change: Klasse Verein -> Ausgabe des alternativen Vereinsnamen
+* Change: Tabelle elo umbenannt in tl_dwz_elo und Klassen entsprechend geändert
+* Add: DCA für tl_dwz_elo
+
 ## Version 2.1.4 (2025-07-09)
 
 * Fix: Warning: Undefined property: stdClass::$vkz in src/Helper/AktualisiereVereine.php (line 31) -> $result->union statt $result->members

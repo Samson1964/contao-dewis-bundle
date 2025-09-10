@@ -114,7 +114,7 @@ $GLOBALS['TL_DCA']['tl_dwz_ver'] = array
 	'palettes' => array
 	(
 		'__selector__'                => array('addImage'), 
-		'default'                     => '{name_legend},zpsver,verband,name,abkuerzung,status,statusdatum;{adresse_legend},empfaenger,plz,ort,strasse,telefon,email,adressdatum;{image_legend},addImage;{info_legend},info,homepage;{source_legend},elobase;{publish_legend},published'
+		'default'                     => '{name_legend},zpsver,verband,name,altname,abkuerzung,status,statusdatum;{adresse_legend},empfaenger,plz,ort,strasse,telefon,email,adressdatum;{image_legend},addImage;{info_legend},info,homepage;{source_legend},elobase;{publish_legend},published'
 	),
 
 	// Subpalettes
@@ -210,6 +210,22 @@ $GLOBALS['TL_DCA']['tl_dwz_ver'] = array
 		'name' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_dwz_ver']['name'],
+			'exclude'                 => true,
+			'search'                  => true,
+			'sorting'                 => true,
+			'flag'                    => 1,
+			'inputType'               => 'text',
+			'eval'                    => array
+			(
+				'mandatory'           => false, 
+				'maxlength'           => 255, 
+				'tl_class'            => 'w50'
+			),
+			'sql'                     => "varchar(255) NOT NULL default ''"
+		),
+		'altname' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_dwz_ver']['altname'],
 			'exclude'                 => true,
 			'search'                  => true,
 			'sorting'                 => true,

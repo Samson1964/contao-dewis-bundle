@@ -383,7 +383,7 @@ class DeWIS_Converter
 		// Spieler-Array anhand Datenbanktabelle elo modifizieren, Abweichungen bei Name und Geschlecht loggen
 		for($x = 1; $x < count($this->spieler); $x++)
 		{
-			$objPlayer = \Database::getInstance()->prepare("SELECT * FROM elo WHERE fideid = ?")
+			$objPlayer = \Database::getInstance()->prepare("SELECT * FROM tl_dwz_elo WHERE fideid = ?")
 			                                     ->execute($this->spieler[$x][13]);
 			$ungleich = array();
 			if($objPlayer->numRows)

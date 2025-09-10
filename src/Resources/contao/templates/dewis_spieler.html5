@@ -67,8 +67,8 @@
 					<tr class="row_0">
 						<td class="col_0" rowspan="6" style="text-align:center;">
 							<?php if($this->addImage): ?>
-								<a href="<?= $this->image ?>" data-lightbox="playerpicture"><img src="<?= $this->thumbnail ?>"<?= $this->imageSize ?> alt="<?= $this->imageAlt ?>" title="<?= $this->imageTitle ?>"></a><br>
-								<a href="mailto:webmaster@schachbund.de" style="font-size:10px;">Foto senden</a>
+								<?php $this->insert('image', $this->arrData); ?>
+								<br><a href="mailto:webmaster@schachbund.de" style="font-size:10px;">Foto senden</a>
 							<?php endif; ?>
 						</td>
 						<td class="col_1 bottom-line">Name:</td>

@@ -920,7 +920,7 @@ class DeWIS
 		if($fideid)
 		{
 			// FIDE-ID in lokaler Datenbank suchen
-			$objPlayer = \Database::getInstance()->prepare("SELECT * FROM elo WHERE fideid = ?")
+			$objPlayer = \Database::getInstance()->prepare("SELECT * FROM tl_dwz_elo WHERE fideid = ?")
 			                                     ->execute($fideid);
 			if($objPlayer->numRows)
 			{

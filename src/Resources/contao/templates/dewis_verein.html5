@@ -1,5 +1,5 @@
 <!-- indexer::stop -->
-
+<?php $this->showTemplateVars() ?>
 <?php
 	$GLOBALS['TL_CSS'][] = 'bundles/contaodewis/css/default.css';
 ?>
@@ -57,8 +57,8 @@
 					<tr class="row_0">
 						<td class="col_0" rowspan="2" style="text-align:center;" width="25%">
 							<?php if($this->addImage): ?>
-								<a href="<?= $this->image ?>" data-lightbox="clublogo"><img src="<?= $this->thumbnail ?>"<?= $this->imageSize ?>></a><br>
-								<a href="mailto:webmaster@schachbund.de" style="font-size:10px;">Logo senden</a>
+								<?php $this->insert('image', $this->arrData); ?>
+								<br><a href="mailto:webmaster@schachbund.de" style="font-size:10px;">Logo senden</a>
 							<?php endif; ?>
 						</td>
 						<td class="col_1 top-line" width="25%">Homepage:</td>

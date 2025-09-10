@@ -23,13 +23,13 @@ class Verein extends \Module
 	protected $strTemplate = 'dewis_verein';
 	protected $subTemplate = 'dewis_sub_vereinsuche';
 	protected $infoTemplate = 'queries';
-	
+
 	var $startzeit; // Startzeit des Skriptes
 	var $dewis;
-	
+
 	var $Helper;
 
-	
+
 	/**
 	 * Display a wildcard in the back end
 	 * @return string
@@ -66,9 +66,9 @@ class Verein extends \Module
 	 */
 	protected function compile()
 	{
-	
+
 		global $objPage;
-		
+
 		// DWZ-Abfragen abgeschaltet?
 		if(isset($GLOBALS['TL_CONFIG']['dewis_switchedOff']) && $GLOBALS['TL_CONFIG']['dewis_switchedOff'])
 		{
@@ -81,15 +81,15 @@ class Verein extends \Module
 		$Blacklist = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::blacklist();
 
 		// Vereinsliste angefordert?
-		$zps = \Input::get('zps'); 
+		$zps = \Input::get('zps');
 		// Vereinssuche aktiv?
-		$search = \Input::get('search'); 
+		$search = \Input::get('search');
 		// Sortierung festlegen
-		$order = \Input::get('order'); 
+		$order = \Input::get('order');
 		$order = ($order == 'alpha') ? 'alpha' : 'rang';
-		
+
 		$mitglied = \Schachbulle\ContaoDewisBundle\Helper\Helper::getMitglied(); // Daten des aktuellen Mitgliedes laden
-		
+
 		$this->Template->hl = 'h1'; // Standard-Überschriftgröße
 		$this->Template->shl = 'h2'; // Standard-Überschriftgröße 2
 		$this->Template->headline = 'DWZ - Verein'; // Standard-Überschrift
@@ -110,7 +110,7 @@ class Verein extends \Module
 		{
 			$this->Template->search = $search;
 		}
-		
+
 		if($search)
 		{
 
@@ -119,9 +119,9 @@ class Verein extends \Module
 			/*********************************************************
 			 * Verbands- und Vereinsliste holen
 			*/
-			
+
 			$liste = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::Verbandsliste('00000');
-			
+
 
 			/*********************************************************
 			 * Suchbegriff im Vereinssuche-Cache?
@@ -240,7 +240,7 @@ class Verein extends \Module
 
 		}
 
-		
+
 		// Vereinsliste anfordern
 		if($zps)
 		{
@@ -257,7 +257,7 @@ class Verein extends \Module
 
 			// Sichtbarkeit der Vereinsliste festlegen
 			$this->Template->sichtbar = true;
-			
+
 
 			/*********************************************************
 			 * Kein Suchergebnis für $zps -> in Verbandsliste suchen
@@ -283,12 +283,12 @@ class Verein extends \Module
 
 				$this->Template->fehler = \Schachbulle\ContaoDewisBundle\Helper\DeWIS::ZeigeFehler();
 				if(!$result && !$this->Template->fehler) \Schachbulle\ContaoDewisBundle\Helper\Helper::get404(); // VZPS nicht gefunden
-				
+
 				// Titel-Ausgabe modifizieren
 				$ausgabetitel = $liste['verbaende'][$zps]['name'] ? $liste['verbaende'][$zps]['name'] : 'ZPS-Raum '.$zps;
 				$objPage->pageTitle = 'Suche nach Vereinen in '.$ausgabetitel;
 				$this->Template->subHeadline = 'Suche nach Vereinen in '.$ausgabetitel; // Unterüberschrift setzen
-	
+
 				// Templates füllen
 				$this->Subtemplate = new \FrontendTemplate($this->subTemplate);
 				$this->Subtemplate->daten_vn = $result;
@@ -302,6 +302,11 @@ class Verein extends \Module
 			$this->Template->addImage     = true;
 			$this->Template->homepage     = isset($objVerein->homepage) ? $objVerein->homepage : '';
 			$this->Template->info         = isset($objVerein->info) ? $objVerein->info : '';
+
+			/*********************************************************
+			 * Logo des Vereins
+			*/
+
 			if($objVerein->addImage)
 			{
 				// Vereinslogo vorhanden
@@ -309,21 +314,28 @@ class Verein extends \Module
 			}
 			else
 			{
+				// Standardlogo verwenden
 				$objFile = \FilesModel::findByUuid($GLOBALS['TL_CONFIG']['dewis_clubDefaultImage']);
 			}
-			$objBild = new \stdClass();
-			\Controller::addImageToTemplate($objBild, array('singleSRC' => $objFile->path, 'size' => unserialize($GLOBALS['TL_CONFIG']['dewis_clubImageSize'])), \Config::get('maxImageWidth'), null, $objFile);
-			
+
+			// Bild für das Template erstellen (Methode ab Contao 4.10 möglich)
+			$figureBuilder = \System::getContainer()->get('contao.image.studio')->createFigureBuilder();
+			$figure = $figureBuilder->fromPath($objFile->path)
+			                        ->setSize(unserialize($GLOBALS['TL_CONFIG']['dewis_clubImageSize']))
+			                        ->enableLightbox(true)
+			                        ->disableMetadata(true)
+			                        ->build();
+			$figure->applyLegacyTemplateData($this->Template);
+
+
 			/*********************************************************
 			 * Ausgabe Kopfdaten
 			*/
 
-			$this->Template->listenlink   = ($order == 'alpha') ? sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getVereinseite()."/%s.html?order=rang\">Rangliste</a>", $resultArr['result']->union->vkz, $resultArr['result']->union->name) : sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getVereinseite()."/%s.html?order=alpha\">Alphaliste</a>", $resultArr['result']->union->vkz, $resultArr['result']->union->name);
-			$this->Template->vereinsname  = $resultArr['result']->union->name;
+			$vereinsname = (isset($objVerein->altname) && $objVerein->altname != '') ? $objVerein->altname : $resultArr['result']->union->name;
+			$this->Template->listenlink = ($order == 'alpha') ? sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getVereinseite()."/%s.html?order=rang\">Rangliste</a>", $resultArr['result']->union->vkz, $vereinsname) : sprintf("<a href=\"".\Schachbulle\ContaoDewisBundle\Helper\Helper::getVereinseite()."/%s.html?order=alpha\">Alphaliste</a>", $resultArr['result']->union->vkz, $vereinsname);
+			$this->Template->vereinsname = $vereinsname;
 			$referent = $resultArr['result']->ratingOfficer; // Wertungsreferent zuweisen
-			$this->Template->image        = $objBild->singleSRC;
-			$this->Template->imageSize    = $objBild->imgSize;
-			$this->Template->thumbnail    = $objBild->src;
 
 
 			/*********************************************************
@@ -335,12 +347,12 @@ class Verein extends \Module
 			if($resultArr['result']->members)
 			{
 				// Seitentitel ändern
-				$objPage->pageTitle = ($order == 'alpha') ? 'DWZ-Vereinsliste '.$resultArr['result']->union->name : 'DWZ-Rangliste '.$resultArr['result']->union->name;
-				$this->Template->subHeadline = ($order == 'alpha') ? 'DWZ-Vereinsliste '.$resultArr['result']->union->name : 'DWZ-Rangliste '.$resultArr['result']->union->name; // Unterüberschrift setzen
+				$objPage->pageTitle = ($order == 'alpha') ? 'DWZ-Vereinsliste '.$vereinsname : 'DWZ-Rangliste '.$vereinsname;
+				$this->Template->subHeadline = ($order == 'alpha') ? 'DWZ-Vereinsliste '.$vereinsname : 'DWZ-Rangliste '.$vereinsname; // Unterüberschrift setzen
 
 				foreach($resultArr['result']->members as $m)
 				{
-					
+
 					if($GLOBALS['TL_CONFIG']['dewis_passive_ausblenden'] && $m->state == 'P')
 					{
 						// Passive überspringen
@@ -352,7 +364,7 @@ class Verein extends \Module
 						$key = ($order == 'alpha') ? \StringUtil::generateAlias($m->surname.$m->firstname.$z) : sprintf('%05d-%04d-%s-%03d', 10000 - $m->rating, 1000 - $m->ratingIndex, ($m->tcode) ? $m->tcode : 'Z', $z);
 						// Daten zuweisen
 						if(!isset($Blacklist[$m->pid]))
-						{ 
+						{
 							$daten[$key] = array
 							(
 								'PKZ'         => $m->pid,
@@ -412,7 +424,7 @@ class Verein extends \Module
 			{
 				$temp[$x]['typ'] = 'level_'.$x;
 			}
-	
+
 			$this->Template->verbaende    = $temp;
 
 
@@ -434,7 +446,7 @@ class Verein extends \Module
 
 		}
 
-		
+
 	}
 
 }

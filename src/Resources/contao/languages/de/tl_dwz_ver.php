@@ -11,6 +11,7 @@ $GLOBALS['TL_LANG']['tl_dwz_ver']['name_legend'] = 'Verein';
 $GLOBALS['TL_LANG']['tl_dwz_ver']['zpsver'] = array('Kennziffer', 'Fünfstellige Vereinskennziffer');
 $GLOBALS['TL_LANG']['tl_dwz_ver']['verband'] = array('Verband', 'Dreistellige Verbandskennziffer');
 $GLOBALS['TL_LANG']['tl_dwz_ver']['name'] = array('Name', 'Name des Vereins');
+$GLOBALS['TL_LANG']['tl_dwz_ver']['altname'] = array('Alternativer Name', 'Alternativer Name des Vereins, der in DWZ-Listen angezeigt wird. Leerlassen, wenn nichts geändert werden soll.');
 $GLOBALS['TL_LANG']['tl_dwz_ver']['abkuerzung'] = array('Abkürzung', 'Vierstellige Abkürzung des Vereins');
 $GLOBALS['TL_LANG']['tl_dwz_ver']['status'] = array('Status' ,'Status des Vereins');
 $GLOBALS['TL_LANG']['tl_dwz_ver']['statusdatum'] = array('Änderungsdatum' ,'Datum der Änderung der vorstehenden Angaben');
