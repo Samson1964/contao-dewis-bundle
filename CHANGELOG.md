@@ -1,5 +1,9 @@
 # Abfrage der DeWIS-API
 
+## Version 2.2.2 (2025-09-27)
+
+* Fix: Debug-Ausgabe entfernt
+
 ## Version 2.2.1 (2025-09-27)
 
 * Fix: Blacklist-Funktion in DeWIS-Klasse griff auf nicht vorhandenes Feld zu -> dewis_id statt dewisID

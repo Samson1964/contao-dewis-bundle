@@ -844,7 +844,6 @@ class DeWIS
 			}
 		}
 
-		print_r($blacklist);
 		return $blacklist;
 	}
 
