@@ -1,5 +1,9 @@
 # Abfrage der DeWIS-API
 
+## Version 2.2.1 (2025-09-27)
+
+* Fix: Blacklist-Funktion in DeWIS-Klasse griff auf nicht vorhandenes Feld zu -> dewis_id statt dewisID
+
 ## Version 2.2.0 (2025-09-10)
 
 * Change: Verein-Klasse \Controller::addImageToTemplate ersetzt durch \System::getContainer()->get('contao.image.studio')->createFigureBuilder() -> soll Fehler "Vereinslogos werden in Originalgröße angezeigt" reparieren

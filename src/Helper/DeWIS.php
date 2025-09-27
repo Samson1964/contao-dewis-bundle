@@ -830,10 +830,8 @@ class DeWIS
 	public static function Blacklist()
 	{
 		// Gesperrte ID's einlesen
-		//$result = \Database::getInstance()->prepare("SELECT dewis_id FROM tl_dewis_blacklist WHERE published = '1'")
-		//								  ->execute();
-		$result = \Database::getInstance()->prepare("SELECT dewisID FROM tl_dwz_spi WHERE blocked = '1'")
-		                                  ->execute();
+		$result = \Database::getInstance()->prepare("SELECT dewisID FROM tl_dwz_spi WHERE blocked = ?")
+		                                  ->execute(1);
 
 		$blacklist = array();
 		// Übernehmen
@@ -842,10 +840,11 @@ class DeWIS
 			while($result->next())
 			{
 				// Frage: Was ist schneller? Dieser Indexzugriff oder später in_array?
-				$blacklist[$result->dewis_id] = true;
+				$blacklist[$result->dewisID] = true;
 			}
 		}
 
+		print_r($blacklist);
 		return $blacklist;
 	}
 
