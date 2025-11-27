@@ -1,5 +1,9 @@
 # Abfrage der DeWIS-API
 
+## Version 2.2.3 (2025-11-27)
+
+* Fix: composer.json menatwork/contao-multicolumnwizard-bundle auf Version 3.6.11 festgelegt, da der MCW in der aktuellen Version nicht mehr kompatibel mit Contao 4.13 ist. Es wird eine Klasse von Contao 5 verwendet.
+
 ## Version 2.2.2 (2025-09-27)
 
 * Fix: Debug-Ausgabe entfernt
