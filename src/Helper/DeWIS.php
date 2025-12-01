@@ -483,7 +483,7 @@ class DeWIS
 		);
 
 		// Gibt es auf der aktuellen Ebene Kindelemente?
-		if ($c)
+		if($c)
 		{
 			// Kindelemente der Reihe nach rekursiv abarbeiten
 			foreach ($a->children as $b)

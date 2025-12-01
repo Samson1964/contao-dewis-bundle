@@ -276,13 +276,14 @@ class Spieler extends \Module
 			 * Spielerfoto
 			*/
 
-			if($objSpieler->addImage)
+			if(isset($objSpieler->addImage))
 			{
 				// Spielerfoto vorhanden
 				$objFile = \FilesModel::findByPk($objSpieler->singleSRC);
 			}
 			else
 			{
+				// Standardbild verwenden
 				$objFile = \FilesModel::findByUuid($GLOBALS['TL_CONFIG']['dewis_playerDefaultImage']);
 			}
 
@@ -294,7 +295,6 @@ class Spieler extends \Module
 			                        ->disableMetadata(true)
 			                        ->build();
 			$figure->applyLegacyTemplateData($this->Template);
-
 
 			/*********************************************************
 			 * Ausgabe Kopfdaten

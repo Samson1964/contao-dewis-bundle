@@ -1,5 +1,11 @@
 # Abfrage der DeWIS-API
 
+## Version 2.2.4 (2025-12-01)
+
+* Fix: Warning: Attempt to read property "children" on false in src/Helper/DeWIS.php (line 473) -> kein Aktion nötig, der Cache war beschädigt
+* Fix: Warning: Attempt to read property "addImage" on null in src/Classes/Spieler.php (line 279) -> Abfrage auf isset geändert
+* Fix: Warning: Attempt to read property "path" on null in src/Classes/Spieler.php (line 291) -> tritt nur im Dev-System auf. Grund ist vielleicht die Änderung bei addImage.
+
 ## Version 2.2.3 (2025-11-27)
 
 * Fix: composer.json menatwork/contao-multicolumnwizard-bundle auf Version 3.6.11 festgelegt, da der MCW in der aktuellen Version nicht mehr kompatibel mit Contao 4.13 ist. Es wird eine Klasse von Contao 5 verwendet.
