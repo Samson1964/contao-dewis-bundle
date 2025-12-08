@@ -276,7 +276,7 @@ class Spieler extends \Module
 			 * Spielerfoto
 			*/
 
-			if(isset($objSpieler->addImage))
+			if($objSpieler->addImage)
 			{
 				// Spielerfoto vorhanden
 				$objFile = \FilesModel::findByPk($objSpieler->singleSRC);

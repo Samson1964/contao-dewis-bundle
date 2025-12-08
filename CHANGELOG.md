@@ -1,5 +1,12 @@
 # Abfrage der DeWIS-API
 
+## Version 2.2.5 (2025-12-08)
+
+* Fix: Warning: Attempt to read property "path" on null in /src/Classes/Spieler.php (line 292) -> isset wieder entfernt bei if($objSpieler->addImage)
+* Fix: Warning: Undefined array key "elo" in /src/Helper/DeWIS.php:972 -> isset in Zuweisung ergänzt
+* Fix: Warning: Undefined array key "titel" in /src/Helper/DeWIS.php:973 -> isset in Zuweisung ergänzt
+* Fix: Warning: Undefined array key "land" in /src/Helper/DeWIS.php:974 -> isset in Zuweisung ergänzt
+
 ## Version 2.2.4 (2025-12-01)
 
 * Fix: Warning: Attempt to read property "children" on false in src/Helper/DeWIS.php (line 473) -> kein Aktion nötig, der Cache war beschädigt

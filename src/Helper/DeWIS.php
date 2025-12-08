@@ -969,9 +969,9 @@ class DeWIS
 					if($result->member)
 					{
 						$fide = self::getFIDE($result->member->idfide);
-						$result->member->elo = $fide['elo'];
-						$result->member->fideTitle = $fide['titel'];
-						$result->member->fideNation = $fide['land'];
+						$result->member->elo = isset($fide['elo']) ? $fide['elo'] : '';
+						$result->member->fideTitle = isset($fide['titel']) ? $fide['titel'] : '';
+						$result->member->fideNation = isset($fide['land']) ? $fide['land'] : '';
 					}
 					break;
 
