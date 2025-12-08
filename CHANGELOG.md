@@ -1,5 +1,9 @@
 # Abfrage der DeWIS-API
 
+## Version 2.2.6 (2025-12-08)
+
+* Fix: menatwork/contao-multicolumnwizard-bundle Abhängigkeit von 3.6.11 auf ^3.6 geändert
+
 ## Version 2.2.5 (2025-12-08)
 
 * Fix: Warning: Attempt to read property "path" on null in /src/Classes/Spieler.php (line 292) -> isset wieder entfernt bei if($objSpieler->addImage)
