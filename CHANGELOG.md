@@ -1,5 +1,9 @@
 # DeWIS Changelog
 
+## Version 2.2.7 (2026-07-29)
+
+* Change: Beschreibung, Keywords und Homepage in der composer.json ergänzt, damit Packagist das Paket verständlich darstellt und über die Suche auffindbar macht
+
 ## Version 2.2.6 (2025-12-08)
 
 * Fix: menatwork/contao-multicolumnwizard-bundle Abhängigkeit von 3.6.11 auf ^3.6 geändert

@@ -1,7 +1,16 @@
 {
     "name": "schachbulle/contao-dewis-bundle",
     "type": "contao-bundle",
-    "description": "DeWIS-DWZ-Abfrage für Contao 4",
+    "description": "Fragt die Deutsche Wertungszahl (DWZ) über die DeWIS-Schnittstelle des Deutschen Schachbundes ab. Wird nicht mehr gepflegt, Nachfolger ist contao-wertungsportal-bundle.",
+    "keywords": [
+        "contao",
+        "schach",
+        "dwz",
+        "dewis",
+        "wertungszahl",
+        "spielersuche"
+    ],
+    "homepage": "https://github.com/Samson1964/contao-dewis-bundle",
     "license": "LGPL-3.0-or-later",
     "authors": [
         {
