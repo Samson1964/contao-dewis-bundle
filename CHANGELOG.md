@@ -1,4 +1,4 @@
-# Abfrage der DeWIS-API
+# DeWIS Changelog
 
 ## Version 2.2.6 (2025-12-08)
 
